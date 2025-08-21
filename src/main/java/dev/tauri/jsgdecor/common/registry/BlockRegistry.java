@@ -5,6 +5,7 @@ import dev.tauri.jsg.item.ITabbedItem;
 import dev.tauri.jsg.item.JSGBlockItem;
 import dev.tauri.jsg.registry.TabRegistry;
 import dev.tauri.jsgdecor.Constants;
+import dev.tauri.jsgdecor.common.worldgen.tree.Growers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -36,6 +37,7 @@ public class BlockRegistry {
     public static final RegistryObject<Block> LEMON_WOOD_STRIPPED = Constants.JSGD_BLOCK_HELPER.builder("stripped_lemon_wood").clearTooltip().setFlammability(5).setFireSpreadSpeed(5).setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS)).setProperties(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD)).buildPillar(MapColor.WOOD, MapColor.PODZOL);
     public static final RegistryObject<Block> LEMON_WOOD = Constants.JSGD_BLOCK_HELPER.builder("lemon_wood").clearTooltip().addToolStateModifierPillar(tool -> tool.getItem() instanceof AxeItem, LEMON_WOOD_STRIPPED).setFlammability(5).setFireSpreadSpeed(5).setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)).buildPillar(MapColor.WOOD, MapColor.PODZOL);
     public static final RegistryObject<Block> LEMON_LEAVES = Constants.JSGD_BLOCK_HELPER.builder("lemon_leaves").clearTooltip().setFlammability(30).setFireSpreadSpeed(60).setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).noOcclusion().mapColor(MapColor.COLOR_LIGHT_GREEN)).buildLeaves();
+    public static final RegistryObject<Block> LEMON_SAPLING = Constants.JSGD_WOOD_HELPER.builder("lemon_sapling").clearTooltip().setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING).noCollission()).buildSapling(Growers.LEMON_TREE_GROWER);
 
 
     /**
