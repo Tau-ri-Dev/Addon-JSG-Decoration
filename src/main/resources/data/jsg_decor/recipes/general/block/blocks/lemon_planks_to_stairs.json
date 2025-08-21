@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "JSG",
+  "category": "misc",
+  "pattern": [
+    "L  ",
+    "LL ",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "jsg_decor:lemon_planks"
+    }
+  },
+  "result": {
+    "item": "jsg_decor:lemon_stairs",
+    "count": 4
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jsg_decor:lemon_stairs"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "jsg_decor:blocks/wood/lemon_stairs"
+}

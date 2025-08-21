@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "JSG",
+  "category": "building",
+  "ingredients" : [
+    {
+      "tag": "jsg_decor:lemon_logs"
+    }
+  ],
+  "result": {
+    "item": "jsg_decor:lemon_planks",
+    "count": 4
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "JSG",
+  "group": "redstone",
+  "ingredients": [
+    {
+      "item": "jsg_decor:lemon_planks"
+    }
+  ],
+  "result": {
+    "item": "jsg_decor:lemon_button"
+  }
+}

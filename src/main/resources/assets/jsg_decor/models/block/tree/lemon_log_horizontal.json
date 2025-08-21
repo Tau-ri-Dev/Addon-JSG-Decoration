@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "jsg_decor:block/tree/lemon_log_top",
+    "side": "jsg_decor:block/tree/lemon_log"
+  }
+}

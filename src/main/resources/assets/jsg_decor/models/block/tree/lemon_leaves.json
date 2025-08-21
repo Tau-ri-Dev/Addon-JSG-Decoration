@@ -1,0 +1,7 @@
+{
+  "render_type": "minecraft:translucent",
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "jsg_decor:block/tree/lemon_leaves"
+  }
+}

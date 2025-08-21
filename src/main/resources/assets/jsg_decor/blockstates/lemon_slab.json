@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "jsg_decor:block/wood/lemon_slab"
+    },
+    "type=double": {
+      "model": "jsg_decor:block/wood/lemon_planks"
+    },
+    "type=top": {
+      "model": "jsg_decor:block/wood/lemon_slab_top"
+    }
+  }
+}

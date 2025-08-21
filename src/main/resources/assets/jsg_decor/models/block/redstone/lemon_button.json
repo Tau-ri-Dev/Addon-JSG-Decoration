@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button",
+  "textures": {
+    "texture": "jsg_decor:block/wood/lemon_planks"
+  }
+}

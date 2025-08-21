@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "jsg_decor:block/redstone/lemon_pressure_plate"
+    },
+    "powered=true": {
+      "model": "jsg_decor:block/redstone/lemon_pressure_plate_down"
+    }
+  }
+}

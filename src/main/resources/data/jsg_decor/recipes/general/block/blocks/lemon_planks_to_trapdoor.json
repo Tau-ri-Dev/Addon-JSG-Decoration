@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "JSG",
+  "group": "redstone",
+  "key": {
+    "P": {
+      "item": "jsg_decor:lemon_planks"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PPP"
+  ],
+  "result": {
+    "count": 2,
+    "item": "jsg_decor:lemon_trapdoor"
+  },
+  "show_notification": true
+}

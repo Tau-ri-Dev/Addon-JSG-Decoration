@@ -1,0 +1,40 @@
+{
+  "_comment": "----------------- CREATIVE TABS ------------------",
+
+  "itemGroup.jsg_decor.tab": "JSG Decorations",
+
+  "_comment100": "--------------------- ITEMS ----------------------",
+
+  "_comment101": ">>> Advancements Icons <<<<<<<<<<<<<<<<<<<<<<<<<<<",
+
+  "item.jsg_decor.icon_jsg_decor": "Main JSG Decoration Icon",
+
+  "_comment102": ">>> Integrations Items <<<<<<<<<<<<<<<<<<<<<<<<<<<",
+
+
+  "_comment200": "----------- BLOCKS / BLOCK ENTITIES --------------",
+
+  "_comment201": ">>> Tree and Wood <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+
+  "block.jsg_decor.lemon_log": "Lemon Tree Log",
+  "block.jsg_decor.stripped_lemon_log": "Stripped Lemon Tree Log",
+  "block.jsg_decor.lemon_wood": "Lemon Tree Wood",
+  "block.jsg_decor.stripped_lemon_wood": "Stripped Lemon Tree Wood",
+  "block.jsg_decor.lemon_leaves": "Lemon Tree Leaves",
+
+  "block.jsg_decor.lemon_planks": "Lemon Tree Planks",
+  "block.jsg_decor.lemon_slab": "Lemon Tree Slab",
+  "block.jsg_decor.lemon_stairs": "Lemon Tree Stairs",
+  "block.jsg_decor.lemon_fence": "Lemon Tree Fence",
+  "block.jsg_decor.lemon_fence_gate": "Lemon Tree Fence Gate",
+
+  "block.jsg_decor.lemon_button": "Lemon Tree Button",
+  "block.jsg_decor.lemon_pressure_plate": "Lemon Tree Pressure Plate",
+
+  "block.jsg_decor.lemon_door": "Lemon Tree Door",
+  "block.jsg_decor.lemon_trapdoor": "Lemon Tree Trapdoor",
+
+  "_comment300": "-------------------- ENTITIES --------------------",
+
+  "entity.jsg.mastadge": "Mastadge"
+}

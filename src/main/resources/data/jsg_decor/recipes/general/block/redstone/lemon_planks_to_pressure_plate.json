@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "JSG",
+  "group": "redstone",
+  "key": {
+    "P": {
+      "item": "jsg_decor:lemon_planks"
+    }
+  },
+  "pattern": [
+    "PP"
+  ],
+  "result": {
+    "item": "jsg_decor:lemon_pressure_plate"
+  },
+  "show_notification": true
+}

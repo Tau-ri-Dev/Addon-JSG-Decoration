@@ -1,0 +1,37 @@
+{
+  "criteria": {
+    "has_logs": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "jsg_decor:lemon_log",
+              "jsg_decor:lemon_wood",
+              "jsg_decor:stripped_lemon_log",
+              "jsg_decor:stripped_lemon_wood"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "jsg_decor:general/block/blocks/lemon_logs_to_planks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_logs",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "jsg_decor:general/block/blocks/lemon_logs_to_planks"
+    ]
+  },
+  "sends_telemetry_event": false
+}
