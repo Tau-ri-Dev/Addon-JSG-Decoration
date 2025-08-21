@@ -8,13 +8,21 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class Growers {
-    public static class LemonTreeGrower extends AbstractTreeGrower {
-        @Override
-        @ParametersAreNonnullByDefault
-        protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource pRandom, boolean pHasFlowers) {
-            return ConfiguredFeaturesRegistry.LEMON_TREE;
-        }
+
+    public static final Supplier<AbstractTreeGrower> LEMON_TREE_GROWER = createGrower((random, hasFlowers) -> ConfiguredFeaturesRegistry.LEMON_TREE);
+
+
+    public static Supplier<AbstractTreeGrower> createGrower(BiFunction<RandomSource, Boolean, ResourceKey<ConfiguredFeature<?, ?>>> configuredFeature) {
+        return () -> new AbstractTreeGrower() {
+            @Override
+            @ParametersAreNonnullByDefault
+            protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource pRandom, boolean pHasFlowers) {
+                return configuredFeature.apply(pRandom, pHasFlowers);
+            }
+        };
     }
 }
