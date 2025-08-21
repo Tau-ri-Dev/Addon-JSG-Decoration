@@ -1,13 +1,20 @@
 package dev.tauri.jsgdecor;
 
 import dev.tauri.jsg.JSG;
+import dev.tauri.jsg.LoggerWrapper;
 import dev.tauri.jsg.api.JSGAddon;
 import dev.tauri.jsgdecor.common.registry.BlockRegistry;
+import dev.tauri.jsgdecor.common.registry.EntityRegistry;
 import dev.tauri.jsgdecor.common.registry.ItemRegistry;
 import dev.tauri.jsgdecor.common.registry.TabRegistry;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +29,7 @@ public class JSGDecor implements JSGAddon {
     public static final String MC_VERSION = "1.20.1";
 
     public JSGDecor() {
-        logger = LoggerFactory.getLogger(MOD_NAME);
+        logger = new LoggerWrapper("[jsg decor] ", LoggerFactory.getLogger(MOD_NAME));
 
         ModList.get().getModContainerById(MOD_ID).ifPresentOrElse(container -> MOD_VERSION = MC_VERSION + "-" + container.getModInfo().getVersion().getQualifier(), () -> {
         });
@@ -30,11 +37,23 @@ public class JSGDecor implements JSGAddon {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         Constants.load();
 
+        MinecraftForge.EVENT_BUS.register(this);
+
         ItemRegistry.register(modEventBus);
         BlockRegistry.register(modEventBus);
         TabRegistry.register(modEventBus);
+        EntityRegistry.register(modEventBus);
 
         JSG.registerAddon(this);
+    }
+
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(EntityRegistry.JSGD_BOAT.entity().get(), (ctx) -> EntityRegistry.JSGD_BOAT.rendererProvider().apply(MOD_ID, ctx));
+            EntityRenderers.register(EntityRegistry.JSGD_CHEST_BOAT.entity().get(), (ctx) -> EntityRegistry.JSGD_CHEST_BOAT.rendererProvider().apply(MOD_ID, ctx));
+        }
     }
 
     @Override
