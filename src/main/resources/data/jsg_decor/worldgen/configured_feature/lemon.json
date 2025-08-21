@@ -1,0 +1,84 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "ignore_vines": true,
+    "force_dirt": true,
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "min_clipped_height": 5,
+      "limit": 1,
+      "lower_size": 3,
+      "upper_size": 7
+    },
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
+    },
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "jsg:lemon_log",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "jsg:lemon_leaves",
+        "Properties": {
+          "persistent": "false",
+          "waterlogged": "false"
+        }
+      }
+    },
+    "trunk_placer": {
+      "type": "minecraft:upwards_branching_trunk_placer",
+      "base_height": 7,
+      "height_rand_a": 3,
+      "height_rand_b": 4,
+      "extra_branch_steps": {
+        "type": "minecraft:uniform",
+        "min_inclusive": 2,
+        "max_inclusive": 6
+      },
+      "extra_branch_length": 2,
+      "place_branch_per_log_probability": 0.3,
+      "can_grow_through": [
+        "minecraft:air"
+      ]
+    },
+    "foliage_placer": {
+      "type": "minecraft:random_spread_foliage_placer",
+      "radius": 3,
+      "offset": 5,
+      "foliage_height": 2,
+      "leaf_placement_attempts": 4
+    },
+    "decorators": [
+      {
+        "type": "minecraft:attached_to_leaves",
+        "probability": 0.05,
+        "exclusion_radius_xz": 3,
+        "exclusion_radius_y": 2,
+        "required_empty_blocks": 1,
+        "block_provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "jsg:lemon_block"
+          }
+        },
+        "directions": [
+          "down",
+          "north",
+          "east",
+          "south",
+          "west"
+        ]
+      }
+    ]
+  }
+}
