@@ -21,6 +21,7 @@
   "block.jsg_decor.lemon_wood": "Lemon Tree Wood",
   "block.jsg_decor.stripped_lemon_wood": "Stripped Lemon Tree Wood",
   "block.jsg_decor.lemon_leaves": "Lemon Tree Leaves",
+  "block.jsg_decor.lemon_sapling": "Lemon Tree Sapling",
 
   "block.jsg_decor.lemon_planks": "Lemon Tree Planks",
   "block.jsg_decor.lemon_slab": "Lemon Tree Slab",
@@ -33,6 +34,9 @@
 
   "block.jsg_decor.lemon_door": "Lemon Tree Door",
   "block.jsg_decor.lemon_trapdoor": "Lemon Tree Trapdoor",
+
+  "block.jsg_decor.lemon_boat": "Lemon Tree Boat",
+  "block.jsg_decor.lemon_boat_with_chest": "Lemon Tree Boat with Chest",
 
   "_comment300": "-------------------- ENTITIES --------------------",
 
