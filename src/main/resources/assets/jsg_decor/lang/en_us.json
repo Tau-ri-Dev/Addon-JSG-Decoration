@@ -40,6 +40,7 @@
   "block.jsg_decor.lemon_trapdoor": "Lemon Tree Trapdoor",
 
   "_comment300": "-------------------- ENTITIES --------------------",
+  "_comment301": "-------------------- Boats <<<--------------------",
 
   "entity.jsg_decor.boat": "Boat",
   "entity.jsg_decor.boat_with_chest": "Boat with Chest"
