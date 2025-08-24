@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "JSG",
+  "category": "misc",
+  "pattern": [
+    "BC"
+  ],
+  "key": {
+    "B": {
+      "item": "jsg_decor:lemon_boat"
+    },
+    "C": {
+      "tag": "forge:chests/wooden"
+    }
+  },
+  "result": {
+    "item": "jsg_decor:lemon_boat_with_chest",
+    "count": 1
+  }
+}

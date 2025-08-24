@@ -4,12 +4,16 @@
   "itemGroup.jsg_decor.tab": "JSG Decorations",
 
   "_comment100": "--------------------- ITEMS ----------------------",
+  "_comment101": ">>> Wood Items <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
 
-  "_comment101": ">>> Advancements Icons <<<<<<<<<<<<<<<<<<<<<<<<<<<",
+  "item.jsg_decor.lemon_boat": "Lemon Tree Boat",
+  "item.jsg_decor.lemon_boat_with_chest": "Lemon Tree Boat with Chest",
+
+  "_comment102": ">>> Advancements Icons <<<<<<<<<<<<<<<<<<<<<<<<<<<",
 
   "item.jsg_decor.icon_jsg_decor": "Main JSG Decoration Icon",
 
-  "_comment102": ">>> Integrations Items <<<<<<<<<<<<<<<<<<<<<<<<<<<",
+  "_comment103": ">>> Integrations Items <<<<<<<<<<<<<<<<<<<<<<<<<<<",
 
 
   "_comment200": "----------- BLOCKS / BLOCK ENTITIES --------------",
@@ -35,10 +39,8 @@
   "block.jsg_decor.lemon_door": "Lemon Tree Door",
   "block.jsg_decor.lemon_trapdoor": "Lemon Tree Trapdoor",
 
-  "block.jsg_decor.lemon_boat": "Lemon Tree Boat",
-  "block.jsg_decor.lemon_boat_with_chest": "Lemon Tree Boat with Chest",
-
   "_comment300": "-------------------- ENTITIES --------------------",
 
-  "entity.jsg.mastadge": "Mastadge"
+  "entity.jsg_decor.boat": "Boat",
+  "entity.jsg_decor.boat_with_chest": "Boat with Chest"
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jsg_decor:item/wood/lemon_boat_with_chest"
+  }
+}

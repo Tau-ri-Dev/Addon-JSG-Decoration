@@ -17,7 +17,7 @@ public enum BoatTypes implements JSGBoatTypeWrapper.Type, StringRepresentable {
 
     @Override
     public @NotNull String getSerializedName() {
-        return this.name;
+        return this.name.toLowerCase();
     }
 
     @Override
