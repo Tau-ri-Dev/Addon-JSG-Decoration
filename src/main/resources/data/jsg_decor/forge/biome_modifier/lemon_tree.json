@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#jsg_decor:has_lemon_tree",
+  "features": "jsg_decor:lemon_tree",
+  "step": "vegetal_decoration"
+}
