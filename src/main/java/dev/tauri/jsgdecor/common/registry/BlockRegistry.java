@@ -8,7 +8,6 @@ import dev.tauri.jsgdecor.common.worldgen.tree.Growers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -16,9 +15,7 @@ import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -41,7 +38,6 @@ public class BlockRegistry {
     public static final RegistryObject<Block> LEMON_LEAVES = Constants.JSGD_BLOCK_HELPER.builder("lemon_leaves").clearTooltip().setFlammability(30).setFireSpreadSpeed(60).setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS, TabRegistry.JSGD_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).noOcclusion().mapColor(MapColor.COLOR_LIGHT_GREEN)).buildLeaves();
     public static final RegistryObject<Block> LEMON_SAPLING = Constants.JSGD_WOOD_HELPER.builder("lemon_sapling").clearTooltip().setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS, TabRegistry.JSGD_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING).noCollission()).buildSapling(Growers.LEMON_TREE_GROWER);
 
-
     /**
      * WOOD & WOOD BLOCKS
      */
@@ -58,6 +54,22 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> LEMON_DOOR = Constants.JSGD_BLOCK_HELPER.builder("lemon_door").clearTooltip().setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS, TabRegistry.JSGD_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR).noOcclusion()).buildDoor(BlockSetType.OAK);
     public static final RegistryObject<Block> LEMON_TRAPDOOR = Constants.JSGD_BLOCK_HELPER.builder("lemon_trapdoor").clearTooltip().setInTabs(List.of(dev.tauri.jsg.registry.TabRegistry.TAB_BUILDING_BLOCKS, TabRegistry.JSGD_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).noOcclusion()).buildTrapdoor(BlockSetType.OAK);
+
+    /**
+     * Goauld Decoration Blocks
+     */
+
+    /**
+     * SGC Decoration Blocks
+     */
+
+    /**
+     * Atlantis Decoration Blocks
+     */
+
+    /**
+     * SGU Decoration Blocks
+     */
 
     public static void register(IEventBus bus) {
         for (RegistryObject<Block> i : REGISTER.getEntries().stream().toList()) {
