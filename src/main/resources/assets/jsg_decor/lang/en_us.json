@@ -1,7 +1,8 @@
 {
   "_comment": "----------------- CREATIVE TABS ------------------",
 
-  "itemGroup.jsg_main": "JSG Decorations",
+  "itemGroup.jsg_decor": "JSG: Decorations",
+  "itemGroup.jsg_atlantis_decor": "JSG: Atlantis Decorations",
 
   "_comment100": "--------------------- ITEMS ----------------------",
   "_comment101": ">>> Wood Items <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
@@ -38,6 +39,25 @@
 
   "block.jsg_decor.lemon_door": "Lemon Tree Door",
   "block.jsg_decor.lemon_trapdoor": "Lemon Tree Trapdoor",
+
+  "_comment202": ">>> Atlantis Stuff <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+
+  "block.jsg_decor.blue_atlantis_block": "Blue Atlantis Block",
+  "block.jsg_decor.blue_atlantis_lamp_block": "Blue Atlantis Lamp",
+  "block.jsg_decor.clear_white_block": "Clear White Block",
+  "block.jsg_decor.light_wall_block": "Light Wall",
+  "block.jsg_decor.standard_wall_block": "Standard Wall",
+  "block.jsg_decor.aged_wall_block": "Aged Wall",
+  "block.jsg_decor.brown_wall_block": "Brown Wall",
+  "block.jsg_decor.densely_written_block": "Densely Written Block",
+  "block.jsg_decor.sparsely_written_block": "Sparsely Written Block",
+  "block.jsg_decor.left_green_glass_block": "Left Green Glass",
+  "block.jsg_decor.right_green_glass_block": "Right Green Glass",
+  "block.jsg_decor.green_glass_block": "Standard Green Glass",
+  "block.jsg_decor.left_red_glass_block": "Left Red Glass",
+  "block.jsg_decor.right_red_glass_block": "Right Red Glass",
+  "block.jsg_decor.left_blue_glass_block": "Left Blue Glass",
+  "block.jsg_decor.right_blue_glass_block": "Right Blue Glass",
 
   "_comment300": "-------------------- ENTITIES --------------------",
   "_comment301": "-------------------- Boats <<<--------------------",

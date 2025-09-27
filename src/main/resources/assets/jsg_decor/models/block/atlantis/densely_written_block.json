@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "jsg_decor:block/atlantis/floor/densely_written_block"
+  }
+}

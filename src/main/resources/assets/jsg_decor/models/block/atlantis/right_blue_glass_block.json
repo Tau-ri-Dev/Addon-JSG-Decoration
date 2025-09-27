@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "jsg_decor:block/atlantis/glass/right_blue_glass_block"
+  }
+}
