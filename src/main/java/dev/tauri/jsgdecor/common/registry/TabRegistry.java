@@ -16,7 +16,8 @@ import static dev.tauri.jsgdecor.JSGDecor.MOD_ID;
 public class TabRegistry {
     public static final DeferredRegister<CreativeModeTab> REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> JSGD_TAB = Constants.JSGD_TAB_HELPER.createCreativeTabWithItemStack("main", () -> new ItemStack(BlockRegistry.LEMON_LOG.get()));
+    public static final RegistryObject<CreativeModeTab> JSGD_TAB = Constants.JSGD_TAB_HELPER.createCreativeTabWithItemStack("decor", () -> new ItemStack(BlockRegistry.LEMON_LOG.get()));
+    public static final RegistryObject<CreativeModeTab> JSGD_ATLANTIS_TAB = Constants.JSGD_TAB_HELPER.createCreativeTabWithItemStack("atlantis_decor", () -> new ItemStack(BlockRegistry.STANDARD_WALL_BLOCK.get()));
 
     public static void register(IEventBus bus) {
         REGISTER.register(bus);
