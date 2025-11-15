@@ -4,6 +4,8 @@ import dev.tauri.jsg.block.IItemBlock;
 import dev.tauri.jsg.item.ITabbedItem;
 import dev.tauri.jsg.item.JSGBlockItem;
 import dev.tauri.jsgdecor.Constants;
+import dev.tauri.jsgdecor.common.block.BrazierBlock;
+import dev.tauri.jsgdecor.common.block.BrazierType;
 import dev.tauri.jsgdecor.common.worldgen.tree.Growers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.AxeItem;
@@ -21,6 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
+import java.util.Map;
 
 import static dev.tauri.jsgdecor.JSGDecor.MOD_ID;
 
@@ -58,6 +61,8 @@ public class BlockRegistry {
     /**
      * Goauld Decoration Blocks
      */
+
+    public static final Map<BrazierType, RegistryObject<BrazierBlock>> BRAZIERS = BrazierType.registerBlocks();
 
     /**
      * SGC Decoration Blocks
