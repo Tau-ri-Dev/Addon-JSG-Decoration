@@ -59,6 +59,13 @@
   "block.jsg_decor.left_blue_glass_block": "Left Blue Glass",
   "block.jsg_decor.right_blue_glass_block": "Right Blue Glass",
 
+  "_comment203": ">>> Braziers <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+
+  "block.jsg_decor.abydos_brazier": "Abydos Brazier",
+  "block.jsg_decor.hatak_brazier": "Hatak Brazier",
+  "block.jsg_decor.anubis_brazier": "Anubis Brazier",
+  "block.jsg_decor.goauld_brazier": "Goauld Brazier",
+
   "_comment300": "-------------------- ENTITIES --------------------",
   "_comment301": "-------------------- Boats <<<--------------------",
 

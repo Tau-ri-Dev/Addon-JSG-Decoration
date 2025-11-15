@@ -4,6 +4,7 @@ import dev.tauri.jsg.JSG;
 import dev.tauri.jsg.LoggerWrapper;
 import dev.tauri.jsg.api.JSGAddon;
 import dev.tauri.jsgdecor.common.registry.*;
+import dev.tauri.jsgdecor.common.worldgen.tree.StructuresInjector;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,6 +42,8 @@ public class JSGDecor implements JSGAddon {
         TabRegistry.register(modEventBus);
         EntityRegistry.register(modEventBus);
         BlockEntityRegistry.register(modEventBus);
+
+        StructuresInjector.register();
 
         JSG.registerAddon(this);
     }
