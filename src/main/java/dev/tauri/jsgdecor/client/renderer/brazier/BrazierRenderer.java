@@ -28,15 +28,13 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBE> {
         var topState = level.getBlockState(be.getBlockPos().above());
 
         stack.pushPose();
-        OBJModel.packedLight = light;
-        OBJModel.source = bufferSource;
 
         var type = be.type;
 
         stack.translate(type.translation.x, type.translation.y, type.translation.z);
         stack.scale(type.scale, type.scale, type.scale);
         ClientConstants.LOADERS_HOLDER.texture().getTexture(ClientConstants.LOADERS_HOLDER.texture().getTextureResource(type.texture)).bindTexture();
-        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.model)).render(stack);
+        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.model)).render(stack, bufferSource, light);
 
         stack.pushPose();
         stack.translate(type.coalTranslation.x, type.coalTranslation.y, type.coalTranslation.z);
@@ -63,7 +61,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBE> {
             }
         } else
             ClientConstants.LOADERS_HOLDER.texture().getTexture(ClientConstants.LOADERS_HOLDER.texture().getTextureResource(type.coalTexture)).bindTexture();
-        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.coalModel)).render(stack);
+        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.coalModel)).render(stack, bufferSource, light);
         stack.popPose();
 
         stack.popPose();

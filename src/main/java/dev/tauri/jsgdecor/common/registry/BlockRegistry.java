@@ -1,8 +1,8 @@
 package dev.tauri.jsgdecor.common.registry;
 
-import dev.tauri.jsg.block.IItemBlock;
-import dev.tauri.jsg.item.ITabbedItem;
-import dev.tauri.jsg.item.JSGBlockItem;
+import dev.tauri.jsg.api.block.util.IItemBlock;
+import dev.tauri.jsg.api.item.ITabbedItem;
+import dev.tauri.jsg.api.item.JSGBlockItem;
 import dev.tauri.jsgdecor.Constants;
 import dev.tauri.jsgdecor.common.block.BrazierBlock;
 import dev.tauri.jsgdecor.common.block.BrazierType;

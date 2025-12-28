@@ -19,14 +19,14 @@ public class BrazierItemRenderer implements JSGModelOBJInGUIRenderer.RenderPartI
         poseStack.translate(type.translation.x - 0.5, type.translation.y - 0.5, type.translation.z);
         poseStack.scale(type.scale, type.scale, type.scale);
         ClientConstants.LOADERS_HOLDER.texture().getTexture(ClientConstants.LOADERS_HOLDER.texture().getTextureResource(type.texture)).bindTexture();
-        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.model)).render(poseStack);
+        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.model)).render(poseStack, bufferSource, light);
 
         poseStack.pushPose();
         poseStack.translate(type.coalTranslation.x, type.coalTranslation.y, type.coalTranslation.z);
         poseStack.scale(type.coalScale, type.coalScale, type.coalScale);
 
         ClientConstants.LOADERS_HOLDER.texture().getTexture(ClientConstants.LOADERS_HOLDER.texture().getTextureResource(type.coalTexture)).bindTexture();
-        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.coalModel)).render(poseStack);
+        ClientConstants.LOADERS_HOLDER.model().getModel(ClientConstants.LOADERS_HOLDER.model().getModelResource(type.coalModel)).render(poseStack, bufferSource, light);
         poseStack.popPose();
     }
 }

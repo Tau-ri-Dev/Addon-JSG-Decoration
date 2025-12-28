@@ -1,8 +1,8 @@
 package dev.tauri.jsgdecor;
 
-import dev.tauri.jsg.JSG;
-import dev.tauri.jsg.LoggerWrapper;
 import dev.tauri.jsg.api.JSGAddon;
+import dev.tauri.jsg.api.JSGApi;
+import dev.tauri.jsg.api.LoggerWrapper;
 import dev.tauri.jsgdecor.common.registry.*;
 import dev.tauri.jsgdecor.common.worldgen.tree.StructuresInjector;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -45,7 +45,7 @@ public class JSGDecor implements JSGAddon {
 
         StructuresInjector.register();
 
-        JSG.registerAddon(this);
+        JSGApi.registerAddon(this);
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

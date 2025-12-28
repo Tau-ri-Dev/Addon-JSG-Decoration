@@ -1,11 +1,11 @@
 package dev.tauri.jsgdecor.common.block;
 
-import dev.tauri.jsg.block.IHighlightBlock;
-import dev.tauri.jsg.block.IItemBlock;
-import dev.tauri.jsg.block.JSGBlock;
+import dev.tauri.jsg.api.block.JSGBlock;
+import dev.tauri.jsg.api.block.util.IHighlightBlock;
+import dev.tauri.jsg.api.block.util.IItemBlock;
+import dev.tauri.jsg.api.blockstates.JSGProperties;
+import dev.tauri.jsg.api.item.JSGBlockItem;
 import dev.tauri.jsg.helpers.BlockPosHelper;
-import dev.tauri.jsg.item.JSGBlockItem;
-import dev.tauri.jsg.property.JSGProperties;
 import dev.tauri.jsgdecor.common.blockentity.BrazierBE;
 import dev.tauri.jsgdecor.common.item.BrazierItem;
 import net.minecraft.core.BlockPos;

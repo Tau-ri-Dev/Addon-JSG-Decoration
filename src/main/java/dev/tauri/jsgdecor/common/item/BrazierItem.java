@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.common.item;
 
-import dev.tauri.jsg.item.JSGBlockItem;
+import dev.tauri.jsg.api.item.JSGBlockItem;
 import dev.tauri.jsg.item.JSGModelOBJInGUIRenderer;
 import dev.tauri.jsgdecor.client.renderer.brazier.BrazierItemRenderer;
 import dev.tauri.jsgdecor.common.block.BrazierType;

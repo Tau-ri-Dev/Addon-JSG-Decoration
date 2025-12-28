@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.client;
 
-import dev.tauri.jsg.loader.LoadersHolder;
+import dev.tauri.jsg.api.client.LoadersHolder;
 import dev.tauri.jsgdecor.JSGDecor;
 
 public class ClientConstants {
