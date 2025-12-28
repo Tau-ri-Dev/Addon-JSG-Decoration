@@ -4,7 +4,7 @@ import dev.tauri.jsg.api.JSGAddon;
 import dev.tauri.jsg.api.JSGApi;
 import dev.tauri.jsg.api.LoggerWrapper;
 import dev.tauri.jsgdecor.common.registry.*;
-import dev.tauri.jsgdecor.common.worldgen.tree.StructuresInjector;
+import dev.tauri.jsgdecor.common.worldgen.StructuresInjector;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;

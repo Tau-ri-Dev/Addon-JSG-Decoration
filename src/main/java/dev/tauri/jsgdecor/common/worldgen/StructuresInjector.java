@@ -1,4 +1,4 @@
-package dev.tauri.jsgdecor.common.worldgen.tree;
+package dev.tauri.jsgdecor.common.worldgen;
 
 import dev.tauri.jsg.JSG;
 import dev.tauri.jsg.worldgen.poolinject.TemplatePoolInjector;
