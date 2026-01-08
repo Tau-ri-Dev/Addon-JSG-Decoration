@@ -21,9 +21,4 @@ public class Constants {
     public static final TabHelper JSGD_TAB_HELPER = new TabHelper(() -> TabRegistry.REGISTER);
 
     public static final EntityRegistryHelperBoat JSGD_BOAT_HELPER = new EntityRegistryHelperBoat(() -> ItemRegistry.REGISTER, () -> EntityRegistry.REGISTER);
-
-
-    public static void load() {
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientConstants::load);
-    }
 }

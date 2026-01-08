@@ -3,6 +3,7 @@ package dev.tauri.jsgdecor;
 import dev.tauri.jsg.api.JSGAddon;
 import dev.tauri.jsg.api.JSGApi;
 import dev.tauri.jsg.api.LoggerWrapper;
+import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.registry.*;
 import dev.tauri.jsgdecor.common.worldgen.StructuresInjector;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -33,7 +34,6 @@ public class JSGDecor implements JSGAddon {
         });
         JSGDecor.logger.info("Loading JSG:Decoration Addon version {}", JSGDecor.MOD_VERSION);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        Constants.load();
 
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -70,5 +70,10 @@ public class JSGDecor implements JSGAddon {
     @Override
     public String getVersion() {
         return MOD_VERSION;
+    }
+
+    @Override
+    public void onJSGLoad() {
+        ClientConstants.load();
     }
 }
