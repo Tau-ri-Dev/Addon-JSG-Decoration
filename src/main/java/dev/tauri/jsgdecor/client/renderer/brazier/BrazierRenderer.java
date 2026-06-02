@@ -1,7 +1,6 @@
 package dev.tauri.jsgdecor.client.renderer.brazier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.tauri.jsg.loader.model.OBJModel;
 import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.blockentity.BrazierBE;
 import net.minecraft.client.renderer.MultiBufferSource;

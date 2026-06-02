@@ -1,8 +1,8 @@
 {
   "_comment": "----------------- CREATIVE TABS ------------------",
 
-  "itemGroup.jsg_decor": "JSG: Decorations",
-  "itemGroup.jsg_atlantis_decor": "JSG: Atlantis Decorations",
+  "itemGroup.jsg_decor.decor": "JSG: Decorations",
+  "itemGroup.jsg_decor.atlantis_decor": "JSG: Atlantis Decorations",
 
   "_comment100": "--------------------- ITEMS ----------------------",
   "_comment101": ">>> Wood Items <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",

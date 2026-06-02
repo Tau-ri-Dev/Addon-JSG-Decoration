@@ -1,7 +1,8 @@
 package dev.tauri.jsgdecor.common.boat;
 
-import dev.tauri.jsg.entity.vehicle.JSGBoatTypeWrapper;
-import dev.tauri.jsgdecor.common.registry.EntityRegistry;
+
+import dev.tauri.jsg.core.common.entity.vehicle.JSGBoatTypeWrapper;
+import dev.tauri.jsgdecor.common.registry.JSGDecorEntities;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +29,8 @@ public enum BoatTypes implements JSGBoatTypeWrapper.Type, StringRepresentable {
     @Override
     public Item getDrop(boolean withChest) {
         if(withChest)
-            return EntityRegistry.JSGD_CHEST_BOAT.item().get(this).get();
-        return EntityRegistry.JSGD_BOAT.item().get(this).get();
+            return JSGDecorEntities.JSGD_CHEST_BOAT.item().get(this).get();
+        return JSGDecorEntities.JSGD_BOAT.item().get(this).get();
     }
 
     public static final JSGBoatTypeWrapper<BoatTypes> JSGD_BOAT_TYPE_WRAPPER = new JSGBoatTypeWrapper<>(BoatTypes.LEMON, BoatTypes::values);

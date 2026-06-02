@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.common.listener;
 
 import dev.tauri.jsgdecor.JSGDecor;
-import dev.tauri.jsgdecor.common.registry.BlockRegistry;
+import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,11 +13,11 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientModListener {
     @SubscribeEvent
     public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
-        event.register((blockState, level, pos, tintIndex) -> level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor(), BlockRegistry.LEMON_LEAVES.get());
+        event.register((blockState, level, pos, tintIndex) -> level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor(), JSGDecorBlocks.LEMON_LEAVES.get());
     }
 
     @SubscribeEvent
     public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, tintIndex) -> FoliageColor.getDefaultColor(), BlockRegistry.LEMON_LEAVES.get());
+        event.register((stack, tintIndex) -> FoliageColor.getDefaultColor(), JSGDecorBlocks.LEMON_LEAVES.get());
     }
 }

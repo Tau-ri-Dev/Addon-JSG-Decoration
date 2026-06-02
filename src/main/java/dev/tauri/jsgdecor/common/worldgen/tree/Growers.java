@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.common.worldgen.tree;
 
-import dev.tauri.jsgdecor.common.registry.ConfiguredFeaturesRegistry;
+import dev.tauri.jsgdecor.common.registry.JSGDecorFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class Growers {
 
-    public static final Supplier<AbstractTreeGrower> LEMON_TREE_GROWER = createGrower((random, hasFlowers) -> ConfiguredFeaturesRegistry.LEMON_TREE);
+    public static final Supplier<AbstractTreeGrower> LEMON_TREE_GROWER = createGrower((random, hasFlowers) -> JSGDecorFeatures.LEMON_TREE);
 
 
     public static Supplier<AbstractTreeGrower> createGrower(BiFunction<RandomSource, Boolean, ResourceKey<ConfiguredFeature<?, ?>>> configuredFeature) {

@@ -1,11 +1,11 @@
 package dev.tauri.jsgdecor.common.worldgen;
 
-import dev.tauri.jsg.JSG;
-import dev.tauri.jsg.worldgen.poolinject.TemplatePoolInjector;
+
+import dev.tauri.jsg.core.common.worldgen.TemplatePoolInjector;
 import net.minecraft.resources.ResourceLocation;
 
 public class StructuresInjector {
-    public static void register() {
+    public static void register() {/*
         new TemplatePoolInjector.Builder()
                 .addPool(new ResourceLocation(JSG.MOD_ID, "abydos/main_pyramid/braziers"))
                 .setClearPool()
@@ -19,5 +19,12 @@ public class StructuresInjector {
                 .addAddition("jsg_decor:abydos/brazier_off",1)
                 .addAddition("jsg_decor:abydos/brazier_on",1)
                 .submit();
+        new TemplatePoolInjector.Builder()
+                .addPool(new ResourceLocation(JSG.MOD_ID, "abydos/dungeon/braziers"))
+                .setClearPool()
+                .addAddition("minecraft:empty_pool_element",3)
+                .addAddition("jsg_decor:abydos/brazier_off",6)
+                .addAddition("jsg_decor:abydos/brazier_on",1)
+                .submit();*/
     }
 }

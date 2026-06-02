@@ -1,9 +1,12 @@
 package dev.tauri.jsgdecor.common.block;
 
+import dev.tauri.jsg.core.common.registry.CoreBlocks;
+import dev.tauri.jsg.core.common.registry.helper.RegistryHelper;
+import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.client.renderer.brazier.BrazierRenderer;
 import dev.tauri.jsgdecor.common.blockentity.BrazierBE;
-import dev.tauri.jsgdecor.common.registry.BlockEntityRegistry;
-import dev.tauri.jsgdecor.common.registry.BlockRegistry;
+import dev.tauri.jsgdecor.common.registry.JSGDecorBlockEntities;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -16,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public enum BrazierType {
@@ -100,8 +104,8 @@ public enum BrazierType {
     public static Map<BrazierType, RegistryObject<BrazierBlock>> registerBlocks() {
         var map = new HashMap<BrazierType, RegistryObject<BrazierBlock>>();
         for (var type : values()) {
-            type.block = BlockRegistry.REGISTER.register(type.id, () -> new BrazierBlock(
-                    BlockBehaviour.Properties.copy(dev.tauri.jsg.registry.BlockRegistry.NAQUADAH_BLOCK.get())
+            type.block = JSGDecor.REGISTRY_HELPER.block().register(type.id, () -> new BrazierBlock(
+                    BlockBehaviour.Properties.copy(CoreBlocks.NAQUADAH_BLOCK.get())
                             .noOcclusion()
                             .lightLevel((state) -> (state.getOptionalValue(BlockStateProperties.LIT).orElse(false) && state.getOptionalValue(BlockStateProperties.DOUBLE_BLOCK_HALF).orElse(DoubleBlockHalf.LOWER) == DoubleBlockHalf.UPPER) ? 15 : 0)
                             .isRedstoneConductor((pState, pLevel, pPos) -> false),
@@ -114,15 +118,15 @@ public enum BrazierType {
     public static Map<BrazierType, RegistryObject<BlockEntityType<BrazierBE>>> registerBEs() {
         var map = new HashMap<BrazierType, RegistryObject<BlockEntityType<BrazierBE>>>();
         for (var type : values()) {
-            type.blockEntity = BlockEntityRegistry.registerBE(type.id, (pos, state) -> new BrazierBE(pos, state, type, () -> map.get(type).get()), type.block());
+            type.blockEntity = JSGDecor.REGISTRY_HELPER.be().register(type.id, RegistryHelper.beSupplier((pos, state) -> new BrazierBE(pos, state, type, () -> map.get(type).get()), type.block()));
             map.put(type, type.blockEntity);
         }
         return map;
     }
 
-    public static void registerBERs(EntityRenderersEvent.RegisterRenderers event) {
+    public static void registerBERs(Consumer<RegistryHelper.BlockEntityRendererPair<?>> rendererPairConsumer) {
         for (var type : values()) {
-            event.registerBlockEntityRenderer(type.blockEntity.get(), BrazierRenderer::new);
+            rendererPairConsumer.accept(new RegistryHelper.BlockEntityRendererPair<>(type.blockEntity.get(), BrazierRenderer::new));
         }
     }
 }

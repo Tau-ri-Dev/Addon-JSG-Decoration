@@ -1,19 +1,16 @@
 package dev.tauri.jsgdecor;
 
-import dev.tauri.jsg.api.JSGAddon;
-import dev.tauri.jsg.api.JSGApi;
-import dev.tauri.jsg.api.LoggerWrapper;
+import dev.tauri.jsg.core.JSGAddon;
+import dev.tauri.jsg.core.JSGAddons;
+import dev.tauri.jsg.core.LoggerWrapper;
+import dev.tauri.jsg.core.common.registry.helper.RegistryHelper;
 import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.registry.*;
 import dev.tauri.jsgdecor.common.worldgen.StructuresInjector;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +24,10 @@ public class JSGDecor implements JSGAddon {
     public static String MOD_VERSION = "";
     public static final String MC_VERSION = "1.20.1";
 
+    public static final RegistryHelper REGISTRY_HELPER = new RegistryHelper(JSGDecor.MOD_ID);
+
     public JSGDecor() {
-        logger = new LoggerWrapper("[jsg decor] ", LoggerFactory.getLogger(MOD_NAME));
+        logger = new LoggerWrapper("[jsg_decor] ", LoggerFactory.getLogger(MOD_NAME));
 
         ModList.get().getModContainerById(MOD_ID).ifPresentOrElse(container -> MOD_VERSION = MC_VERSION + "-" + container.getModInfo().getVersion().getQualifier(), () -> {
         });
@@ -37,25 +36,22 @@ public class JSGDecor implements JSGAddon {
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        ItemRegistry.register(modEventBus);
-        BlockRegistry.register(modEventBus);
-        TabRegistry.register(modEventBus);
-        EntityRegistry.register(modEventBus);
-        BlockEntityRegistry.register(modEventBus);
+        JSGDecorRegistriesInit.init();
+        JSGDecorRegistriesInit.register(modEventBus);
 
         StructuresInjector.register();
 
-        JSGApi.registerAddon(this);
+        JSGAddons.registerAddon(this);
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    /*@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(EntityRegistry.JSGD_BOAT.entity().get(), (ctx) -> EntityRegistry.JSGD_BOAT.rendererProvider().apply(MOD_ID, ctx));
             EntityRenderers.register(EntityRegistry.JSGD_CHEST_BOAT.entity().get(), (ctx) -> EntityRegistry.JSGD_CHEST_BOAT.rendererProvider().apply(MOD_ID, ctx));
         }
-    }
+    }*/
 
     @Override
     public String getName() {
@@ -73,7 +69,7 @@ public class JSGDecor implements JSGAddon {
     }
 
     @Override
-    public void onJSGLoad() {
+    public void onJSGCoreLoad() {
         ClientConstants.load();
     }
 }
