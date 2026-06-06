@@ -5,8 +5,8 @@ import dev.tauri.jsg.core.JSGAddons;
 import dev.tauri.jsg.core.LoggerWrapper;
 import dev.tauri.jsg.core.common.registry.helper.RegistryHelper;
 import dev.tauri.jsgdecor.client.ClientConstants;
+import dev.tauri.jsgdecor.common.injectors.JSGDecorTemplatePoolInjectors;
 import dev.tauri.jsgdecor.common.registry.*;
-import dev.tauri.jsgdecor.common.worldgen.StructuresInjector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -39,7 +39,7 @@ public class JSGDecor implements JSGAddon {
         JSGDecorRegistriesInit.init();
         JSGDecorRegistriesInit.register(modEventBus);
 
-        StructuresInjector.register();
+        JSGDecorTemplatePoolInjectors.register();
 
         JSGAddons.registerAddon(this);
     }
