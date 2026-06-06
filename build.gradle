@@ -126,8 +126,9 @@ repositories {
         name = 'MinecraftForge'
         url = 'https://maven.minecraftforge.net/'
     }
-    flatDir {
-        dir rootDir.getAbsolutePath() + "/libs"
+    maven {
+        name = 'Just SG Mod'
+        url = 'https://maven.justsgmod.eu'
     }
 }
 
