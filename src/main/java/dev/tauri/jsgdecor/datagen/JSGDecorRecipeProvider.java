@@ -1,24 +1,21 @@
 package dev.tauri.jsgdecor.datagen;
 
 import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
-import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 import java.util.function.Consumer;
+
 
 public class JSGDecorRecipeProvider extends RecipeProvider implements IConditionBuilder {
     public JSGDecorRecipeProvider(PackOutput pOutput) {
@@ -28,8 +25,6 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
     @Override
     @ParametersAreNonnullByDefault
     protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
-
-        //TODO: Při přepisu projít a nastavit správný tagy!!
 
         //Lemon wood and all related to it
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEMON_WOOD.get(), 3)
@@ -221,7 +216,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .define('#', JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
                 .define('C', JSGDecorBlocks.CLEAR_WHITE_BLOCK.get())
                 .unlockedBy("has_blue_block", has(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get()))
-                .unlockedBy("has_white_block", has(Blocks.WHITE_CONCRETE))
+                .unlockedBy("has_white_block", has(JSGDecorBlocks.CLEAR_WHITE_BLOCK.get()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.CLEAR_WHITE_BLOCK.get(), 8)
@@ -244,7 +239,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .define('C', Ingredient.of(Items.GLOW_INK_SAC, Items.INK_SAC))
                 .unlockedBy("has_white_block", has(Blocks.BROWN_TERRACOTTA))
                 .unlockedBy("has_glow_ink", has(Items.GLOW_INK_SAC))
-                .unlockedBy("has_glow_ink", has(Items.INK_SAC))
+                .unlockedBy("has_ink", has(Items.INK_SAC))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LIGHT_WALL_BLOCK.get())
@@ -252,33 +247,117 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .pattern("TIT")
                 .pattern("IRI")
                 .pattern("TIT")
-                //.define('#', )
-                .define('#', Blocks.BROWN_TERRACOTTA)
-                .define('#', Blocks.BROWN_TERRACOTTA)
-                .unlockedBy("has_white_block", has(Blocks.BROWN_TERRACOTTA))
-                .unlockedBy("has_glow_ink", has(Items.GLOW_INK_SAC))
-                .unlockedBy("has_glow_ink", has(Items.INK_SAC))
+                .define('T', CoreItemTags.INGOT_TITANIUM)
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('R', CoreItemTags.INGOT_TRINIUM)
+                .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
                 .save(pWriter);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.AGED_WALL_BLOCK.get())
+                .group("jsg_decor:atlantis_solid")
+                .pattern("NTN")
+                .pattern("TRT")
+                .pattern("NTN")
+                .define('T', CoreItemTags.INGOT_TITANIUM)
+                .define('N', CoreItemTags.INGOT_NAQUADAH_ALLOY)
+                .define('R', CoreItemTags.INGOT_TRINIUM)
+                .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
+                .unlockedBy("has_naquadah", has(CoreItemTags.INGOT_NAQUADAH_ALLOY))
+                .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
+                .save(pWriter);
 
-    }
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.STANDARD_WALL_BLOCK.get())
+                .group("jsg_decor:atlantis_solid")
+                .pattern("ITI")
+                .pattern("TRT")
+                .pattern("ITI")
+                .define('T', CoreItemTags.INGOT_TITANIUM)
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('R', CoreItemTags.INGOT_TRINIUM)
+                .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
+                .save(pWriter);
 
-    @ParametersAreNonnullByDefault
-    protected static void oreSmelting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTIme, String pGroup) {
-        oreCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTIme, pGroup, "_from_smelting");
-    }
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get(), 8)
+                .group("jsg_decor:atlantis_solid")
+                .pattern("###")
+                .pattern("#S#")
+                .pattern("###")
+                .define('#', Blocks.TERRACOTTA)
+                .define('S', ItemTags.SIGNS)
+                .unlockedBy("has_brown_terracota", has(Blocks.TERRACOTTA))
+                .unlockedBy("has_sign", has(ItemTags.SIGNS))
+                .save(pWriter);
 
-    @ParametersAreNonnullByDefault
-    protected static void oreBlasting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
-        oreCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTime, pGroup, "_from_blasting");
-    }
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get())
+                .requires(JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get())
+                .requires(ItemTags.SIGNS)
+                .unlockedBy("has_brown_terracota", has(Blocks.TERRACOTTA))
+                .unlockedBy("has_sign", has(ItemTags.SIGNS))
+                .save(pWriter);
 
-    @ParametersAreNonnullByDefault
-    protected static void oreCooking(Consumer<FinishedRecipe> pFinishedRecipeConsumer, RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pRecipeName) {
-        for (ItemLike itemlike : pIngredients) {
-            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pCookingSerializer)
-                    .group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
-                    .save(pFinishedRecipeConsumer, JSGDecor.MOD_ID + ":" + getItemName(pResult) + pRecipeName + "_" + getItemName(itemlike));
-        }
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.GREEN_GLASS_BLOCK.get(), 9)
+                .group("jsg_decor:atlantis_transparent")
+                .pattern("PST")
+                .pattern("PTS")
+                .pattern("PST")
+                .define('P', Tags.Items.GLASS_LIME)
+                .define('S', Tags.Items.GLASS_GREEN)
+                .define('T', Tags.Items.GLASS_CYAN)
+                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_LIME))
+                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_GREEN))
+                .unlockedBy("has_tertiary_glass", has(Tags.Items.GLASS_CYAN))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get(), 9)
+                .group("jsg_decor:atlantis_transparent")
+                .pattern("PPS")
+                .pattern("PPS")
+                .pattern("PPS")
+                .define('P', Tags.Items.GLASS_LIME)
+                .define('S', Tags.Items.GLASS_GREEN)
+                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_LIME))
+                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_GREEN))
+                .save(pWriter);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get())
+                .requires(JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get())
+                .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get(), 9)
+                .group("jsg_decor:atlantis_transparent")
+                .pattern("PPS")
+                .pattern("PPS")
+                .pattern("PPS")
+                .define('P', Tags.Items.GLASS_RED)
+                .define('S', Tags.Items.GLASS_ORANGE)
+                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_RED))
+                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_ORANGE))
+                .save(pWriter);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_RED_GLASS_BLOCK.get())
+                .requires(JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get())
+                .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get(), 9)
+                .group("jsg_decor:atlantis_transparent")
+                .pattern("PPS")
+                .pattern("PPS")
+                .pattern("PPS")
+                .define('P', Tags.Items.GLASS_LIGHT_BLUE)
+                .define('S', Tags.Items.GLASS_BLUE)
+                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_LIGHT_BLUE))
+                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_BLUE))
+                .save(pWriter);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_BLUE_GLASS_BLOCK.get())
+                .requires(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get())
+                .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get()))
+                .save(pWriter);
     }
 }
