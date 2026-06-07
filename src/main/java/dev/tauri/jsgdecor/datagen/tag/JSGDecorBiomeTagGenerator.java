@@ -1,7 +1,5 @@
 package dev.tauri.jsgdecor.datagen.tag;
 
-import dev.tauri.jsg.core.JSGCore;
-import dev.tauri.jsg.core.common.registry.tag.CoreBiomeTags;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBiomeTags;
 import net.minecraft.core.HolderLookup;

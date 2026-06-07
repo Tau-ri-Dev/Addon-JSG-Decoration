@@ -4,7 +4,6 @@ import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
-import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
