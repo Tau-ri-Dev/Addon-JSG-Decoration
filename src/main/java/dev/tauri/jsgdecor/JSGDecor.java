@@ -6,9 +6,13 @@ import dev.tauri.jsg.core.LoggerWrapper;
 import dev.tauri.jsg.core.common.registry.helper.RegistryHelper;
 import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.injectors.JSGDecorTemplatePoolInjectors;
-import dev.tauri.jsgdecor.common.registry.*;
+import dev.tauri.jsgdecor.common.registry.JSGDecorEntities;
+import dev.tauri.jsgdecor.common.registry.JSGDecorRegistriesInit;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -44,15 +48,21 @@ public class JSGDecor implements JSGAddon {
         JSGAddons.registerAddon(this);
     }
 
-    //TODO: FIX crash when any LEMON BOAT is placed in world
-    /*@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            EntityRenderers.register(EntityRegistry.JSGD_BOAT.entity().get(), (ctx) -> EntityRegistry.JSGD_BOAT.rendererProvider().apply(MOD_ID, ctx));
-            EntityRenderers.register(EntityRegistry.JSGD_CHEST_BOAT.entity().get(), (ctx) -> EntityRegistry.JSGD_CHEST_BOAT.rendererProvider().apply(MOD_ID, ctx));
+        public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(
+                    JSGDecorEntities.JSGD_BOAT.entity().get(),
+                    (ctx) -> JSGDecorEntities.JSGD_BOAT.rendererProvider().apply(MOD_ID, ctx)
+            );
+
+            event.registerEntityRenderer(
+                    JSGDecorEntities.JSGD_CHEST_BOAT.entity().get(),
+                    (ctx) -> JSGDecorEntities.JSGD_CHEST_BOAT.rendererProvider().apply(MOD_ID, ctx)
+            );
         }
-    }*/
+    }
 
     @Override
     public String getName() {
