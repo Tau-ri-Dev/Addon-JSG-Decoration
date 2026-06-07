@@ -1,6 +1,7 @@
 package dev.tauri.jsgdecor.datagen;
 
 import dev.tauri.jsgdecor.JSGDecor;
+import dev.tauri.jsgdecor.datagen.loot.JSGDecorLootTableProvider;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorBiomeTagGenerator;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorBlockTagGenerator;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorItemTagGenerator;
@@ -16,6 +17,8 @@ public class JDGDecorDataGenerators {
         var output = generator.getPackOutput();
         var exFileHelper = event.getExistingFileHelper();
         var lookupProvider = event.getLookupProvider();
+
+        generator.addProvider(event.includeServer(), JSGDecorLootTableProvider.create(output));
 
         generator.addProvider(event.includeClient(), new JSGDecorRecipeProvider(output));
 
