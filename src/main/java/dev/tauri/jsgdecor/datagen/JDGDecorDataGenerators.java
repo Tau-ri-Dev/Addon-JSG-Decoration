@@ -1,6 +1,7 @@
 package dev.tauri.jsgdecor.datagen;
 
 import dev.tauri.jsgdecor.JSGDecor;
+import dev.tauri.jsgdecor.datagen.tag.JSGDecorBiomeTagGenerator;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorBlockTagGenerator;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorItemTagGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -21,6 +22,6 @@ public class JDGDecorDataGenerators {
         var blockTagGenerator = generator.addProvider(event.includeServer(), new JSGDecorBlockTagGenerator(output, lookupProvider, exFileHelper));
         generator.addProvider(event.includeServer(), new JSGDecorItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), exFileHelper));
 
-
+        generator.addProvider(event.includeServer(), new JSGDecorBiomeTagGenerator(output, lookupProvider, exFileHelper));
     }
 }
