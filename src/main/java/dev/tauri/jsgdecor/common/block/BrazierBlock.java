@@ -70,9 +70,7 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
             level.playSound(player, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, true), 11);
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockpos);
-            player.getItemInHand(hand).hurtAndBreak(1, player, (p_41303_) -> {
-                p_41303_.broadcastBreakEvent(hand);
-            });
+            player.getItemInHand(hand).hurtAndBreak(1, player, (p_41303_) -> p_41303_.broadcastBreakEvent(hand));
 
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
