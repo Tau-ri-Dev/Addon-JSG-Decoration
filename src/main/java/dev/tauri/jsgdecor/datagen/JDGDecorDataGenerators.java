@@ -26,5 +26,7 @@ public class JDGDecorDataGenerators {
         generator.addProvider(event.includeServer(), new JSGDecorItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), exFileHelper));
 
         generator.addProvider(event.includeServer(), new JSGDecorBiomeTagGenerator(output, lookupProvider, exFileHelper));
+
+        generator.addProvider(event.includeServer(), new JSGDecorWorldGenProvider(output, lookupProvider));
     }
 }

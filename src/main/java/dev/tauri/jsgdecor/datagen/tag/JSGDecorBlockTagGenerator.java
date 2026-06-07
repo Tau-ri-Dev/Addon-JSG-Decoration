@@ -1,5 +1,6 @@
 package dev.tauri.jsgdecor.datagen.tag;
 
+import dev.tauri.jsg.core.common.registry.tag.CoreBlockTags;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
@@ -140,8 +141,9 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .add(JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get())
                 .add(JSGDecorBlocks.GREEN_GLASS_BLOCK.get());
 
-        //JSG tags
-        //TODO: TAG support_lemon (.add(JSGDecorBlocks.LEMON_LEAVES.get())
+        //JSG Core tags
+        tag(CoreBlockTags.SUPPORT_LEMON)
+                .addTag(JSGDecorBlockTags.LEMON_LEAVES);
 
         //Mining tags
         tag(BlockTags.MINEABLE_WITH_AXE)
