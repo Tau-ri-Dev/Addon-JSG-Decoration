@@ -1,6 +1,7 @@
 package dev.tauri.jsgdecor.client.renderer.brazier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import dev.tauri.jsg.core.client.renderer.AbstractItemBEWLR;
 import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.item.BrazierItem;
@@ -20,18 +21,21 @@ public class BrazierBEWLR extends AbstractItemBEWLR {
             poseStack.translate(0, 0.13, 0);
         } else if (itemDisplayContext == ItemDisplayContext.FIXED) {
             poseStack.translate(0.5, 0.3, 0.15);
-        } else { //TODO: Bude potřeba vyřešit kolize s ground + item se nepohybuje s pacičkou
-            /*if (itemDisplayContext.firstPerson()) {
-                poseStack.scale(0.2f, 0.2f, 0.2f);
-                //TODO: centr v pacičce
-            } else {
+        } else {
+            if (itemDisplayContext.firstPerson()) {
+                poseStack.scale(0.4f, 0.4f, 0.4f);
+                poseStack.translate(0.15,-0.45,1.55);
+                poseStack.mulPose(Axis.YP.rotationDegrees(-30));
+            } else if (itemDisplayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || itemDisplayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) {
                 poseStack.translate(0f, -0.8f, 0.6f);
                 poseStack.scale(0.5f, 0.5f, 0.5f);
-            }*/
+            }
         }
 
-
-        poseStack.scale(0.6f, 0.6f, 0.6f);
+        if (itemDisplayContext == ItemDisplayContext.GROUND)
+            poseStack.scale(0.4f, 0.4f,0.4f);
+        else
+            poseStack.scale(0.6f, 0.6f, 0.6f);
 
         if (itemDisplayContext != ItemDisplayContext.GROUND)
             poseStack.translate(type.translation.x - 0.5, type.translation.y - 0.5, type.translation.z);
