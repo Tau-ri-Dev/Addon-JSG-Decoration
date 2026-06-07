@@ -4,6 +4,7 @@ import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
+import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -86,6 +87,9 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
 
         tag(JSGDecorItemTags.WOODEN_FENCES)
                 .add(JSGDecorBlocks.LEMON_FENCE.get().asItem());
+
+        tag(JSGDecorItemTags.WOODEN_FENCE_GATES)
+                .add(JSGDecorBlocks.LEMON_GATE.get().asItem());
 
         tag(JSGDecorItemTags.WOODEN_PRESSURE_PLATES)
                 .add(JSGDecorBlocks.LEMON_PRESSURE_PLATE.get().asItem());
@@ -193,9 +197,18 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
         tag(ItemTags.PIGLIN_LOVED)
                 .add(BrazierType.HATAK.block().get().asItem());
 
-
         //Forge Tags
-            //Because Forge is STUPID don't generate these tags: FENCES, WOODEN_FENCES, FENCE_GATES, WOODEN_FENCE_GATES - otherwise game will crash Duplicate handling...
+        tag(Tags.Items.FENCES)
+                .addTag(JSGDecorItemTags.FENCES);
+
+        tag(Tags.Items.FENCES_WOODEN)
+                .addTag(JSGDecorItemTags.WOODEN_FENCES);
+
+        tag(Tags.Items.FENCE_GATES)
+                .addTag(JSGDecorItemTags.FENCE_GATES);
+
+        tag(Tags.Items.FENCE_GATES_WOODEN)
+                .addTag(JSGDecorItemTags.WOODEN_FENCE_GATES);
 
         tag(Tags.Items.GLASS)
                 .addTag(JSGDecorItemTags.GLASS);

@@ -265,9 +265,18 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
         tag(BlockTags.GUARDED_BY_PIGLINS)
                 .add(BrazierType.HATAK.block().get());
 
-
         //Forge Tags
-            //Because Forge is STUPID don't generate these tags: FENCES, WOODEN_FENCES, FENCE_GATES, WOODEN_FENCE_GATES - otherwise game will crash Duplicate handling...
+        tag(Tags.Blocks.FENCES)
+                .addTag(JSGDecorBlockTags.FENCES);
+
+        tag(Tags.Blocks.FENCES_WOODEN)
+                .addTag(JSGDecorBlockTags.WOODEN_FENCES);
+
+        tag(Tags.Blocks.FENCE_GATES)
+                .addTag(JSGDecorBlockTags.FENCE_GATES);
+
+        tag(Tags.Blocks.FENCE_GATES_WOODEN)
+                .addTag(JSGDecorBlockTags.WOODEN_FENCE_GATES);
 
         tag(Tags.Blocks.GLASS)
                 .addTag(JSGDecorBlockTags.GLASS);
