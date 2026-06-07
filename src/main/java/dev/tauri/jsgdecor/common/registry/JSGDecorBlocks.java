@@ -79,6 +79,17 @@ public class JSGDecorBlocks {
     public static final RegistryObject<Block> LEFT_BLUE_GLASS_BLOCK = Constants.JSGD_BLOCK_HELPER.builder("left_blue_glass_block").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.RED_STAINED_GLASS)).buildGeneric();
     public static final RegistryObject<Block> RIGHT_BLUE_GLASS_BLOCK = Constants.JSGD_BLOCK_HELPER.builder("right_blue_glass_block").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.RED_STAINED_GLASS)).buildGeneric();
 
+    //Prepared for glass panes
+    /*
+    public static final RegistryObject<Block> LEFT_GREEN_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("left_green_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    public static final RegistryObject<Block> RIGHT_GREEN_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("right_green_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    public static final RegistryObject<Block> GREEN_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("green_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    public static final RegistryObject<Block> LEFT_RED_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("left_red_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    public static final RegistryObject<Block> RIGHT_RED_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("right_red_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    public static final RegistryObject<Block> LEFT_BLUE_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("left_blue_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    public static final RegistryObject<Block> RIGHT_BLUE_GLASS_PANE = Constants.JSGD_BLOCK_HELPER.builder("right_blue_glass_pane").clearTooltip().setInTabs(List.of(JSGDecorTabs.JSGD_ATLANTIS_TAB)).setProperties(BlockBehaviour.Properties.copy(Blocks.GREEN_STAINED_GLASS_PANE)).buildGlassPane();
+    */
+
     /**
      * SGU Decoration Blocks
      */
