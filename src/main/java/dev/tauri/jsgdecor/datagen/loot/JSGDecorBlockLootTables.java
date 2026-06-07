@@ -52,9 +52,8 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
         add(JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
         add(JSGDecorBlocks.GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
 
-        JSGDecorBlocks.BRAZIERS.values().forEach(registryObject -> {
-            this.add(registryObject.get(), this::createDoorTable);
-        });
+        //TODO: fix Brazier braking mechanic
+        JSGDecorBlocks.BRAZIERS.values().forEach(registryObject -> this.add(registryObject.get(), this::createDoorTable));
     }
 
     @Override

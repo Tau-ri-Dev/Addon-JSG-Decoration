@@ -44,6 +44,7 @@ public class JSGDecor implements JSGAddon {
         JSGAddons.registerAddon(this);
     }
 
+    //TODO: FIX crash when any LEMON BOAT is placed in world
     /*@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
