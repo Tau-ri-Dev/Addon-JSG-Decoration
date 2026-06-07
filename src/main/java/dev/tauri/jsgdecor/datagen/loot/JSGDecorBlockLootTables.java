@@ -5,6 +5,8 @@ import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,8 +54,7 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
         add(JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
         add(JSGDecorBlocks.GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
 
-        //TODO: fix Brazier braking mechanic
-        JSGDecorBlocks.BRAZIERS.values().forEach(registryObject -> this.add(registryObject.get(), this::createDoorTable));
+        JSGDecorBlocks.BRAZIERS.values().forEach(registryObject -> this.dropSelf(registryObject.get()));
     }
 
     @Override

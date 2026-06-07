@@ -146,7 +146,7 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
     @Override
     @ParametersAreNonnullByDefault
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if (!pLevel.isClientSide && pPlayer.isCreative()) {
+        if (!pLevel.isClientSide) {
             preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
         }
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
@@ -178,8 +178,13 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
     @ParametersAreNonnullByDefault
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         var box = type.blockShape.get().bounds();
-        if (box.maxY - box.minY > 1)
-            pLevel.setBlock(pPos.above(), pState.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER), 3);
+        if (box.maxY - box.minY > 1) {
+            boolean isTopWater = pLevel.getFluidState(pPos.above()).getType() == Fluids.WATER;
+
+            pLevel.setBlock(pPos.above(), pState
+                    .setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER)
+                    .setValue(BlockStateProperties.WATERLOGGED, isTopWater), 3);
+        }
     }
 
     @Override
