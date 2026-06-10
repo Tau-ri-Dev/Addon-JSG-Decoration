@@ -38,7 +38,7 @@ public class JSGDecorItemModelProvider extends ItemModelProvider {
     private void itemOBJModel(ResourceLocation item, ItemDisplayContext... renderTypes) {
         getBuilder(item.toString())
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", JSGMapping.rl(JSGDecor.MOD_ID, "block/wip"))
+                .texture("layer0", JSGMapping.rl(JSGCore.MOD_ID, "block/wip"))
                 .customLoader((parent, existingFileHelper) -> new JSGOBJModelLoaderBuilder<>(parent, existingFileHelper).renderTypes(renderTypes));
     }
 }

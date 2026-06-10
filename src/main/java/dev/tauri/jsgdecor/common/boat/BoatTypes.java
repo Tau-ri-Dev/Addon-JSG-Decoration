@@ -2,18 +2,24 @@ package dev.tauri.jsgdecor.common.boat;
 
 
 import dev.tauri.jsg.core.common.entity.vehicle.JSGBoatTypeWrapper;
+import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorEntities;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public enum BoatTypes implements JSGBoatTypeWrapper.Type, StringRepresentable {
-    LEMON("lemon");
+    LEMON("lemon", JSGDecorBlocks.LEMON_PLANKS);
 
     public final String name;
+    public final Supplier<Block> materialSupplier;
 
-    BoatTypes(String name) {
+    BoatTypes(String name, Supplier<Block> materialSupplier) {
         this.name = name;
+        this.materialSupplier = materialSupplier;
     }
 
     @Override
@@ -24,6 +30,10 @@ public enum BoatTypes implements JSGBoatTypeWrapper.Type, StringRepresentable {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    public Block getMaterial() {
+        return this.materialSupplier.get();
     }
 
     @Override

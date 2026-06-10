@@ -115,21 +115,25 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_planks", has(JSGDecorBlocks.LEMON_PLANKS.get()))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, BoatTypes.LEMON.getDrop(false))
-                .group("boat")
-                .pattern("# #")
-                .pattern("###")
-                .define('#', JSGDecorBlocks.LEMON_PLANKS.get())
-                .unlockedBy("has_planks", has(JSGDecorBlocks.LEMON_PLANKS.get()))
-                .save(pWriter);
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, BoatTypes.LEMON.getDrop(true))
-                .group("chest_boat")
-                .requires(BoatTypes.LEMON.getDrop(false))
-                .requires(Tags.Items.CHESTS_WOODEN)
-                .unlockedBy("has_boat", has(BoatTypes.LEMON.getDrop(false)))
-                .unlockedBy("has_chest", has(Tags.Items.CHESTS_WOODEN))
-                .save(pWriter);
+        for (var type : BoatTypes.values()) {
+            var boat = type.getDrop(false);
+            ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, boat)
+                    .group("boat")
+                    .pattern("# #")
+                    .pattern("###")
+                    .define('#', type.getMaterial())
+                    .unlockedBy("has_planks", has(type.getMaterial()))
+                    .save(pWriter);
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, type.getDrop(true))
+                    .group("chest_boat")
+                    .requires(boat)
+                    .requires(Tags.Items.CHESTS_WOODEN)
+                    .unlockedBy("has_boat", has(boat))
+                    .unlockedBy("has_chest", has(Tags.Items.CHESTS_WOODEN))
+                    .save(pWriter);
+        }
 
         // Braziers
 
