@@ -75,7 +75,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    implementation(fg.deobf("eu.justsgmod:jsg-core-${minecraft_version}:${core_version}:") { transitive = false })
+    implementation(fg.deobf("eu.tauridev:jsg-core-${minecraft_version}:${core_version}:") { transitive = false })
 }
 
 tasks.named('processResources', ProcessResources).configure {
