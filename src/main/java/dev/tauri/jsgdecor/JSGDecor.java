@@ -16,14 +16,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.slf4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 @Mod(JSGDecor.MOD_ID)
 public class JSGDecor implements JSGAddon {
     public static final String MOD_ID = "jsg_decor";
     public static final String MOD_NAME = "JSG: Decoration";
-    public static Logger logger;
+    public static LoggerWrapper logger;
 
     public static String MOD_VERSION = "";
     public static final String MC_VERSION = "1.20.1";
@@ -33,8 +35,9 @@ public class JSGDecor implements JSGAddon {
     public JSGDecor() {
         logger = new LoggerWrapper("[jsg_decor] ", LoggerFactory.getLogger(MOD_NAME));
 
-        ModList.get().getModContainerById(MOD_ID).ifPresentOrElse(container -> MOD_VERSION = MC_VERSION + "-" + container.getModInfo().getVersion().getQualifier(), () -> {
-        });
+        ModList.get().getModContainerById(MOD_ID).ifPresentOrElse(
+                container -> MOD_VERSION = MC_VERSION + "-" + container.getModInfo().getVersion().getQualifier(), () -> {
+                });
         JSGDecor.logger.info("Loading JSG:Decoration Addon version {}", JSGDecor.MOD_VERSION);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -65,18 +68,26 @@ public class JSGDecor implements JSGAddon {
     }
 
     @Override
-    public String getName() {
-        return MOD_NAME;
-    }
-
-    @Override
-    public String getId() {
+    public @NotNull String getId() {
         return MOD_ID;
     }
 
     @Override
-    public String getVersion() {
-        return MOD_VERSION;
+    public String @NotNull [] getWelcomeLogo() {
+        return new String[]{
+                "░░░░░██╗░██████╗░██████╗░██╗██████╗░███████╗░█████╗░░█████╗░██████╗░░█████╗░████████╗██╗░█████╗░███╗░░██╗",
+                "░░░░░██║██╔════╝██╔════╝░╚═╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██║██╔══██╗████╗░██║",
+                "░░░░░██║╚█████╗░██║░░██╗░░░░██║░░██║█████╗░░██║░░╚═╝██║░░██║██████╔╝███████║░░░██║░░░██║██║░░██║██╔██╗██║",
+                "██╗░░██║░╚═══██╗██║░░╚██╗░░░██║░░██║██╔══╝░░██║░░██╗██║░░██║██╔══██╗██╔══██║░░░██║░░░██║██║░░██║██║╚████║",
+                "╚█████╔╝██████╔╝╚██████╔╝██╗██████╔╝███████╗╚█████╔╝╚█████╔╝██║░░██║██║░░██║░░░██║░░░██║╚█████╔╝██║░╚███║",
+                "░╚════╝░╚═════╝░░╚═════╝░╚═╝╚═════╝░╚══════╝░╚════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝"
+        };
+    }
+
+    @Override
+    @NotNull
+    public Optional<LoggerWrapper> getLoggerWrapper() {
+        return Optional.of(logger);
     }
 
     @Override
