@@ -25,7 +25,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
     @Override
     @ParametersAreNonnullByDefault
     protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
-
+/*
         //Lemon wood and all related to it
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEMON_WOOD.get(), 3)
                 .group("bark")
@@ -218,12 +218,12 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .pattern("#C#")
                 .pattern("###")
                 .define('#', JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
-                .define('C', JSGDecorBlocks.CLEAR_WHITE_BLOCK.get())
+                .define('C', JSGDecorBlocks.WHITE_LAMP_BLOCK.get())
                 .unlockedBy("has_blue_block", has(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get()))
-                .unlockedBy("has_white_block", has(JSGDecorBlocks.CLEAR_WHITE_BLOCK.get()))
+                .unlockedBy("has_white_block", has(JSGDecorBlocks.WHITE_LAMP_BLOCK.get()))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.CLEAR_WHITE_BLOCK.get(), 8)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.WHITE_LAMP_BLOCK.get(), 8)
                 .group("jsg_decor:atlantis_solid")
                 .pattern("###")
                 .pattern("#C#")
@@ -246,7 +246,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_ink", has(Items.INK_SAC))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LIGHT_WALL_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.ATLANTIS_WALL_BLOCK.get())
                 .group("jsg_decor:atlantis_solid")
                 .pattern("TIT")
                 .pattern("IRI")
@@ -259,7 +259,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.AGED_WALL_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.AGED_ATLANTIS_WALL_BLOCK.get())
                 .group("jsg_decor:atlantis_solid")
                 .pattern("NTN")
                 .pattern("TRT")
@@ -272,7 +272,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.STANDARD_WALL_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.FLOODED_ATLANTIS_WALL_BLOCK.get())
                 .group("jsg_decor:atlantis_solid")
                 .pattern("ITI")
                 .pattern("TRT")
@@ -362,6 +362,6 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_BLUE_GLASS_BLOCK.get())
                 .requires(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get())
                 .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get()))
-                .save(pWriter);
+                .save(pWriter);*/
     }
 }
