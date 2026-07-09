@@ -8,12 +8,15 @@ import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
@@ -108,16 +111,46 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .add(BrazierType.ANUBIS.block().get());
 
         //Decor blocks tags
-        tag(JSGDecorBlockTags.SOLID_BLOCKS)
-                .add(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
+
+        //
+
+                /*.add(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
                 .add(JSGDecorBlocks.BLUE_ATLANTIS_LAMP_BLOCK.get())
-                .add(JSGDecorBlocks.CLEAR_WHITE_BLOCK.get())
-                .add(JSGDecorBlocks.LIGHT_WALL_BLOCK.get())
-                .add(JSGDecorBlocks.STANDARD_WALL_BLOCK.get())
-                .add(JSGDecorBlocks.AGED_WALL_BLOCK.get())
+                .add(JSGDecorBlocks.WHITE_LAMP_BLOCK.get())
+                .add(JSGDecorBlocks.ATLANTIS_WALL_BLOCK.get())
+                .add(JSGDecorBlocks.FLOODED_ATLANTIS_WALL_BLOCK.get())
+                .add(JSGDecorBlocks.AGED_ATLANTIS_WALL_BLOCK.get())
                 .add(JSGDecorBlocks.BROWN_WALL_BLOCK.get())
                 .add(JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get())
-                .add(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());
+                .add(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());*/
+
+        // Core Decoration
+        var naquadahTag = tag(JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL);
+        var naquadahAlloyTag = tag(JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL);
+        var refinedNaquadahTag = tag(JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL);
+        var titaniumTag = tag(JSGDecorBlockTags.TITANIUM_BASED_MATERIAL);
+        var triniumTag = tag(JSGDecorBlockTags.TRINIUM_BASED_MATERIAL);
+        var pickaxeTag = tag(JSGDecorBlockTags.TOOL_PICKAXE);
+
+        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.CORE_DECORATION_BLOCKS.entrySet()) {
+            String registryName = entry.getKey();
+            Block block = entry.getValue().get();
+
+            pickaxeTag.add(block);
+
+            if (registryName.contains("refined_naquadah")) {
+                refinedNaquadahTag.add(block);
+            } else if (registryName.contains("naquadah_alloy")) {
+                naquadahAlloyTag.add(block);
+            } else if (registryName.contains("naquadah")) {
+                naquadahTag.add(block);
+            } else if (registryName.contains("titanium")) {
+                titaniumTag.add(block);
+            } else if (registryName.contains("trinium")) {
+                triniumTag.add(block);
+            }
+        }
+
 
         //JSGDecor glass tags
         tag(JSGDecorBlockTags.GLASS)
@@ -163,14 +196,18 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .addTag(JSGDecorBlockTags.LEAVES);
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .addTag(JSGDecorBlockTags.SOLID_BLOCKS)
+                .addTag(JSGDecorBlockTags.TOOL_PICKAXE)
                 .addTag(JSGDecorBlockTags.BRAZIERS);
 
-        tag(BlockTags.NEEDS_STONE_TOOL)
-                .addTag(JSGDecorBlockTags.SOLID_BLOCKS);
+        tag(BlockTags.NEEDS_IRON_TOOL)
+                .addTag(JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL)
+                .addTag(JSGDecorBlockTags.TITANIUM_BASED_MATERIAL)
+                .addTag(JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL);
 
         tag(BlockTags.NEEDS_DIAMOND_TOOL)
-                .addTag(JSGDecorBlockTags.BRAZIERS);
+                .addTag(JSGDecorBlockTags.BRAZIERS)
+                .addTag(JSGDecorBlockTags.TRINIUM_BASED_MATERIAL)
+                .addTag(JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL);
 
         //minecraft wood and wood products tags
         tag(BlockTags.BUTTONS)

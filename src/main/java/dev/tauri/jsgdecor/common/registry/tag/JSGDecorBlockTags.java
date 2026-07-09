@@ -35,7 +35,6 @@ public class JSGDecorBlockTags {
     public static TagKey<Block> GREEN_GLASS = tag("green_glasses");
     public static TagKey<Block> STAINED_GLASS = tag("stained_glasses");
     public static TagKey<Block> GLASS = tag("glass");
-    public static TagKey<Block> SOLID_BLOCKS = tag("solid_blocks");
     public static TagKey<Block> LEMON_LOGS = tag("lemon_logs");
     public static TagKey<Block> LEMON_LEAVES = tag("lemon_leaves");
     public static TagKey<Block> NAQUADAH_BASED_MATERIAL = tag("naquadah_based_material");
