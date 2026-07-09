@@ -3,7 +3,6 @@ package dev.tauri.jsgdecor.common.item;
 
 import dev.tauri.jsg.core.client.renderer.AbstractItemBEWLR;
 import dev.tauri.jsg.core.common.item.JSGBlockItem;
-import dev.tauri.jsg.core.common.registry.CoreTabs;
 import dev.tauri.jsgdecor.client.renderer.brazier.BrazierBEWLR;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import net.minecraft.world.level.block.Block;
