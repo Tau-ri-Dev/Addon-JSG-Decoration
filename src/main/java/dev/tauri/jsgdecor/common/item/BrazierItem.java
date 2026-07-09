@@ -3,9 +3,9 @@ package dev.tauri.jsgdecor.common.item;
 
 import dev.tauri.jsg.core.client.renderer.AbstractItemBEWLR;
 import dev.tauri.jsg.core.common.item.JSGBlockItem;
+import dev.tauri.jsg.core.common.registry.CoreTabs;
 import dev.tauri.jsgdecor.client.renderer.brazier.BrazierBEWLR;
 import dev.tauri.jsgdecor.common.block.BrazierType;
-import dev.tauri.jsgdecor.common.registry.JSGDecorTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -18,7 +18,7 @@ public class BrazierItem extends JSGBlockItem {
     public final BrazierType type;
 
     public BrazierItem(Block pBlock, BrazierType type) {
-        super(pBlock, new Properties(), List.of(JSGDecorTabs.JSGD_TAB));
+        super(pBlock, new Properties(), List.of());
         this.type = type;
     }
 
