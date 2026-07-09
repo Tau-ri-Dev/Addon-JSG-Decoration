@@ -38,6 +38,13 @@ public class JSGDecorBlockTags {
     public static TagKey<Block> SOLID_BLOCKS = tag("solid_blocks");
     public static TagKey<Block> LEMON_LOGS = tag("lemon_logs");
     public static TagKey<Block> LEMON_LEAVES = tag("lemon_leaves");
+    public static TagKey<Block> NAQUADAH_BASED_MATERIAL = tag("naquadah_based_material");
+    public static TagKey<Block> NAQUADAH_ALLOY_BASED_MATERIAL = tag("naquadah_alloy_based_material");
+    public static TagKey<Block> REFINED_NAQUADAH_BASED_MATERIAL = tag("refined_naquadah_based_material");
+    public static TagKey<Block> TITANIUM_BASED_MATERIAL = tag("titanium_based_material");
+    public static TagKey<Block> TRINIUM_BASED_MATERIAL = tag("trinium_based_material");
+    public static TagKey<Block> TOOL_PICKAXE = tag("tool_pickaxe");
+
 
     private static TagKey<Block> tag(String name) {
         return BlockTags.create(JSGMapping.rl(JSGDecor.MOD_ID, name));

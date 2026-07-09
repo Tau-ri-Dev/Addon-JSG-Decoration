@@ -5,9 +5,15 @@ import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class JSGDecorBlockLootTables extends BlockLootSubProvider {
@@ -34,12 +40,43 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
         add(JSGDecorBlocks.LEMON_DOOR.get(), this::createDoorTable);
         dropSelf(JSGDecorBlocks.LEMON_TRAPDOOR.get());
 
-        dropSelf(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get());
-        dropSelf(JSGDecorBlocks.BLUE_ATLANTIS_LAMP_BLOCK.get());
-        dropSelf(JSGDecorBlocks.CLEAR_WHITE_BLOCK.get());
-        dropSelf(JSGDecorBlocks.LIGHT_WALL_BLOCK.get());
-        dropSelf(JSGDecorBlocks.STANDARD_WALL_BLOCK.get());
-        dropSelf(JSGDecorBlocks.AGED_WALL_BLOCK.get());
+        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.ATLANTIS_BLOCKS.entrySet()) {
+            String registryName = entry.getKey();
+            Block block = entry.getValue().get();
+
+            if (registryName.endsWith("_slab")) {
+                add(block, this::createSlabItemTable);
+            } else {
+                dropSelf(block);
+            }
+        }
+
+        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.CORE_DECORATION_BLOCKS.entrySet()) {
+            String registryName = entry.getKey();
+            Block block = entry.getValue().get();
+
+            if (registryName.endsWith("_petrified_block")) {
+                String material = registryName.replace("_petrified_block", "");
+                Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material + "_cobbled_block").get();
+
+                add(block, LootTable.lootTable()
+                        .withPool(LootPool.lootPool()
+                                .when(HAS_SILK_TOUCH)
+                                .add(LootItem.lootTableItem(block)))
+                        .withPool(LootPool.lootPool()
+                                .when(HAS_SILK_TOUCH.invert())
+                                .add(this.applyExplosionCondition(block, LootItem.lootTableItem(cobbledBlock))))
+                );
+                continue;
+            }
+
+            if (registryName.endsWith("_slab")) {
+                add(block, this::createSlabItemTable);
+            } else {
+                dropSelf(block);
+            }
+        }
+
         dropSelf(JSGDecorBlocks.BROWN_WALL_BLOCK.get());
         dropSelf(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());
         dropSelf(JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get());
@@ -58,7 +95,12 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
     @Override
     @NotNull
     protected Iterable<Block> getKnownBlocks() {
-        return JSGDecor.REGISTRY_HELPER.block().getEntries().stream().map(RegistryObject::get)::iterator;
-    }
+        List<Block> blocks = new ArrayList<>();
 
+        JSGDecor.REGISTRY_HELPER.block().getEntries().forEach(ro -> blocks.add(ro.get()));
+        JSGDecorBlocks.ATLANTIS_BLOCKS.values().forEach(ro -> blocks.add(ro.get()));
+
+        return blocks;
+        // return JSGDecor.REGISTRY_HELPER.block().getEntries().stream().map(RegistryObject::get)::iterator;
+    }
 }
