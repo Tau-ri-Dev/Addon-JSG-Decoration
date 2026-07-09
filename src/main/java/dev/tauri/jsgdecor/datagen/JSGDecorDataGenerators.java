@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = JSGDecor.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class JDGDecorDataGenerators {
+public class JSGDecorDataGenerators {
     @SubscribeEvent
     public static void generate(GatherDataEvent event) {
         var generator = event.getGenerator();
@@ -20,7 +20,7 @@ public class JDGDecorDataGenerators {
 
         generator.addProvider(event.includeServer(), JSGDecorLootTableProvider.create(output));
 
-        generator.addProvider(event.includeClient(), new JSGDecorRecipeProvider(output));
+        generator.addProvider(event.includeServer(), new JSGDecorRecipeProvider(output));
 
         var blockTagGenerator = generator.addProvider(event.includeServer(), new JSGDecorBlockTagGenerator(output, lookupProvider, exFileHelper));
         generator.addProvider(event.includeServer(), new JSGDecorItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), exFileHelper));
@@ -28,5 +28,9 @@ public class JDGDecorDataGenerators {
         generator.addProvider(event.includeServer(), new JSGDecorBiomeTagGenerator(output, lookupProvider, exFileHelper));
 
         generator.addProvider(event.includeServer(), new JSGDecorWorldGenProvider(output, lookupProvider));
+
+        generator.addProvider(event.includeClient(), new JSGDecorBlockStateProvider(output, exFileHelper));
+
+        generator.addProvider(event.includeClient(), new JSGDecorLanguageProvider(output, "en_us"));
     }
 }
