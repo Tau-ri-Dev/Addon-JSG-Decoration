@@ -1,19 +1,28 @@
 package dev.tauri.jsgdecor.datagen;
 
 import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
+import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
+import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.function.Consumer;
 
 
@@ -25,7 +34,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
     @Override
     @ParametersAreNonnullByDefault
     protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
-/*
+
         //Lemon wood and all related to it
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEMON_WOOD.get(), 3)
                 .group("bark")
@@ -199,9 +208,105 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_material", has(Blocks.DEEPSLATE_TILES))
                 .save(pWriter);
 
+        // Core Blocks
+
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+
+                String modifiedMaterial = material.getMaterial() + "_" + variant.getVariant();
+                Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_" + variant.getVariant() + "_block").get();
+
+                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
+                    Block completedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(modifiedMaterial + "_" + shape.getShape()).get();
+
+                    switch (shape) {
+                        case SLAB -> {
+                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, completedBlock, 6)
+                                    .pattern("###")
+                                    .define('#', block)
+                                    .unlockedBy("has_" + block, has(block))
+                                    .save(pWriter, locationCorrection(modifiedMaterial + "_slab"));
+
+                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(block), RecipeCategory.BUILDING_BLOCKS, completedBlock, 2)
+                                    .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
+                                    .save(pWriter, locationCorrection(modifiedMaterial + "_slab_stonecutting"));
+                        }
+                        case STAIRS -> {
+                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, completedBlock, 4)
+                                    .pattern("#  ")
+                                    .pattern("## ")
+                                    .pattern("###")
+                                    .define('#', block)
+                                    .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
+                                    .save(pWriter, locationCorrection(modifiedMaterial + "_stairs"));
+
+                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(block), RecipeCategory.BUILDING_BLOCKS, completedBlock, 1)
+                                    .unlockedBy("has_" + block, has(block))
+                                    .save(pWriter, locationCorrection(modifiedMaterial + "_stairs_stonecutting"));
+                        }
+                        case BLOCK -> {
+                            Item nugget = material.getNugget();
+
+                            if (variant == CoreDecorationBlocks.Variant.PETRIFIED) {
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block, 8)
+                                        .pattern("###")
+                                        .pattern("x#x")
+                                        .pattern("###")
+                                        .define('#', Blocks.STONE)
+                                        .define('x', nugget)
+                                        .unlockedBy("has_" + modifiedMaterial + "_nugget", has(nugget))
+                                        .save(pWriter, locationCorrection(modifiedMaterial + "block_crafting"));
+
+                                for (CoreDecorationBlocks.Variant variants : CoreDecorationBlocks.Variant.values()) {
+                                    if (variants == CoreDecorationBlocks.Variant.PETRIFIED) continue;
+
+                                    Block targetBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_" + variants.getVariant() + "_block").get();
+
+                                    SingleItemRecipeBuilder.stonecutting(Ingredient.of(block), RecipeCategory.BUILDING_BLOCKS, targetBlock, 1)
+                                            .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
+                                            .save(pWriter, locationCorrection(material.getMaterial() + "_" + variants.getVariant() + "_block_from_petrified_stonecutting"));
+                                }
+
+                                Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_cobbled_block").get();
+                                blockSmelting(pWriter, List.of(cobbledBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 200, "jsg_decor_petrified");
+                                blockBlasting(pWriter, List.of(cobbledBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 100, "jsg_decor_petrified");
+
+                            } else if (variant == CoreDecorationBlocks.Variant.COBBLED) {
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block, 8)
+                                        .pattern("###")
+                                        .pattern("x#x")
+                                        .pattern("###")
+                                        .define('#', Blocks.COBBLESTONE)
+                                        .define('x', nugget)
+                                        .unlockedBy("has_" + modifiedMaterial + "_nugget", has(nugget))
+                                        .save(pWriter, locationCorrection(modifiedMaterial + "block_crafting"));
+                            } else if (variant == CoreDecorationBlocks.Variant.BIG_BRICKS) {
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block, 4)
+                                        .pattern("##")
+                                        .pattern("##")
+                                        .define('#', JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_petrified_block").get())
+                                        .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
+                                        .save(pWriter, locationCorrection(modifiedMaterial + "block_crafting"));
+                            }
+                            else if (variant == CoreDecorationBlocks.Variant.SMOOTH) {
+                                Block petrifiedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_petrified_block").get();
+                                blockSmelting(pWriter, List.of(petrifiedBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 200, "jsg_decor_smooth");
+                                blockBlasting(pWriter, List.of(petrifiedBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 100, "jsg_decor_smooth");
+                            }
+                            else if (variant == CoreDecorationBlocks.Variant.MONOLITHIC) {
+                                Block smoothBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_smooth_block").get();
+                                blockSmelting(pWriter, List.of(smoothBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 200, "jsg_decor_monolithic");
+                                blockBlasting(pWriter, List.of(smoothBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 100, "jsg_decor_monolithic");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //Atlantis decoration blocks
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get(), 8)
+        /*ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get(), 8)
                 .group("jsg_decor:atlantis_solid")
                 .pattern("###")
                 .pattern("#C#")
@@ -283,7 +388,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
-                .save(pWriter);
+                .save(pWriter);*/
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get(), 8)
                 .group("jsg_decor:atlantis_solid")
@@ -362,6 +467,33 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_BLUE_GLASS_BLOCK.get())
                 .requires(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get())
                 .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get()))
-                .save(pWriter);*/
+                .save(pWriter);
+    }
+
+
+    private ResourceLocation locationCorrection(String name) {
+        return JSGMapping.rl(JSGDecor.MOD_ID, name);
+    }
+
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("SameParameterValue")
+    protected static void blockSmelting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTIme, String pGroup) {
+        blockCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTIme, pGroup, "_from_smelting");
+    }
+
+    @ParametersAreNonnullByDefault
+    @SuppressWarnings("SameParameterValue")
+    protected static void blockBlasting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
+        blockCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTime, pGroup, "_from_blasting");
+    }
+
+
+    @ParametersAreNonnullByDefault
+    protected static void blockCooking(Consumer<FinishedRecipe> pFinishedRecipeConsumer, RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pRecipeName) {
+        for (ItemLike itemlike : pIngredients) {
+            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pCookingSerializer)
+                    .group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
+                    .save(pFinishedRecipeConsumer, JSGDecor.MOD_ID + ":" + getItemName(pResult) + pRecipeName + "_" + getItemName(itemlike));
+        }
     }
 }

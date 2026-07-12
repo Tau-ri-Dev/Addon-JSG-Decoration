@@ -2,6 +2,7 @@ package dev.tauri.jsgdecor.datagen.tag;
 
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
+import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorItemTags;
@@ -9,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -123,6 +125,20 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
                 .add(JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get().asItem())
                 .add(JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get().asItem())
                 .add(JSGDecorBlocks.GREEN_GLASS_BLOCK.get().asItem());
+
+        // Core Decoration
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
+
+                    String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                    Item item = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(name).get().asItem();
+
+                    if (shape == CoreDecorationBlocks.Shape.SLAB) tag(JSGDecorItemTags.SLABS).add(item);
+                    if (shape == CoreDecorationBlocks.Shape.STAIRS) tag(JSGDecorItemTags.STAIRS).add(item);
+                }
+            }
+        }
 
         //minecraft wood and wood products tags
         tag(ItemTags.BOATS)

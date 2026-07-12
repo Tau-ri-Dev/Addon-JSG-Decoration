@@ -1,12 +1,11 @@
 package dev.tauri.jsgdecor.datagen.loot;
 
 import dev.tauri.jsgdecor.JSGDecor;
+import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -51,29 +50,28 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
             }
         }
 
-        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.CORE_DECORATION_BLOCKS.entrySet()) {
-            String registryName = entry.getKey();
-            Block block = entry.getValue().get();
+        //Core Block
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
 
-            if (registryName.endsWith("_petrified_block")) {
-                String material = registryName.replace("_petrified_block", "");
-                Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material + "_cobbled_block").get();
+                    String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                    Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(name).get();
 
-                add(block, LootTable.lootTable()
-                        .withPool(LootPool.lootPool()
-                                .when(HAS_SILK_TOUCH)
-                                .add(LootItem.lootTableItem(block)))
-                        .withPool(LootPool.lootPool()
-                                .when(HAS_SILK_TOUCH.invert())
-                                .add(this.applyExplosionCondition(block, LootItem.lootTableItem(cobbledBlock))))
-                );
-                continue;
-            }
+                    if (variant == CoreDecorationBlocks.Variant.PETRIFIED && shape == CoreDecorationBlocks.Shape.BLOCK) {
+                        String cobbledName = material.getMaterial() + "_" + CoreDecorationBlocks.Variant.COBBLED.getVariant() + "_block";
+                        Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(cobbledName).get();
 
-            if (registryName.endsWith("_slab")) {
-                add(block, this::createSlabItemTable);
-            } else {
-                dropSelf(block);
+                        add(block, createSilkTouchDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(cobbledBlock))));
+                        continue;
+                    }
+                    if (shape == CoreDecorationBlocks.Shape.SLAB) {
+                        add(block, this::createSlabItemTable);
+                        continue;
+                    }
+
+                    dropSelf(block);
+                }
             }
         }
 

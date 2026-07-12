@@ -3,6 +3,7 @@ package dev.tauri.jsgdecor.datagen.tag;
 import dev.tauri.jsg.core.common.registry.tag.CoreBlockTags;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
+import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import net.minecraft.core.HolderLookup;
@@ -12,11 +13,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
@@ -125,31 +124,28 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .add(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());*/
 
         // Core Decoration
-        var naquadahTag = tag(JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL);
-        var naquadahAlloyTag = tag(JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL);
-        var refinedNaquadahTag = tag(JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL);
-        var titaniumTag = tag(JSGDecorBlockTags.TITANIUM_BASED_MATERIAL);
-        var triniumTag = tag(JSGDecorBlockTags.TRINIUM_BASED_MATERIAL);
-        var pickaxeTag = tag(JSGDecorBlockTags.TOOL_PICKAXE);
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
 
-        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.CORE_DECORATION_BLOCKS.entrySet()) {
-            String registryName = entry.getKey();
-            Block block = entry.getValue().get();
+                    String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                    Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(name).get();
 
-            pickaxeTag.add(block);
+                    tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
+                    if (shape == CoreDecorationBlocks.Shape.SLAB)  tag(JSGDecorBlockTags.SLABS).add(block);
+                    if (shape == CoreDecorationBlocks.Shape.STAIRS) tag(JSGDecorBlockTags.STAIRS).add(block);
 
-            if (registryName.contains("refined_naquadah")) {
-                refinedNaquadahTag.add(block);
-            } else if (registryName.contains("naquadah_alloy")) {
-                naquadahAlloyTag.add(block);
-            } else if (registryName.contains("naquadah")) {
-                naquadahTag.add(block);
-            } else if (registryName.contains("titanium")) {
-                titaniumTag.add(block);
-            } else if (registryName.contains("trinium")) {
-                triniumTag.add(block);
+                    switch (material) {
+                        case NAQUADAH         -> tag(JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL).add(block);
+                        case NAQUADAH_ALLOY   -> tag(JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL).add(block);
+                        case REFINED_NAQUADAH -> tag(JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL).add(block);
+                        case TITANIUM         -> tag(JSGDecorBlockTags.TITANIUM_BASED_MATERIAL).add(block);
+                        case TRINIUM          -> tag(JSGDecorBlockTags.TRINIUM_BASED_MATERIAL).add(block);
+                    }
+                }
             }
         }
+
 
 
         //JSGDecor glass tags
@@ -196,7 +192,6 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .addTag(JSGDecorBlockTags.LEAVES);
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .addTag(JSGDecorBlockTags.TOOL_PICKAXE)
                 .addTag(JSGDecorBlockTags.BRAZIERS);
 
         tag(BlockTags.NEEDS_IRON_TOOL)

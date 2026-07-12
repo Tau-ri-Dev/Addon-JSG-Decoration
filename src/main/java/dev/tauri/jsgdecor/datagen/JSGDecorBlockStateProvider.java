@@ -1,6 +1,7 @@
 package dev.tauri.jsgdecor.datagen;
 
 import dev.tauri.jsgdecor.JSGDecor;
+import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
 import java.util.Map;
 
 public class JSGDecorBlockStateProvider extends BlockStateProvider {
@@ -24,53 +26,54 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-
         //Core decor blocks
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
 
-        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.CORE_DECORATION_BLOCKS.entrySet()) {
-            String name = entry.getKey();
-            Block block = entry.getValue().get();
-            String baseName = name.replaceAll("_(block|slab|stairs)$", "");
+                    boolean pillars = List.of(
+                            CoreDecorationBlocks.Variant.PILLAR,
+                            CoreDecorationBlocks.Variant.TILLED_PILLAR,
+                            CoreDecorationBlocks.Variant.CARVED_PILLAR
+                    ).contains(variant);
 
-            boolean isSmooth = baseName.endsWith("_smooth");
+                    String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                    if (!JSGDecorBlocks.CORE_DECORATION_BLOCKS.containsKey(name)) continue;
+                    Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(name).get();
 
-            String topTexture = baseName
-                    .replace("sculpted_creeper", "burnished")
-                    .replace("polished_tiles", "small_tiles");
+                    String texVar = switch (variant) {
+                        case SCULPTED_CREEPER, SCULPTED_WITHER -> "burnished";
+                        case POLISHED_TILES -> "small_tiles";
+                        default -> variant.getVariant();
+                    };
 
-            if (baseName.contains("sculpted_wither") && !baseName.contains("wither_skeleton")) {
-                topTexture = baseName.replace("sculpted_wither", "burnished");
-            }
+                    ResourceLocation side = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_" + variant.getVariant());
+                    ResourceLocation top = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_" + texVar);
 
-            ResourceLocation side = modLoc("block/core_blocks_variants/" + baseName);
-            ResourceLocation top  = modLoc("block/core_blocks_variants/" + (baseName.contains("sculpted_guardian") || baseName.contains("pillar") ? baseName + "_top" : topTexture));
+                    if (variant == CoreDecorationBlocks.Variant.SCULPTED_GUARDIAN || pillars) {
+                        top = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_" + variant.getVariant() + "_top");
+                    }
+                    if (variant == CoreDecorationBlocks.Variant.SMOOTH) {
+                        side = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_slab_side");
+                        top = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_slab_top");
+                        if (shape == CoreDecorationBlocks.Shape.BLOCK) side = top;
+                    }
 
-            if (isSmooth) {
-                String materialName = baseName.replace("_smooth", "");
-                side = modLoc("block/core_blocks_variants/" + materialName + "_slab_side");
-                top  = modLoc("block/core_blocks_variants/" + materialName + "_slab_top");
-            }
+                    boolean differentTopBottomTexture = !side.equals(top);
 
-            boolean difTopBottomTexture = !side.equals(top);
-            if (isSmooth && !(block instanceof SlabBlock) && !(block instanceof StairBlock)) {
-                side = top;
-                difTopBottomTexture = false;
-            }
-
-            if (block instanceof SlabBlock slab) {
-                slabBlock(slab, difTopBottomTexture ? models().slab(name, side, top, top) : models().slab(name, side, side, side), difTopBottomTexture ? models().slabTop(name + "_top", side, top, top) : models().slabTop(name + "_top", side, side, side), difTopBottomTexture ? models().cubeBottomTop(name + "_double", side, top, top) : models().cubeAll(name + "_double", side));
-                itemModels().withExistingParent(name, modLoc("block/" + name));
-            } else if (block instanceof StairBlock stairs) {
-                stairsBlock(stairs, difTopBottomTexture ? models().stairs(name, side, top, top) : models().stairs(name, side, side, side), difTopBottomTexture ? models().stairsInner(name + "_inner", side, top, top) : models().stairsInner(name + "_inner", side, side, side), difTopBottomTexture ? models().stairsOuter(name + "_outer", side, top, top) : models().stairsOuter(name + "_outer", side, side, side));
-                itemModels().withExistingParent(name, modLoc("block/" + name));
-            } else if (difTopBottomTexture && baseName.contains("pillar")) {
-                axisBlock((RotatedPillarBlock) block, side, top);
-                itemModels().withExistingParent(name, modLoc("block/" + name));
-            } else if (baseName.contains("petrified")) {
-                getVariantBuilder(block).partialState().setModels(ConfiguredModel.builder().modelFile(models().cubeAll(name, side)).nextModel().modelFile(models().withExistingParent(name + "_mirrored", "minecraft:block/cube_mirrored_all").texture("all", side)).nextModel().modelFile(models().cubeAll(name, side)).rotationY(180).nextModel().modelFile(models().withExistingParent(name + "_mirrored", "minecraft:block/cube_mirrored_all").texture("all", side)).rotationY(180).build());
-                itemModels().withExistingParent(name, modLoc("block/" + name));
-            } else {
-                simpleBlockWithItem(block, difTopBottomTexture ? models().cubeBottomTop(name, side, top, top) : models().cubeAll(name, side));
+                    if (block instanceof SlabBlock slab) {
+                        slabBlock(slab, differentTopBottomTexture ? models().slab(name, side, top, top) : models().slab(name, side, side, side), differentTopBottomTexture ? models().slabTop(name + "_top", side, top, top) : models().slabTop(name + "_top", side, side, side), differentTopBottomTexture ? models().cubeBottomTop(name + "_double", side, top, top) : models().cubeAll(name + "_double", side));
+                    } else if (block instanceof StairBlock stairs) {
+                        stairsBlock(stairs, differentTopBottomTexture ? models().stairs(name, side, top, top) : models().stairs(name, side, side, side), differentTopBottomTexture ? models().stairsInner(name + "_inner", side, top, top) : models().stairsInner(name + "_inner", side, side, side), differentTopBottomTexture ? models().stairsOuter(name + "_outer", side, top, top) : models().stairsOuter(name + "_outer", side, side, side));
+                    } else if (pillars) {
+                        axisBlock((RotatedPillarBlock) block, side, top);
+                    } else if (variant == CoreDecorationBlocks.Variant.PETRIFIED) {
+                        getVariantBuilder(block).partialState().setModels(ConfiguredModel.builder().modelFile(models().cubeAll(name, side)).nextModel().modelFile(models().withExistingParent(name + "_mirrored", "minecraft:block/cube_mirrored_all").texture("all", side)).nextModel().modelFile(models().cubeAll(name, side)).rotationY(180).nextModel().modelFile(models().withExistingParent(name + "_mirrored", "minecraft:block/cube_mirrored_all").texture("all", side)).rotationY(180).build());
+                    } else {
+                        simpleBlock(block, differentTopBottomTexture ? models().cubeBottomTop(name, side, top, top) : models().cubeAll(name, side));
+                    }
+                    itemModels().withExistingParent(name, modLoc("block/" + name));
+                }
             }
         }
 

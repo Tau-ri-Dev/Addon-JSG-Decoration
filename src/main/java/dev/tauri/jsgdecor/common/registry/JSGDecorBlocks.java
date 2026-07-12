@@ -5,6 +5,7 @@ import dev.tauri.jsg.core.common.registry.CoreTabs;
 import dev.tauri.jsgdecor.Constants;
 import dev.tauri.jsgdecor.common.block.BrazierBlock;
 import dev.tauri.jsgdecor.common.block.BrazierType;
+import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
 import dev.tauri.jsgdecor.common.worldgen.tree.Growers;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.AxeItem;
@@ -68,41 +69,24 @@ public class JSGDecorBlocks {
 
     public static final Map<String, RegistryObject<Block>> CORE_DECORATION_BLOCKS = new LinkedHashMap<>();
 
-    private enum Material {
-        NAQUADAH         ("naquadah", MapColor.COLOR_GREEN),
-        NAQUADAH_ALLOY   ("naquadah_alloy", MapColor.COLOR_CYAN),
-        REFINED_NAQUADAH ("refined_naquadah", MapColor.COLOR_LIGHT_GREEN),
-        TITANIUM         ("titanium", MapColor.COLOR_GRAY),
-        TRINIUM          ("trinium", MapColor.SNOW);
-
-        final String id;
-        final MapColor color;
-
-        Material(String id, MapColor color) {
-            this.id = id;
-            this.color = color;
-        }
-    }
-
-    private static final List<String> CORE_VARIANTS = List.of(
-            "petrified", "monolithic", "smooth", "burnished", "exposed", "weathered", "cracked", "pillar",
-            "cobbled", "carved_bricks", "large_bricks", "big_bricks", "cracked_big_bricks", "bricks", "cracked_bricks",
-            "chiseled", "big_tiles", "small_tiles", "polished_tiles", "tilled_pillar", "carved_pillar",
-            "sculpted", "sculpted_creeper", "sculpted_guardian", "sculpted_piglin_snout", "sculpted_wither",
-            "sculpted_wither_skeleton", "sculpted_warden"
-    );
-
-    private static final List<String> SHAPES = List.of("block", "slab", "stairs");
-
     static {
-        for (Material material : Material.values()) {
-            CORE_VARIANTS.forEach(variant -> SHAPES.forEach(shape -> registerCoreBlock(material, variant, shape)));
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                registerCoreBlock(material, variant, CoreDecorationBlocks.Shape.BLOCK);
+            }
+        }
+
+        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
+            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                registerCoreBlock(material, variant, CoreDecorationBlocks.Shape.SLAB);
+                registerCoreBlock(material, variant, CoreDecorationBlocks.Shape.STAIRS);
+            }
         }
     }
 
-    private static void registerCoreBlock(Material material, String variant, String shape) {
-        String name = material.id + (variant != null ? "_" + variant : "") + "_" + shape;
-        var properties = BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(material.color);
+    private static void registerCoreBlock(CoreDecorationBlocks.Material material, CoreDecorationBlocks.Variant variant, CoreDecorationBlocks.Shape shape) {
+        String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+        var properties = BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(material.getMapColor());
 
         var builder = Constants.JSGD_BLOCK_HELPER.builder(name)
                 .clearTooltip()
@@ -110,12 +94,12 @@ public class JSGDecorBlocks {
                 .setProperties(properties);
 
         RegistryObject<Block> block = switch (shape) {
-            case "slab" -> builder.buildSlab();
-            case "stairs" -> builder.buildStairs(() ->
-                    CORE_DECORATION_BLOCKS.get(material.id + "_" + variant + "_block").get().defaultBlockState()
+            case SLAB -> builder.buildSlab();
+            case STAIRS -> builder.buildStairs(() ->
+                    CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_" + variant.getVariant() + "_block").get().defaultBlockState()
             );
             default -> (name.contains("pillar") || name.contains("polished_tiles"))
-                    ? builder.buildPillar(material.color, material.color)
+                    ? builder.buildPillar(material.getMapColor(), material.getMapColor())
                     : builder.buildGeneric();
         };
 

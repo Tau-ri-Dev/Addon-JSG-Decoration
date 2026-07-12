@@ -42,7 +42,6 @@ public class JSGDecorBlockTags {
     public static TagKey<Block> REFINED_NAQUADAH_BASED_MATERIAL = tag("refined_naquadah_based_material");
     public static TagKey<Block> TITANIUM_BASED_MATERIAL = tag("titanium_based_material");
     public static TagKey<Block> TRINIUM_BASED_MATERIAL = tag("trinium_based_material");
-    public static TagKey<Block> TOOL_PICKAXE = tag("tool_pickaxe");
 
 
     private static TagKey<Block> tag(String name) {
