@@ -16,14 +16,20 @@ public class WoodBlock {
         private final MapColor leavesColor;
         private final MapColor planksColor;
         private final Supplier<AbstractTreeGrower> treeGrower;
+        private final Boolean burns;
 
-        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<AbstractTreeGrower> treeGrower) {
+        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<AbstractTreeGrower> treeGrower, Boolean burns) {
             this.material = material;
             this.woodColor = woodColor;
             this.barkColor = barkColor;
             this.leavesColor = leavesColor;
             this.planksColor = planksColor;
             this.treeGrower = treeGrower;
+            this.burns = burns;
+        }
+
+        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<AbstractTreeGrower> treeGrower) {
+            this(material, woodColor, barkColor, leavesColor, planksColor, treeGrower, true);
         }
 
         public String getMaterial() { return material; }
@@ -32,6 +38,7 @@ public class WoodBlock {
         public MapColor getLeavesColor() { return leavesColor; }
         public MapColor getPlanksColor() { return planksColor; }
         public AbstractTreeGrower getTreeGrower() { return treeGrower.get(); }
+        public boolean isFlammable() { return burns; }
     }
 
     public enum Shape {
