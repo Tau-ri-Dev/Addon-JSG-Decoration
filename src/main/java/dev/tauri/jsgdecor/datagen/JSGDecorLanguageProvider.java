@@ -1,5 +1,6 @@
 package dev.tauri.jsgdecor.datagen;
 
+import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
@@ -23,10 +24,13 @@ public class JSGDecorLanguageProvider extends LanguageProvider {
         addMapTranslations(STONE_BASED_DECORATION_BLOCKS);
         addMapTranslations(WOOD_BLOCKS);
 
+
         for (BoatTypes boat : BoatTypes.values()) {
             add(boat.getDrop(false), createLocalizedName(boat.getName() + "_boat"));
-            add(boat.getDrop(true), createLocalizedName(boat.getName() + "_boat_with_chest"));
+            add(boat.getDrop(true), createLocalizedName(boat.getName()) + " Boat with Chest");
         }
+        add("entity" + "." + JSGDecor.MOD_ID + "." + "boat", "Boat");
+        add("entity" + "." + JSGDecor.MOD_ID + "." + "boat_with_chest", "Boat with Chest");
 
         for (var registryObject : JSGDecorBlocks.BRAZIERS.values()) {
             Block block = registryObject.get();
