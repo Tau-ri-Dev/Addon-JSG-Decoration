@@ -1,11 +1,14 @@
 package dev.tauri.jsgdecor.datagen.loot;
 
 import dev.tauri.jsgdecor.JSGDecor;
-import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
+import dev.tauri.jsgdecor.common.block.StoneBasedDecorationBlock;
+import dev.tauri.jsgdecor.common.block.WoodBlock;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -15,57 +18,61 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
+
 public class JSGDecorBlockLootTables extends BlockLootSubProvider {
+
     public JSGDecorBlockLootTables() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
 
     @Override
     protected void generate() {
-        dropSelf(JSGDecorBlocks.LEMON_LOG_STRIPPED.get());
-        dropSelf(JSGDecorBlocks.LEMON_LOG.get());
-        dropSelf(JSGDecorBlocks.LEMON_WOOD_STRIPPED.get());
-        dropSelf(JSGDecorBlocks.LEMON_WOOD.get());
-        dropSelf(JSGDecorBlocks.LEMON_SAPLING.get());
-        dropSelf(JSGDecorBlocks.LEMON_PLANKS.get());
-        add(JSGDecorBlocks.LEMON_LEAVES.get(), block -> createLeavesDrops(block, JSGDecorBlocks.LEMON_SAPLING.get(), 0.5f, 0.0625f, 0.083333336F, 0.1f));
+        dropStandardBlocks(OVERLAY_BLOCKS);
+        dropStandardBlocks(COMMON_BLOCKS);
 
-        add(JSGDecorBlocks.LEMON_SLAB.get(), this::createSlabItemTable);
-        dropSelf(JSGDecorBlocks.LEMON_STAIRS.get());
-        dropSelf(JSGDecorBlocks.LEMON_FENCE.get());
-        dropSelf(JSGDecorBlocks.LEMON_GATE.get());
-        dropSelf(JSGDecorBlocks.LEMON_BUTTON.get());
-        dropSelf(JSGDecorBlocks.LEMON_PRESSURE_PLATE.get());
-        add(JSGDecorBlocks.LEMON_DOOR.get(), this::createDoorTable);
-        dropSelf(JSGDecorBlocks.LEMON_TRAPDOOR.get());
+        generateStoneBasedLoot();
+        generateWoodLoot();
 
-        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.ATLANTIS_BLOCKS.entrySet()) {
-            String registryName = entry.getKey();
-            Block block = entry.getValue().get();
+        JSGDecorBlocks.BRAZIERS.values().forEach(registryObject -> this.dropSelf(registryObject.get()));
 
-            if (registryName.endsWith("_slab")) {
-                add(block, this::createSlabItemTable);
+        for (var block : GLASS_BLOCKS.values()) {
+            Block dropBlock = block.get();
+            add(dropBlock, noDrop().withPool(LootPool.lootPool().when(HAS_SILK_TOUCH).add(LootItem.lootTableItem(dropBlock))));
+        }
+    }
+
+    private void dropStandardBlocks(Map<String, RegistryObject<Block>> blockMap) {
+        for (var block : blockMap.values()) {
+            Block dropBlock = block.get();
+            if (dropBlock instanceof SlabBlock) {
+                add(dropBlock, this::createSlabItemTable);
             } else {
-                dropSelf(block);
+                dropSelf(dropBlock);
             }
         }
+    }
 
-        //Core Block
-        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
-            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
-                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
+    private void generateStoneBasedLoot() {
+        for (StoneBasedDecorationBlock.Material material : StoneBasedDecorationBlock.Material.values()) {
+            for (StoneBasedDecorationBlock.Variant variant : StoneBasedDecorationBlock.Variant.values()) {
+                for (StoneBasedDecorationBlock.Shape shape : StoneBasedDecorationBlock.Shape.values()) {
 
-                    String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
-                    Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(name).get();
+                    String name = variant.shouldSwapOrder()
+                            ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape()
+                            : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
 
-                    if (variant == CoreDecorationBlocks.Variant.PETRIFIED && shape == CoreDecorationBlocks.Shape.BLOCK) {
-                        String cobbledName = material.getMaterial() + "_" + CoreDecorationBlocks.Variant.COBBLED.getVariant() + "_block";
-                        Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(cobbledName).get();
+                    Block block = STONE_BASED_DECORATION_BLOCKS.get(name).get();
+
+                    if (variant == StoneBasedDecorationBlock.Variant.PETRIFIED && shape == StoneBasedDecorationBlock.Shape.BLOCK) {
+                        String cobbledName = StoneBasedDecorationBlock.Variant.COBBLED.getVariant() + "_" + material.getMaterial() + "_block";
+                        Block cobbledBlock = STONE_BASED_DECORATION_BLOCKS.get(cobbledName).get();
 
                         add(block, createSilkTouchDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(cobbledBlock))));
                         continue;
                     }
-                    if (shape == CoreDecorationBlocks.Shape.SLAB) {
+
+                    if (block instanceof SlabBlock) {
                         add(block, this::createSlabItemTable);
                         continue;
                     }
@@ -74,20 +81,44 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
                 }
             }
         }
+    }
 
-        dropSelf(JSGDecorBlocks.BROWN_WALL_BLOCK.get());
-        dropSelf(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());
-        dropSelf(JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get());
+    private void generateWoodLoot() {
+        for (WoodBlock.Material material : WoodBlock.Material.values()) {
+            String woodType = material.getMaterial() + "_";
 
-        add(JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
-        add(JSGDecorBlocks.LEFT_RED_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
-        add(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
-        add(JSGDecorBlocks.LEFT_BLUE_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
-        add(JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
-        add(JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
-        add(JSGDecorBlocks.GREEN_GLASS_BLOCK.get(), BlockLootSubProvider::createSilkTouchOnlyTable);
+            for (WoodBlock.Shape shape : WoodBlock.Shape.values()) {
+                String blockKey = getCorrectWoodBlockKey(shape, woodType);
 
-        JSGDecorBlocks.BRAZIERS.values().forEach(registryObject -> this.dropSelf(registryObject.get()));
+                Block block = WOOD_BLOCKS.get(blockKey).get();
+
+                switch (shape) {
+                    case SLAB -> add(block, this::createSlabItemTable);
+                    case DOOR -> add(block, this::createDoorTable);
+                    case LEAVES -> {
+                        Block saplingBlock = WOOD_BLOCKS.get(woodType + "sapling").get();
+                        add(block, leavesBlock -> createLeavesDrops(leavesBlock, saplingBlock, NORMAL_LEAVES_SAPLING_CHANCES));
+                    }
+                    default -> dropSelf(block);
+                }
+            }
+        }
+    }
+
+    private static @NotNull String getCorrectWoodBlockKey
+            (WoodBlock.Shape shape, String woodType) {
+        String blockKey = woodType + shape.getShape();
+
+        if (shape == WoodBlock.Shape.LOG) {
+            blockKey = woodType + "log";
+        } else if (shape == WoodBlock.Shape.STRIPPED_LOG) {
+            blockKey = "stripped_" + woodType + "log";
+        } else if (shape == WoodBlock.Shape.WOOD) {
+            blockKey = woodType + "wood";
+        } else if (shape == WoodBlock.Shape.STRIPPED_WOOD) {
+            blockKey = "stripped_" + woodType + "wood";
+        }
+        return blockKey;
     }
 
     @Override
@@ -95,8 +126,7 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
     protected Iterable<Block> getKnownBlocks() {
         List<Block> blocks = new ArrayList<>();
 
-        JSGDecor.REGISTRY_HELPER.block().getEntries().forEach(ro -> blocks.add(ro.get()));
-        JSGDecorBlocks.ATLANTIS_BLOCKS.values().forEach(ro -> blocks.add(ro.get()));
+        JSGDecor.REGISTRY_HELPER.block().getEntries().forEach(registeredBlocks -> blocks.add(registeredBlocks.get()));
 
         return blocks;
         // return JSGDecor.REGISTRY_HELPER.block().getEntries().stream().map(RegistryObject::get)::iterator;

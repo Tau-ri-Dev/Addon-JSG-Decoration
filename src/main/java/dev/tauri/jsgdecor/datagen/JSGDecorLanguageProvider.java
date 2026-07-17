@@ -1,5 +1,6 @@
 package dev.tauri.jsgdecor.datagen;
 
+import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
@@ -8,54 +9,38 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Map;
 
+import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
+
 public class JSGDecorLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        //Tabs
         add("itemGroup.jsg_decor.building_blocks", "JSG Decor: Building Blocks");
 
-        //Lemon wood and products
-        add("block.jsg_decor.lemon_log", "Lemon Log");
-        add("block.jsg_decor.stripped_lemon_log", "Stripped Lemon Log");
-        add("block.jsg_decor.lemon_wood", "Lemon Wood");
-        add("block.jsg_decor.stripped_lemon_wood", "Stripped Lemon Wood");
-        add("block.jsg_decor.lemon_planks", "Lemon Planks");
-        add("block.jsg_decor.lemon_stairs", "Lemon Stairs");
-        add("block.jsg_decor.lemon_slab", "Lemon Slab");
-        add("block.jsg_decor.lemon_fence", "Lemon Fence");
-        add("block.jsg_decor.lemon_fence_gate", "Lemon Fence Gate");
-        add("block.jsg_decor.lemon_door", "Lemon Door");
-        add("block.jsg_decor.lemon_trapdoor", "Lemon Trapdoor");
-        add("block.jsg_decor.lemon_pressure_plate", "Lemon Pressure Plate");
-        add("block.jsg_decor.lemon_button", "Lemon Button");
-        add("block.jsg_decor.lemon_leaves", "Lemon Leaves");
-        add("block.jsg_decor.lemon_sapling", "Lemon Sapling");
-        add("item.jsg_decor.lemon_boat", "Lemon Boat");
-        add("item.jsg_decor.lemon_boat_with_chest", "Lemon Boat with Chest");
+        addMapTranslations(OVERLAY_BLOCKS);
+        addMapTranslations(COMMON_BLOCKS);
+        addMapTranslations(GLASS_BLOCKS);
+        addMapTranslations(STONE_BASED_DECORATION_BLOCKS);
+        addMapTranslations(WOOD_BLOCKS);
 
-        //Braziers
+        for (BoatTypes boat : BoatTypes.values()) {
+            add(boat.getDrop(false), createLocalizedName(boat.getName() + "_boat"));
+            add(boat.getDrop(true), createLocalizedName(boat.getName() + "_boat_with_chest"));
+        }
+
         for (var registryObject : JSGDecorBlocks.BRAZIERS.values()) {
             Block block = registryObject.get();
-            net.minecraft.resources.ResourceLocation location = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(block);
-
-            if (location != null) {
-                String registryName = location.getPath();
-                String localizedName = createLocalizedName(registryName);
-                add(block, localizedName);
+            var id = registryObject.getId();
+            if (id != null) {
+                add(block, createLocalizedName(id.getPath()));
             }
         }
+    }
 
-        // Core Decoration Blocks
-        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.CORE_DECORATION_BLOCKS.entrySet()) {
-            String registryName = entry.getKey();
-            Block block = entry.getValue().get();
-
-            String localizedName = createLocalizedName(registryName);
-            add(block, localizedName);
+    private void addMapTranslations(Map<String, RegistryObject<Block>> blockMap) {
+        for (Map.Entry<String, RegistryObject<Block>> entry : blockMap.entrySet()) {
+            add(entry.getValue().get(), createLocalizedName(entry.getKey()));
         }
-
-        //Atlantis Decoration Blocks
     }
 
     private static String createLocalizedName(String registryName) {

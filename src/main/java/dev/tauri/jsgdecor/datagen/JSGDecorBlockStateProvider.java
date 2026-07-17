@@ -1,23 +1,21 @@
 package dev.tauri.jsgdecor.datagen;
 
+import dev.tauri.jsg.core.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
-import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
-import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
+import dev.tauri.jsgdecor.common.block.*;
+import dev.tauri.jsgdecor.common.block.GlassBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.*;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.List;
 import java.util.Map;
+
+import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
+import static net.minecraftforge.registries.ForgeRegistries.BLOCKS;
 
 public class JSGDecorBlockStateProvider extends BlockStateProvider {
     public JSGDecorBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -26,99 +24,280 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        //Core decor blocks
-        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
-            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
-                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
+        generateBlockWithOverlayStates();
+        generateCommonBlockStates();
+        generateGlassBlockStates();
+        generateStoneBasedDecorationStates();
+        generateWoodBlockStates();
+    }
 
-                    boolean pillars = List.of(
-                            CoreDecorationBlocks.Variant.PILLAR,
-                            CoreDecorationBlocks.Variant.TILLED_PILLAR,
-                            CoreDecorationBlocks.Variant.CARVED_PILLAR
-                    ).contains(variant);
+    private void generateBlockWithOverlayStates() {
+        ResourceLocation cubeTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/cube_only_side_overlay");
+        ResourceLocation slabTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/slab_only_side_overlay");
+        ResourceLocation slabTopTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/slab_top_only_side_overlay");
+        ResourceLocation stairsTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/stairs_only_side_overlay");
+        ResourceLocation stairsInnerTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/inner_stairs_only_side_overlay");
+        ResourceLocation stairsOuterTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/outer_stairs_only_side_overlay");
 
-                    String name = material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
-                    if (!JSGDecorBlocks.CORE_DECORATION_BLOCKS.containsKey(name)) continue;
-                    Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(name).get();
+        for (BlockWithOverlay.Material material : BlockWithOverlay.Material.values()) {
+            String baseName = material.getMaterial();
 
-                    String texVar = switch (variant) {
-                        case SCULPTED_CREEPER, SCULPTED_WITHER -> "burnished";
-                        case POLISHED_TILES -> "small_tiles";
-                        default -> variant.getVariant();
-                    };
+            ResourceLocation vanillaTexture = JSGMapping.rl("minecraft", "block/" + material.getBaseTexture());
+            ResourceLocation overlayTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/overlays/" + material.getOverlayTexture());
 
-                    ResourceLocation side = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_" + variant.getVariant());
-                    ResourceLocation top = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_" + texVar);
+            String blockName = baseName + "_block";
+            String slabName = baseName + "_slab";
+            String stairsName = baseName + "_stairs";
 
-                    if (variant == CoreDecorationBlocks.Variant.SCULPTED_GUARDIAN || pillars) {
-                        top = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_" + variant.getVariant() + "_top");
-                    }
-                    if (variant == CoreDecorationBlocks.Variant.SMOOTH) {
-                        side = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_slab_side");
-                        top = modLoc("block/core_blocks_variants/" + material.getMaterial() + "_slab_top");
-                        if (shape == CoreDecorationBlocks.Shape.BLOCK) side = top;
-                    }
+            Block block = OVERLAY_BLOCKS.get(blockName).get();
+            BlockModelBuilder cubeModel = models().withExistingParent(blockName, cubeTemplate)
+                    .texture("normal", vanillaTexture)
+                    .texture("overlay", overlayTexture);
+            simpleBlock(block, cubeModel);
+            generateInventoryItem(blockName);
 
-                    boolean differentTopBottomTexture = !side.equals(top);
+            SlabBlock slab = (SlabBlock) OVERLAY_BLOCKS.get(slabName).get();
+            BlockModelBuilder slabModel = models().withExistingParent(slabName, slabTemplate).texture("normal", vanillaTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder slabTopModel = models().withExistingParent(slabName + "_top", slabTopTemplate).texture("normal", vanillaTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder slabDoubleModel = models().withExistingParent(slabName + "_double", cubeTemplate).texture("normal", vanillaTexture).texture("overlay", overlayTexture);
 
-                    if (block instanceof SlabBlock slab) {
-                        slabBlock(slab, differentTopBottomTexture ? models().slab(name, side, top, top) : models().slab(name, side, side, side), differentTopBottomTexture ? models().slabTop(name + "_top", side, top, top) : models().slabTop(name + "_top", side, side, side), differentTopBottomTexture ? models().cubeBottomTop(name + "_double", side, top, top) : models().cubeAll(name + "_double", side));
-                    } else if (block instanceof StairBlock stairs) {
-                        stairsBlock(stairs, differentTopBottomTexture ? models().stairs(name, side, top, top) : models().stairs(name, side, side, side), differentTopBottomTexture ? models().stairsInner(name + "_inner", side, top, top) : models().stairsInner(name + "_inner", side, side, side), differentTopBottomTexture ? models().stairsOuter(name + "_outer", side, top, top) : models().stairsOuter(name + "_outer", side, side, side));
-                    } else if (pillars) {
-                        axisBlock((RotatedPillarBlock) block, side, top);
-                    } else if (variant == CoreDecorationBlocks.Variant.PETRIFIED) {
-                        getVariantBuilder(block).partialState().setModels(ConfiguredModel.builder().modelFile(models().cubeAll(name, side)).nextModel().modelFile(models().withExistingParent(name + "_mirrored", "minecraft:block/cube_mirrored_all").texture("all", side)).nextModel().modelFile(models().cubeAll(name, side)).rotationY(180).nextModel().modelFile(models().withExistingParent(name + "_mirrored", "minecraft:block/cube_mirrored_all").texture("all", side)).rotationY(180).build());
-                    } else {
-                        simpleBlock(block, differentTopBottomTexture ? models().cubeBottomTop(name, side, top, top) : models().cubeAll(name, side));
-                    }
-                    itemModels().withExistingParent(name, modLoc("block/" + name));
+            slabBlock(slab, slabModel, slabTopModel, slabDoubleModel);
+            generateInventoryItem(slabName);
+
+            StairBlock stairs = (StairBlock) OVERLAY_BLOCKS.get(stairsName).get();
+            BlockModelBuilder stairsModel = models().withExistingParent(stairsName, stairsTemplate).texture("top", vanillaTexture).texture("bottom", vanillaTexture).texture("side", vanillaTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder stairsInner = models().withExistingParent(stairsName + "_inner", stairsInnerTemplate).texture("top", vanillaTexture).texture("bottom", vanillaTexture).texture("side", vanillaTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder stairsOuter = models().withExistingParent(stairsName + "_outer", stairsOuterTemplate).texture("top", vanillaTexture).texture("bottom", vanillaTexture).texture("side", vanillaTexture).texture("overlay", overlayTexture);
+
+            stairsBlock(stairs, stairsModel, stairsInner, stairsOuter);
+            generateInventoryItem(stairsName);
+        }
+    }
+
+    private void generateCommonBlockStates() {
+        for (CommonBlock.Material material : CommonBlock.Material.values()) {
+
+            CommonBlock.Variant[] generateVariants = material.hasVariants()
+                    ? CommonBlock.Variant.values()
+                    : new CommonBlock.Variant[]{CommonBlock.Variant.DEFAULT};
+
+            for (CommonBlock.Variant var : generateVariants) {
+
+                String name = (var == CommonBlock.Variant.DEFAULT)
+                        ? material.getMaterial()
+                        : var.getVariant() + "_" + material.getMaterial();
+
+                String texturePath = (var == CommonBlock.Variant.DEFAULT)
+                        ? material.getTextureName()
+                        : var.getVariant() + "_" + material.getTextureName();
+
+                ResourceLocation commonTex = JSGMapping.rl(JSGDecor.MOD_ID, "block/common/" + texturePath);
+
+                String blockName = name + "_block";
+                String slabName = name + "_slab";
+                String stairsName = name + "_stairs";
+
+                generateBlockSlabStairs(COMMON_BLOCKS, blockName, slabName, stairsName, commonTex, false);
+
+                if (material.hasLampVariant()) {
+                    String lampBlockName = name + "_lamp_block";
+                    String lampSlabName = name + "_lamp_slab";
+                    String lampStairsName = name + "_lamp_stairs";
+
+                    generateBlockSlabStairs(COMMON_BLOCKS, lampBlockName, lampSlabName, lampStairsName, commonTex, true);
                 }
             }
         }
+    }
 
-        //todo: set right block states for Atlantis blocks
+    private void generateGlassBlockStates() {
+        for (GlassBlock.Material material : GlassBlock.Material.values()) {
+            String baseName = material.getMaterial();
+            ResourceLocation glassTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/glass/" + baseName);
 
-        // Atlantis blocks
-        for (Map.Entry<String, RegistryObject<Block>> entry : JSGDecorBlocks.ATLANTIS_BLOCKS.entrySet()) {
-            String registryName = entry.getKey();
-            Block block = entry.getValue().get();
+            for (GlassBlock.Shape shape : GlassBlock.Shape.values()) {
+                String name = baseName + "_" + shape.getShape();
+                Block block = GLASS_BLOCKS.get(name).get();
 
-            String textureName = registryName.replace("_block", "")
-                    .replace("_slab", "")
-                    .replace("_stairs", "");
+                if (shape == GlassBlock.Shape.GLASS_BLOCK) {
+                    BlockModelBuilder cubeModel = models().cubeAll(name, glassTexture).renderType("translucent");
+                    simpleBlock(block, cubeModel);
+                    generateInventoryItem(name);
+                } else if (shape == GlassBlock.Shape.GLASS_PANE) {
+                    ResourceLocation paneTopTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/glass/" + material.getTopPaneTexture());
 
-            if (textureName.contains("white_lamp")) {
-                textureName = textureName.replace("_lamp", "");
-            }
-
-            ResourceLocation textureRL = modLoc("block/atlantis/" + textureName);
-
-            if (registryName.endsWith("_slab")) {
-                ModelFile bottomModel = models().slab(registryName, textureRL, textureRL, textureRL);
-                ModelFile topModel = models().slabTop(registryName + "_top", textureRL, textureRL, textureRL);
-                ModelFile doubleModel = models().cubeAll(registryName + "_double", textureRL);
-
-                slabBlock((SlabBlock) block, bottomModel, topModel, doubleModel);
-                itemModels().withExistingParent(registryName, modLoc("block/" + registryName));
-            } else if (registryName.endsWith("_stairs")) {
-                ModelFile stairsModel = models().stairs(registryName, textureRL, textureRL, textureRL);
-                ModelFile innerModel = models().stairsInner(registryName + "_inner", textureRL, textureRL, textureRL);
-                ModelFile outerModel = models().stairsOuter(registryName + "_outer", textureRL, textureRL, textureRL);
-
-                stairsBlock((StairBlock) block, stairsModel, innerModel, outerModel);
-                itemModels().withExistingParent(registryName, modLoc("block/" + registryName));
-            } else {
-                var cubeAllModel = models().cubeAll(registryName, textureRL);
-                simpleBlockWithItem(block, cubeAllModel);
+                    paneBlockWithRenderType((IronBarsBlock) block, name, glassTexture, paneTopTexture, "translucent");
+                    itemModels().withExistingParent(name, "minecraft:item/generated").texture("layer0", glassTexture).renderType("translucent");
+                }
             }
         }
     }
 
-    public static ResourceLocation getRL(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block);
+    private void generateStoneBasedDecorationStates() {
+        for (StoneBasedDecorationBlock.Material material : StoneBasedDecorationBlock.Material.values()) {
+            for (StoneBasedDecorationBlock.Variant variant : StoneBasedDecorationBlock.Variant.values()) {
+                for (StoneBasedDecorationBlock.Shape shape : StoneBasedDecorationBlock.Shape.values()) {
+
+                    if (shape != StoneBasedDecorationBlock.Shape.BLOCK) continue;
+
+                    String baseName = variant.shouldSwapOrder() ? variant.getVariant() + "_" + material.getMaterial() : material.getMaterial() + "_" + variant.getVariant();
+
+                    Block block = STONE_BASED_DECORATION_BLOCKS.get(baseName + "_block").get();
+                    SlabBlock slab = (SlabBlock) STONE_BASED_DECORATION_BLOCKS.get(baseName + "_slab").get();
+                    StairBlock stairs = (StairBlock) STONE_BASED_DECORATION_BLOCKS.get(baseName + "_stairs").get();
+
+                    String textureRL = "block/stone_based/" + material.getMaterial() + "_";
+
+                    ResourceLocation textureSides = JSGMapping.rl(JSGDecor.MOD_ID, textureRL + variant.getVariant());
+                    ResourceLocation textureBottomTop = JSGMapping.rl(JSGDecor.MOD_ID, textureRL + variant.getTopBottomTexture());
+
+
+                    if (variant == StoneBasedDecorationBlock.Variant.SMOOTH) {
+                        textureSides = JSGMapping.rl(JSGDecor.MOD_ID, textureRL + "slab_top");
+                        textureBottomTop = textureSides;
+                    }
+
+                    generateBlockSlabStairs(block, slab, stairs, textureSides, textureBottomTop, variant.isRotatable(), false);
+                }
+            }
+        }
     }
 
+    private void generateWoodBlockStates() {
+        for (WoodBlock.Material material : WoodBlock.Material.values()) {
+            String woodType = material.getMaterial() + "_";
+
+            ResourceLocation logSideTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "log");
+            ResourceLocation logTopTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "log_top");
+            ResourceLocation strippedLogSideTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/stripped_" + woodType + "log");
+            ResourceLocation strippedLogTopTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/stripped_" + woodType + "log_top");
+            ResourceLocation planksTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "planks");
+            ResourceLocation leavesTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "leaves");
+            ResourceLocation saplingTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "sapling");
+
+            axisBlock((RotatedPillarBlock) WOOD_BLOCKS.get(woodType + "log").get(), logSideTexture, logTopTexture);
+            axisBlock((RotatedPillarBlock) WOOD_BLOCKS.get("stripped_" + woodType + "log").get(), strippedLogSideTexture, strippedLogTopTexture);
+            axisBlock((RotatedPillarBlock) WOOD_BLOCKS.get(woodType + "wood").get(), logSideTexture, logSideTexture);
+            axisBlock((RotatedPillarBlock) WOOD_BLOCKS.get("stripped_" + woodType + "wood").get(), strippedLogSideTexture, strippedLogSideTexture);
+
+            simpleBlock(WOOD_BLOCKS.get(woodType + "planks").get(), models().cubeAll(woodType + "planks", planksTexture));
+
+            simpleBlock(WOOD_BLOCKS.get(woodType + "leaves").get(), models().withExistingParent(woodType + "leaves", "minecraft:block/leaves").texture("all", leavesTexture).renderType("cutout"));
+            simpleBlock(WOOD_BLOCKS.get(woodType + "sapling").get(), models().cross(woodType + "sapling", saplingTexture).renderType("cutout"));
+
+            slabBlock((SlabBlock) WOOD_BLOCKS.get(woodType + "slab").get(), WOOD_BLOCKS.get(woodType + "planks").getId(), planksTexture);
+            stairsBlock((StairBlock) WOOD_BLOCKS.get(woodType + "stairs").get(), planksTexture);
+            fenceBlock((FenceBlock) WOOD_BLOCKS.get(woodType + "fence").get(), planksTexture);
+            fenceGateBlock((FenceGateBlock) WOOD_BLOCKS.get(woodType + "fence_gate").get(), planksTexture);
+            buttonBlock((ButtonBlock) WOOD_BLOCKS.get(woodType + "button").get(), planksTexture);
+            pressurePlateBlock((PressurePlateBlock) WOOD_BLOCKS.get(woodType + "pressure_plate").get(), planksTexture);
+
+            doorBlockWithRenderType((DoorBlock) WOOD_BLOCKS.get(woodType + "door").get(),
+                    JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "door_bottom"),
+                    JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "door_top"), "cutout");
+            trapdoorBlock((TrapDoorBlock) WOOD_BLOCKS.get(woodType + "trapdoor").get(),
+                    JSGMapping.rl(JSGDecor.MOD_ID, "block/wood/" + material.getMaterial() + "/" + woodType + "trapdoor"), true);
+                    models().getBuilder(woodType + "trapdoor_bottom").renderType("cutout");
+                    models().getBuilder(woodType + "trapdoor_top").renderType("cutout");
+                    models().getBuilder(woodType + "trapdoor_open").renderType("cutout");
+
+            for (WoodBlock.Shape shape : WoodBlock.Shape.values()) {
+                String fullName = woodType + shape.getShape();
+
+                if (shape == WoodBlock.Shape.LOG) fullName = woodType + "log";
+                else if (shape == WoodBlock.Shape.STRIPPED_LOG) fullName = "stripped_" + woodType + "log";
+                else if (shape == WoodBlock.Shape.WOOD) fullName = woodType + "wood";
+                else if (shape == WoodBlock.Shape.STRIPPED_WOOD) fullName = "stripped_" + woodType + "wood";
+
+                if (WOOD_BLOCKS.containsKey(fullName)) {
+                    if (shape == WoodBlock.Shape.FENCE) {
+                        itemModels().fenceInventory(fullName, planksTexture);
+                    } else if (shape == WoodBlock.Shape.BUTTON) {
+                        itemModels().buttonInventory(fullName, planksTexture);
+                    } else if (shape == WoodBlock.Shape.DOOR || shape == WoodBlock.Shape.SAPLING) {
+                        itemModels().withExistingParent(fullName, "minecraft:item/generated")
+                                .texture("layer0", JSGMapping.rl(JSGDecor.MOD_ID, "item/wood/" + material.getMaterial() + "/" + fullName));
+                    } else if (shape == WoodBlock.Shape.TRAPDOOR) {
+                        itemModels().withExistingParent(fullName, JSGMapping.rl(JSGDecor.MOD_ID, "block/" + fullName + "_bottom"));
+                    } else {
+                        generateInventoryItem(fullName);
+                    }
+                }
+            }
+        }
+    }
+
+    private void generateBlockSlabStairs(Block block, SlabBlock slab, StairBlock stairs, ResourceLocation side, ResourceLocation top, boolean isPillar, boolean isLamp) {
+        var blockKey = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(block);
+        var slabKey = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(slab);
+        var stairsKey = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(stairs);
+
+
+        if (blockKey == null || slabKey == null || stairsKey == null) {
+            throw new IllegalArgumentException("Cannot generate data for a block that is not registered!");
+        }
+
+        String blockName = blockKey.getPath();
+        String slabName = slabKey.getPath();
+        String stairsName = stairsKey.getPath();
+
+
+        boolean diff = !side.equals(top);
+
+        if (isPillar) {
+            axisBlock((RotatedPillarBlock) block, side, top);
+        } else {
+            var model = diff ? models().cubeBottomTop(blockName, side, top, top) : models().cubeAll(blockName, side);
+            if (isLamp) model.renderType("cutout");
+            simpleBlock(block, model);
+        }
+        generateInventoryItem(blockName);
+
+        var slabModel = diff ? models().slab(slabName, side, top, top) : models().slab(slabName, side, side, side);
+        var slabTopModel = diff ? models().slabTop(slabName + "_top", side, top, top) : models().slabTop(slabName + "_top", side, side, side);
+        var slabDoubleModel = diff ? models().cubeBottomTop(slabName + "_double", side, top, top) : models().cubeAll(slabName + "_double", side);
+
+        if (isLamp) {
+            slabModel.renderType("cutout");
+            slabTopModel.renderType("cutout");
+            slabDoubleModel.renderType("cutout");
+        }
+        slabBlock(slab, slabModel, slabTopModel, slabDoubleModel);
+        generateInventoryItem(slabName);
+
+        var stairsModel = diff ? models().stairs(stairsName, side, top, top) : models().stairs(stairsName, side, side, side);
+        var stairsInner = diff ? models().stairsInner(stairsName + "_inner", side, top, top) : models().stairsInner(stairsName + "_inner", side, side, side);
+        var stairsOuter = diff ? models().stairsOuter(stairsName + "_outer", side, top, top) : models().stairsOuter(stairsName + "_outer", side, side, side);
+
+        if (isLamp) {
+            stairsModel.renderType("cutout");
+            stairsInner.renderType("cutout");
+            stairsOuter.renderType("cutout");
+        }
+        stairsBlock(stairs, stairsModel, stairsInner, stairsOuter);
+        generateInventoryItem(stairsName);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void generateBlockSlabStairs(Map<String, RegistryObject<Block>> blockMap, String blockName, String slabName, String stairsName, ResourceLocation texture, boolean isLamp) {
+        Block block = blockMap.get(blockName).get();
+        SlabBlock slab = (SlabBlock) blockMap.get(slabName).get();
+        StairBlock stairs = (StairBlock) blockMap.get(stairsName).get();
+
+        // Volání tvé hlavní velké metody
+        generateBlockSlabStairs(block, slab, stairs, texture, texture, false, isLamp);
+    }
+
+    private void generateInventoryItem(String name) {
+        itemModels().withExistingParent(name, JSGMapping.rl(JSGDecor.MOD_ID, "block/" + name));
+    }
+
+    @SuppressWarnings("unused")
+    public static ResourceLocation getRL(Block block) {
+        return BLOCKS.getKey(block);
+    }
+
+    @SuppressWarnings("unused")
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
     }

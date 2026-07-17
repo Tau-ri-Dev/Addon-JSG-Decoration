@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "jsg_decor:block/wood/lemon_planks",
-    "side": "jsg_decor:block/wood/lemon_planks",
-    "top": "jsg_decor:block/wood/lemon_planks"
-  }
-}

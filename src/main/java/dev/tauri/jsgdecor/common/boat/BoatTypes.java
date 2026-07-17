@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public enum BoatTypes implements JSGBoatTypeWrapper.Type, StringRepresentable {
-    LEMON("lemon", JSGDecorBlocks.LEMON_PLANKS);
+    LEMON("lemon", () -> JSGDecorBlocks.WOOD_BLOCKS.get("lemon_planks").get());
 
     public final String name;
     public final Supplier<Block> materialSupplier;

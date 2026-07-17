@@ -1,16 +1,8 @@
 package dev.tauri.jsgdecor.datagen.tag;
 
-import dev.tauri.jsg.core.common.registry.tag.CoreBlockTags;
 import dev.tauri.jsgdecor.JSGDecor;
-import dev.tauri.jsgdecor.common.block.BrazierType;
-import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
-import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
-import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +19,7 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
     @ParametersAreNonnullByDefault
     protected void addTags(HolderLookup.Provider pProvider) {
         //JSGDecor wood and wood products tags
-        tag(JSGDecorBlockTags.WOODEN_BUTTONS)
+        /*tag(JSGDecorBlockTags.WOODEN_BUTTONS)
                 .add(JSGDecorBlocks.LEMON_BUTTON.get());
 
         tag(JSGDecorBlockTags.BUTTONS)
@@ -113,7 +105,7 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
 
         //
 
-                /*.add(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
+                .add(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
                 .add(JSGDecorBlocks.BLUE_ATLANTIS_LAMP_BLOCK.get())
                 .add(JSGDecorBlocks.WHITE_LAMP_BLOCK.get())
                 .add(JSGDecorBlocks.ATLANTIS_WALL_BLOCK.get())
@@ -121,7 +113,7 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .add(JSGDecorBlocks.AGED_ATLANTIS_WALL_BLOCK.get())
                 .add(JSGDecorBlocks.BROWN_WALL_BLOCK.get())
                 .add(JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get())
-                .add(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());*/
+                .add(JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get());
 
         // Core Decoration
         for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
@@ -325,6 +317,6 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 .addTag(JSGDecorBlockTags.BLUE_GLASS);
 
         tag(Tags.Blocks.GLASS_GREEN)
-                .addTag(JSGDecorBlockTags.GREEN_GLASS);
+                .addTag(JSGDecorBlockTags.GREEN_GLASS);*/
     }
 }

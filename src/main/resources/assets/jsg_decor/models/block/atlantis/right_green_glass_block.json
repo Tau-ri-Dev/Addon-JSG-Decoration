@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "render_type": "minecraft:translucent",
-  "textures": {
-    "all": "jsg_decor:block/atlantis/glass/right_green_glass_block"
-  }
-}

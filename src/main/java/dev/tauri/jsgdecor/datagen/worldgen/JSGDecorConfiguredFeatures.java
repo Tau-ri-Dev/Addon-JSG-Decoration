@@ -31,11 +31,11 @@ public class JSGDecorConfiguredFeatures {
 
         context.register(JSGDecorFeatures.LEMON_TREE, new ConfiguredFeature<>(Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
-                        BlockStateProvider.simple(JSGDecorBlocks.LEMON_LOG.get().defaultBlockState().setValue(BlockStateProperties.AXIS, Direction.Axis.Y)),
+                        BlockStateProvider.simple(JSGDecorBlocks.WOOD_BLOCKS.get("lemon_log").get().defaultBlockState().setValue(BlockStateProperties.AXIS, Direction.Axis.Y)),
 
                         new FancyTrunkPlacer(7, 1, 0),
 
-                        BlockStateProvider.simple(JSGDecorBlocks.LEMON_LEAVES.get().defaultBlockState()
+                        BlockStateProvider.simple(JSGDecorBlocks.WOOD_BLOCKS.get("lemon_leaves").get().defaultBlockState()
                                 .setValue(BlockStateProperties.DISTANCE, 7)
                                 .setValue(BlockStateProperties.PERSISTENT, false)
                                 .setValue(BlockStateProperties.WATERLOGGED, false)),

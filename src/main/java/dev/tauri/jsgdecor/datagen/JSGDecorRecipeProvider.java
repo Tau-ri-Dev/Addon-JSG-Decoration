@@ -4,14 +4,16 @@ import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
 import dev.tauri.jsg.core.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.BrazierType;
-import dev.tauri.jsgdecor.common.block.CoreDecorationBlocks;
+import dev.tauri.jsgdecor.common.block.StoneBasedDecorationBlock;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -34,7 +36,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
     @Override
     @ParametersAreNonnullByDefault
     protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
-
+/*
         //Lemon wood and all related to it
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEMON_WOOD.get(), 3)
                 .group("bark")
@@ -209,94 +211,121 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .save(pWriter);
 
         // Core Blocks
+        //todo: refractor - methods + add condition to recipe book as petrified block or petrified slabs are in same category - you need to right click to see it and it cycle by default
+        for (StoneBasedDecorationBlock.Material material : StoneBasedDecorationBlock.Material.values()) {
+            for (StoneBasedDecorationBlock.Variant variant : StoneBasedDecorationBlock.Variant.values()) {
 
-        for (CoreDecorationBlocks.Material material : CoreDecorationBlocks.Material.values()) {
-            for (CoreDecorationBlocks.Variant variant : CoreDecorationBlocks.Variant.values()) {
+                String ingredientName = variant.shouldSwapOrder() ? variant.getVariant() + "_" + material.getMaterial() + "_block" : material.getMaterial() + "_" + variant.getVariant() + "_block";
+                Block ingredientBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(ingredientName).get();
 
-                String modifiedMaterial = material.getMaterial() + "_" + variant.getVariant();
-                Block block = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_" + variant.getVariant() + "_block").get();
+                for (StoneBasedDecorationBlock.Shape shape : StoneBasedDecorationBlock.Shape.values()) {
 
-                for (CoreDecorationBlocks.Shape shape : CoreDecorationBlocks.Shape.values()) {
-                    Block completedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(modifiedMaterial + "_" + shape.getShape()).get();
+                    String craftedBlockName = variant.shouldSwapOrder() ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape() : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                    Block craftedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(craftedBlockName).get();
 
                     switch (shape) {
                         case SLAB -> {
-                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, completedBlock, 6)
+                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, craftedBlock, 6)
                                     .pattern("###")
-                                    .define('#', block)
-                                    .unlockedBy("has_" + block, has(block))
-                                    .save(pWriter, locationCorrection(modifiedMaterial + "_slab"));
+                                    .define('#', ingredientBlock)
+                                    .unlockedBy("has_" + ingredientName, has(ingredientBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName));
 
-                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(block), RecipeCategory.BUILDING_BLOCKS, completedBlock, 2)
-                                    .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
-                                    .save(pWriter, locationCorrection(modifiedMaterial + "_slab_stonecutting"));
+                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredientBlock), RecipeCategory.BUILDING_BLOCKS, craftedBlock, 2)
+                                    .unlockedBy("has_" + ingredientName, has(ingredientBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName + "_stonecutting"));
                         }
                         case STAIRS -> {
-                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, completedBlock, 4)
+                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, craftedBlock, 4)
                                     .pattern("#  ")
                                     .pattern("## ")
                                     .pattern("###")
-                                    .define('#', block)
-                                    .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
-                                    .save(pWriter, locationCorrection(modifiedMaterial + "_stairs"));
+                                    .define('#', ingredientBlock)
+                                    .unlockedBy("has_" + ingredientName, has(ingredientBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName));
 
-                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(block), RecipeCategory.BUILDING_BLOCKS, completedBlock, 1)
-                                    .unlockedBy("has_" + block, has(block))
-                                    .save(pWriter, locationCorrection(modifiedMaterial + "_stairs_stonecutting"));
+                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredientBlock), RecipeCategory.BUILDING_BLOCKS, craftedBlock, 1)
+                                    .unlockedBy("has_" + ingredientName, has(ingredientBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName + "_stonecutting"));
                         }
                         case BLOCK -> {
                             Item nugget = material.getNugget();
 
-                            if (variant == CoreDecorationBlocks.Variant.PETRIFIED) {
-                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block, 8)
+                            if (variant == StoneBasedDecorationBlock.Variant.PETRIFIED) {
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 8)
                                         .pattern("###")
                                         .pattern("x#x")
                                         .pattern("###")
                                         .define('#', Blocks.STONE)
                                         .define('x', nugget)
-                                        .unlockedBy("has_" + modifiedMaterial + "_nugget", has(nugget))
-                                        .save(pWriter, locationCorrection(modifiedMaterial + "block_crafting"));
+                                        .unlockedBy("has_" + ingredientName + "_nugget", has(nugget))
+                                        .save(pWriter, locationCorrection(ingredientName + "_crafting"));
 
-                                for (CoreDecorationBlocks.Variant variants : CoreDecorationBlocks.Variant.values()) {
-                                    if (variants == CoreDecorationBlocks.Variant.PETRIFIED) continue;
+                                for (StoneBasedDecorationBlock.Variant variants : StoneBasedDecorationBlock.Variant.values()) {
+                                    if (variants == StoneBasedDecorationBlock.Variant.PETRIFIED) continue;
 
-                                    Block targetBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_" + variants.getVariant() + "_block").get();
+                                    String targetBlockName = variants.shouldSwapOrder()
+                                            ? variants.getVariant() + "_" + material.getMaterial() + "_block"
+                                            : material.getMaterial() + "_" + variants.getVariant() + "_block";
+                                    Block targetBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(targetBlockName).get();
 
-                                    SingleItemRecipeBuilder.stonecutting(Ingredient.of(block), RecipeCategory.BUILDING_BLOCKS, targetBlock, 1)
-                                            .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
-                                            .save(pWriter, locationCorrection(material.getMaterial() + "_" + variants.getVariant() + "_block_from_petrified_stonecutting"));
+                                    SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredientBlock), RecipeCategory.BUILDING_BLOCKS, targetBlock, 1)
+                                            .unlockedBy("has_" + ingredientName, has(ingredientBlock))
+                                            .save(pWriter, locationCorrection(targetBlockName + "_from_petrified_stonecutting"));
                                 }
 
-                                Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_cobbled_block").get();
-                                blockSmelting(pWriter, List.of(cobbledBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 200, "jsg_decor_petrified");
-                                blockBlasting(pWriter, List.of(cobbledBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 100, "jsg_decor_petrified");
+                                StoneBasedDecorationBlock.Variant cobbledVar = StoneBasedDecorationBlock.Variant.COBBLED;
+                                String cobbledName = cobbledVar.shouldSwapOrder()
+                                        ? cobbledVar.getVariant() + "_" + material.getMaterial() + "_block"
+                                        : material.getMaterial() + "_" + cobbledVar.getVariant() + "_block";
+                                Block cobbledBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(cobbledName).get();
 
-                            } else if (variant == CoreDecorationBlocks.Variant.COBBLED) {
-                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block, 8)
+                                blockSmelting(pWriter, List.of(cobbledBlock), RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 0.1f, 200, "jsg_decor_petrified");
+                                blockBlasting(pWriter, List.of(cobbledBlock), RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 0.1f, 100, "jsg_decor_petrified");
+
+                            } else if (variant == StoneBasedDecorationBlock.Variant.COBBLED) {
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 8)
                                         .pattern("###")
                                         .pattern("x#x")
                                         .pattern("###")
                                         .define('#', Blocks.COBBLESTONE)
                                         .define('x', nugget)
-                                        .unlockedBy("has_" + modifiedMaterial + "_nugget", has(nugget))
-                                        .save(pWriter, locationCorrection(modifiedMaterial + "block_crafting"));
-                            } else if (variant == CoreDecorationBlocks.Variant.BIG_BRICKS) {
-                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block, 4)
+                                        .unlockedBy("has_" + ingredientName + "_nugget", has(nugget))
+                                        .save(pWriter, locationCorrection(ingredientName + "_crafting"));
+
+                            } else if (variant == StoneBasedDecorationBlock.Variant.BIG_BRICKS) {
+                                StoneBasedDecorationBlock.Variant petrifiedVar = StoneBasedDecorationBlock.Variant.PETRIFIED;
+                                String petrifiedName = petrifiedVar.shouldSwapOrder()
+                                        ? petrifiedVar.getVariant() + "_" + material.getMaterial() + "_block"
+                                        : material.getMaterial() + "_" + petrifiedVar.getVariant() + "_block";
+                                Block petrifiedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(petrifiedName).get();
+
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 4)
                                         .pattern("##")
                                         .pattern("##")
-                                        .define('#', JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_petrified_block").get())
-                                        .unlockedBy("has_" + modifiedMaterial + "_block", has(block))
-                                        .save(pWriter, locationCorrection(modifiedMaterial + "block_crafting"));
-                            }
-                            else if (variant == CoreDecorationBlocks.Variant.SMOOTH) {
-                                Block petrifiedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_petrified_block").get();
-                                blockSmelting(pWriter, List.of(petrifiedBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 200, "jsg_decor_smooth");
-                                blockBlasting(pWriter, List.of(petrifiedBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 100, "jsg_decor_smooth");
-                            }
-                            else if (variant == CoreDecorationBlocks.Variant.MONOLITHIC) {
-                                Block smoothBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(material.getMaterial() + "_smooth_block").get();
-                                blockSmelting(pWriter, List.of(smoothBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 200, "jsg_decor_monolithic");
-                                blockBlasting(pWriter, List.of(smoothBlock), RecipeCategory.BUILDING_BLOCKS, block, 0.1f, 100, "jsg_decor_monolithic");
+                                        .define('#', petrifiedBlock)
+                                        .unlockedBy("has_" + ingredientName, has(ingredientBlock))
+                                        .save(pWriter, locationCorrection(ingredientName + "_crafting"));
+
+                            } else if (variant == StoneBasedDecorationBlock.Variant.SMOOTH) {
+                                StoneBasedDecorationBlock.Variant petrifiedVar = StoneBasedDecorationBlock.Variant.PETRIFIED;
+                                String petrifiedName = petrifiedVar.shouldSwapOrder()
+                                        ? petrifiedVar.getVariant() + "_" + material.getMaterial() + "_block"
+                                        : material.getMaterial() + "_" + petrifiedVar.getVariant() + "_block";
+                                Block petrifiedBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(petrifiedName).get();
+
+                                blockSmelting(pWriter, List.of(petrifiedBlock), RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 0.1f, 200, "jsg_decor_smooth");
+                                blockBlasting(pWriter, List.of(petrifiedBlock), RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 0.1f, 100, "jsg_decor_smooth");
+
+                            } else if (variant == StoneBasedDecorationBlock.Variant.MONOLITHIC) {
+                                StoneBasedDecorationBlock.Variant smoothVar = StoneBasedDecorationBlock.Variant.SMOOTH;
+                                String smoothName = smoothVar.shouldSwapOrder()
+                                        ? smoothVar.getVariant() + "_" + material.getMaterial() + "_block"
+                                        : material.getMaterial() + "_" + smoothVar.getVariant() + "_block";
+                                Block smoothBlock = JSGDecorBlocks.CORE_DECORATION_BLOCKS.get(smoothName).get();
+
+                                blockSmelting(pWriter, List.of(smoothBlock), RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 0.1f, 200, "jsg_decor_monolithic");
+                                blockBlasting(pWriter, List.of(smoothBlock), RecipeCategory.BUILDING_BLOCKS, ingredientBlock, 0.1f, 100, "jsg_decor_monolithic");
                             }
                         }
                     }
@@ -306,168 +335,120 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
 
         //Atlantis decoration blocks
 
-        /*ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get(), 8)
-                .group("jsg_decor:atlantis_solid")
-                .pattern("###")
-                .pattern("#C#")
-                .pattern("###")
-                .define('#', Blocks.LIGHT_BLUE_CONCRETE)
-                .define('C', Blocks.WHITE_CONCRETE)
-                .unlockedBy("has_blue_block", has(Blocks.LIGHT_BLUE_CONCRETE))
-                .unlockedBy("has_white_block", has(Blocks.WHITE_CONCRETE))
-                .save(pWriter);
+        for (AtlantisDecorationBlocks.Material material : AtlantisDecorationBlocks.Material.values()) {
+            for (AtlantisDecorationBlocks.Variant variant : AtlantisDecorationBlocks.Variant.values()) {
+                if (!material.hasVariants() && variant != AtlantisDecorationBlocks.Variant.DEFAULT) { continue; }
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.BLUE_ATLANTIS_LAMP_BLOCK.get(), 8)
-                .group("jsg_decor:atlantis_solid")
-                .pattern("###")
-                .pattern("#C#")
-                .pattern("###")
-                .define('#', JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get())
-                .define('C', JSGDecorBlocks.WHITE_LAMP_BLOCK.get())
-                .unlockedBy("has_blue_block", has(JSGDecorBlocks.BLUE_ATLANTIS_BLOCK.get()))
-                .unlockedBy("has_white_block", has(JSGDecorBlocks.WHITE_LAMP_BLOCK.get()))
-                .save(pWriter);
+                String mainShape = material.isGlass() ? "_glass_block" : "_block";
+                String inputBlockName = (variant == AtlantisDecorationBlocks.Variant.DEFAULT) ? material.getMaterial() + mainShape : variant.getVariant() + "_" + material.getMaterial() + mainShape;
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.WHITE_LAMP_BLOCK.get(), 8)
-                .group("jsg_decor:atlantis_solid")
-                .pattern("###")
-                .pattern("#C#")
-                .pattern("###")
-                .define('#', Blocks.WHITE_CONCRETE)
-                .define('C', Blocks.GLOWSTONE)
-                .unlockedBy("has_white_block", has(Blocks.WHITE_CONCRETE))
-                .unlockedBy("has_glowstone", has(Blocks.GLOWSTONE))
-                .save(pWriter);
+                Block inputBlock = JSGDecorBlocks.ATLANTIS_BLOCKS.get(inputBlockName).get();
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.BROWN_WALL_BLOCK.get(), 8)
-                .group("jsg_decor:atlantis_solid")
-                .pattern("###")
-                .pattern("#C#")
-                .pattern("###")
-                .define('#', Blocks.BROWN_TERRACOTTA)
-                .define('C', Ingredient.of(Items.GLOW_INK_SAC, Items.INK_SAC))
-                .unlockedBy("has_white_block", has(Blocks.BROWN_TERRACOTTA))
-                .unlockedBy("has_glow_ink", has(Items.GLOW_INK_SAC))
-                .unlockedBy("has_ink", has(Items.INK_SAC))
-                .save(pWriter);
+                for (AtlantisDecorationBlocks.Shape shape : AtlantisDecorationBlocks.Shape.values()) {
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.ATLANTIS_WALL_BLOCK.get())
-                .group("jsg_decor:atlantis_solid")
-                .pattern("TIT")
-                .pattern("IRI")
-                .pattern("TIT")
-                .define('T', CoreItemTags.INGOT_TITANIUM)
-                .define('I', Tags.Items.INGOTS_IRON)
-                .define('R', CoreItemTags.INGOT_TRINIUM)
-                .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
-                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
-                .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
-                .save(pWriter);
+                    String craftedBlockName = (variant == AtlantisDecorationBlocks.Variant.DEFAULT) ? material.getMaterial() + "_" + shape.getShape() : variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape();
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.AGED_ATLANTIS_WALL_BLOCK.get())
-                .group("jsg_decor:atlantis_solid")
-                .pattern("NTN")
-                .pattern("TRT")
-                .pattern("NTN")
-                .define('T', CoreItemTags.INGOT_TITANIUM)
-                .define('N', CoreItemTags.INGOT_NAQUADAH_ALLOY)
-                .define('R', CoreItemTags.INGOT_TRINIUM)
-                .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
-                .unlockedBy("has_naquadah", has(CoreItemTags.INGOT_NAQUADAH_ALLOY))
-                .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
-                .save(pWriter);
+                    switch (shape) {
+                        case GLASS_BLOCK -> {
+                            if (!material.isGlass()) continue;
+                            Ingredient inputIngredient = getGlassInputIngredient(material.getDyeColor());
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.FLOODED_ATLANTIS_WALL_BLOCK.get())
-                .group("jsg_decor:atlantis_solid")
-                .pattern("ITI")
-                .pattern("TRT")
-                .pattern("ITI")
-                .define('T', CoreItemTags.INGOT_TITANIUM)
-                .define('I', Tags.Items.INGOTS_IRON)
-                .define('R', CoreItemTags.INGOT_TRINIUM)
-                .unlockedBy("has_titanium", has(CoreItemTags.INGOT_TITANIUM))
-                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
-                .unlockedBy("has_trinium", has(CoreItemTags.INGOT_TRINIUM))
-                .save(pWriter);*/
+                            SingleItemRecipeBuilder.stonecutting(inputIngredient, RecipeCategory.BUILDING_BLOCKS, inputBlock)
+                                    .unlockedBy("has_glass", has(Items.GLASS))
+                                    .save(pWriter, locationCorrection(craftedBlockName + "_stonecutting"));
+                        }
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get(), 8)
-                .group("jsg_decor:atlantis_solid")
-                .pattern("###")
-                .pattern("#S#")
-                .pattern("###")
-                .define('#', Blocks.TERRACOTTA)
-                .define('S', ItemTags.SIGNS)
-                .unlockedBy("has_brown_terracota", has(Blocks.TERRACOTTA))
-                .unlockedBy("has_sign", has(ItemTags.SIGNS))
-                .save(pWriter);
+                        case GLASS_PANE -> {
+                            if (!material.isGlass()) continue;
+                            Block craftedPane = JSGDecorBlocks.ATLANTIS_BLOCKS.get(craftedBlockName).get();
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.DENSELY_WRITTEN_BLOCK.get())
-                .requires(JSGDecorBlocks.SPARSELY_WRITTEN_BLOCK.get())
-                .requires(ItemTags.SIGNS)
-                .unlockedBy("has_brown_terracota", has(Blocks.TERRACOTTA))
-                .unlockedBy("has_sign", has(ItemTags.SIGNS))
-                .save(pWriter);
+                            ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, craftedPane, 16)
+                                    .pattern("###")
+                                    .pattern("###")
+                                    .define('#', inputBlock)
+                                    .unlockedBy("has_" + inputBlockName, has(inputBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName));
+                        }
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.GREEN_GLASS_BLOCK.get(), 9)
-                .group("jsg_decor:atlantis_transparent")
-                .pattern("PST")
-                .pattern("PTS")
-                .pattern("PST")
-                .define('P', Tags.Items.GLASS_LIME)
-                .define('S', Tags.Items.GLASS_GREEN)
-                .define('T', Tags.Items.GLASS_CYAN)
-                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_LIME))
-                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_GREEN))
-                .unlockedBy("has_tertiary_glass", has(Tags.Items.GLASS_CYAN))
-                .save(pWriter);
+                        case SLAB -> {
+                            if (material.isGlass()) continue;
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get(), 9)
-                .group("jsg_decor:atlantis_transparent")
-                .pattern("PPS")
-                .pattern("PPS")
-                .pattern("PPS")
-                .define('P', Tags.Items.GLASS_LIME)
-                .define('S', Tags.Items.GLASS_GREEN)
-                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_LIME))
-                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_GREEN))
-                .save(pWriter);
+                            Block craftedSlab = JSGDecorBlocks.ATLANTIS_BLOCKS.get(craftedBlockName).get();
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_GREEN_GLASS_BLOCK.get())
-                .requires(JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get())
-                .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_GREEN_GLASS_BLOCK.get()))
-                .save(pWriter);
+                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, craftedSlab, 6)
+                                    .pattern("###")
+                                    .define('#', inputBlock)
+                                    .unlockedBy("has_" + inputBlockName, has(inputBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get(), 9)
-                .group("jsg_decor:atlantis_transparent")
-                .pattern("PPS")
-                .pattern("PPS")
-                .pattern("PPS")
-                .define('P', Tags.Items.GLASS_RED)
-                .define('S', Tags.Items.GLASS_ORANGE)
-                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_RED))
-                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_ORANGE))
-                .save(pWriter);
+                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.BUILDING_BLOCKS, craftedSlab, 2)
+                                    .unlockedBy("has_" + inputBlockName, has(inputBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName + "_stonecutting"));
+                        }
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_RED_GLASS_BLOCK.get())
-                .requires(JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get())
-                .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_RED_GLASS_BLOCK.get()))
-                .save(pWriter);
+                        case STAIRS -> {
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get(), 9)
-                .group("jsg_decor:atlantis_transparent")
-                .pattern("PPS")
-                .pattern("PPS")
-                .pattern("PPS")
-                .define('P', Tags.Items.GLASS_LIGHT_BLUE)
-                .define('S', Tags.Items.GLASS_BLUE)
-                .unlockedBy("has_primary_glass", has(Tags.Items.GLASS_LIGHT_BLUE))
-                .unlockedBy("has_secoundary_glass", has(Tags.Items.GLASS_BLUE))
-                .save(pWriter);
+                            if (material.isGlass()) continue;
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, JSGDecorBlocks.LEFT_BLUE_GLASS_BLOCK.get())
-                .requires(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get())
-                .unlockedBy("has_right_glass", has(JSGDecorBlocks.RIGHT_BLUE_GLASS_BLOCK.get()))
-                .save(pWriter);
+                            Block craftedStairs = JSGDecorBlocks.ATLANTIS_BLOCKS.get(craftedBlockName).get();
+
+                            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, craftedStairs, 4)
+                                    .pattern("#  ")
+                                    .pattern("## ")
+                                    .pattern("###")
+                                    .define('#', inputBlock)
+                                    .unlockedBy("has_" + inputBlockName, has(inputBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName));
+
+                            SingleItemRecipeBuilder.stonecutting(Ingredient.of(inputBlock), RecipeCategory.BUILDING_BLOCKS, craftedStairs, 1)
+                                    .unlockedBy("has_" + inputBlockName, has(inputBlock))
+                                    .save(pWriter, locationCorrection(craftedBlockName + "_stonecutting"));
+                        }
+
+                        case BLOCK -> {
+                            if (material.isGlass()) continue;
+
+                            // Sem přijdou speciální recepty pro základní bloky z terracotty nebo jiných surovin
+                            // Příklad pro tvé hnědé popsané bloky, pokud se mají craftit z obyčejné hnědé terracotty:
+                            if (material == AtlantisDecorationBlocks.Material.BROWN_SPARSELY_WRITTEN_BLOCK) {
+                                ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, inputBlock, 4)
+                                        .pattern("##")
+                                        .pattern("##")
+                                        .define('#', Items.BROWN_TERRACOTTA)
+                                        .unlockedBy("has_brown_terracotta", has(Items.BROWN_TERRACOTTA))
+                                        .save(pWriter, locationCorrection(craftedBlockName));
+                            }
+                            //todo: this:
+                            /**
+                             * takže zde jsou recepty bloků které je třeba ještě napsat! je to vždy cílový blok: metoda, crafting recept
+                             *
+                             * atlantis blue wall: crafting, light blue dokola u uvnitř cyan barvivo, 8
+                             * atlantis blue wall varianty: stonecutter z hlavního bloku
+                             * atlantis lamp off: crafting, atlantis blue wall kolem dokola a white dye, 8
+                             * atlantis lamp on: crafting stejně jako off lamp, ale ve středu je glowstone, 9
+                             * white lamp off: stonecutter z white concrete
+                             * white lamp on: crafting, dokola white lamp off a doprostřed glowstone, 9
+                             * brown wall a written bloky: stonecutter s brown terracoty
+                             * atlantis gray wall: crafting do kříže gray concrete a do rohu titanium nuggety, 5
+                             * atlantis gray wall varianty: stonecutter, z cisteho gray wallu
+                             * datagen pro item modely, recepty a tagy!
+                        }
+                    }
+                }
+            }
+        }*/
+    }
+
+    private Ingredient getGlassInputIngredient(DyeColor color) {
+        if (color == null) { return Ingredient.of(Tags.Items.GLASS_COLORLESS); }
+
+        TagKey<Item> forgeTag = switch (color) {
+            case LIME -> Tags.Items.GLASS_LIME;
+            case RED -> Tags.Items.GLASS_RED;
+            case BLUE -> Tags.Items.GLASS_BLUE;
+            default -> Tags.Items.GLASS_COLORLESS;
+        };
+        return Ingredient.of(forgeTag);
     }
 
 

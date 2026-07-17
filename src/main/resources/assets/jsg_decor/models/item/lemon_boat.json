@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "jsg_decor:item/wood/lemon_boat"
+    "layer0": "jsg_decor:item/wood/lemon/lemon_boat"
   }
 }

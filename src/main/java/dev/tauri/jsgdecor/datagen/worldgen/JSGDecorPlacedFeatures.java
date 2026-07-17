@@ -42,7 +42,7 @@ public class JSGDecorPlacedFeatures {
                         BiomeFilter.biome(),
 
                         BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(
-                                JSGDecorBlocks.LEMON_SAPLING.get().defaultBlockState(),
+                                JSGDecorBlocks.WOOD_BLOCKS.get("lemon_sapling").get().defaultBlockState(),
                                 BlockPos.ZERO
                         )),
                         RarityFilter.onAverageOnceEvery(40)
