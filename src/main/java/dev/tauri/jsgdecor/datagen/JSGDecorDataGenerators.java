@@ -31,6 +31,8 @@ public class JSGDecorDataGenerators {
 
         generator.addProvider(event.includeClient(), new JSGDecorBlockStateProvider(output, exFileHelper));
 
+        generator.addProvider(event.includeClient(), new JSGDecorItemModelProvider(output, exFileHelper));
+
         generator.addProvider(event.includeClient(), new JSGDecorLanguageProvider(output, "en_us"));
     }
 }

@@ -314,14 +314,4 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
     private void generateInventoryItem(String name) {
         itemModels().withExistingParent(name, JSGMapping.rl(JSGDecor.MOD_ID, "block/" + name));
     }
-
-    @SuppressWarnings("unused")
-    public static ResourceLocation getRL(Block block) {
-        return BLOCKS.getKey(block);
-    }
-
-    @SuppressWarnings("unused")
-    private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
-        simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
-    }
 }
