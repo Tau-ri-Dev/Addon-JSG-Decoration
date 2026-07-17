@@ -11,25 +11,25 @@ public class CommonBlock {
         ATLANTIS_BLUE ("atlantis_blue", true, true, MapColor.NONE, "atlantis_blue_block");
 
         private final String material;
-        private final Boolean isLightSource;
+        private final Boolean generateAlsoLamp;
         private final Boolean hasVariants;
         private final MapColor mapColor;
         private final String texture;
 
-        Material(String material, Boolean isLightSource,Boolean hasVariants, MapColor mapColor, String texture) {
+        Material(String material, Boolean generateAlsoLamp,Boolean hasVariants, MapColor mapColor, String texture) {
             this.material = material;
-            this.isLightSource = isLightSource;
+            this.generateAlsoLamp = generateAlsoLamp;
             this.hasVariants = hasVariants;
             this.mapColor = mapColor;
             this.texture = texture;
         }
 
-        Material(String material, Boolean isLightSource, Boolean hasVariants, MapColor mapColor) {
-            this(material, isLightSource, hasVariants, mapColor, material);
+        Material(String material, Boolean generateAlsoLamp, Boolean hasVariants, MapColor mapColor) {
+            this(material, generateAlsoLamp, hasVariants, mapColor, material);
         }
 
         public String getMaterial() { return material; }
-        public Boolean hasLampVariant() { return isLightSource; }
+        public Boolean hasLampVariant() { return generateAlsoLamp; }
         public Boolean hasVariants() { return hasVariants; }
         public MapColor getMapColor() { return mapColor; }
         public String getTextureName() { return texture; }
