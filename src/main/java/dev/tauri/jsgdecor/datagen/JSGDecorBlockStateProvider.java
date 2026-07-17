@@ -1,5 +1,8 @@
 package dev.tauri.jsgdecor.datagen;
 
+import com.google.gson.JsonObject;
+import dev.tauri.jsg.core.JSGCore;
+import dev.tauri.jsg.core.client.model.JSGOBJModelLoaderBuilder;
 import dev.tauri.jsg.core.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.*;
@@ -24,11 +27,39 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        generateBrazierStates();
         generateBlockWithOverlayStates();
         generateCommonBlockStates();
         generateGlassBlockStates();
         generateStoneBasedDecorationStates();
         generateWoodBlockStates();
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    private void generateBrazierStates() {
+        var genericModel = models().getBuilder("block/brazier_generic")
+                .texture("particle", JSGMapping.rl(JSGCore.MOD_ID, "block/storage_block/naquadah_alloy_block"));
+
+        for (var brazier : BRAZIERS.values()) {
+            BrazierBlock block = brazier.get();
+            simpleBlock(block, genericModel);
+
+            String name = BLOCKS.getKey(block).getPath();
+
+            var itemModel = itemModels().withExistingParent(name, "minecraft:item/generated")
+                    .texture("layer0", JSGMapping.rl(JSGCore.MOD_ID, "block/wip"));
+
+            itemModel.customLoader((parent, helper) ->
+                    new JSGOBJModelLoaderBuilder<>(parent, helper) {
+                        @Override
+                        public JsonObject toJson(JsonObject json) {
+                            JsonObject result = super.toJson(json);
+                            result.addProperty("override_transformations", true);
+                            return result;
+                        }
+                    }.renderTypes(JSGOBJModelLoaderBuilder.DEFAULT_RENDER_TYPES)
+            );
+        }
     }
 
     private void generateBlockWithOverlayStates() {
@@ -227,19 +258,12 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void generateBlockSlabStairs(Block block, SlabBlock slab, StairBlock stairs, ResourceLocation side, ResourceLocation top, boolean isPillar, boolean isLamp) {
-        var blockKey = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(block);
-        var slabKey = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(slab);
-        var stairsKey = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(stairs);
 
-
-        if (blockKey == null || slabKey == null || stairsKey == null) {
-            throw new IllegalArgumentException("Cannot generate data for a block that is not registered!");
-        }
-
-        String blockName = blockKey.getPath();
-        String slabName = slabKey.getPath();
-        String stairsName = stairsKey.getPath();
+        String blockName = BLOCKS.getKey(block).getPath();
+        String slabName = BLOCKS.getKey(slab).getPath();
+        String stairsName = BLOCKS.getKey(stairs).getPath();
 
 
         boolean diff = !side.equals(top);
@@ -284,7 +308,6 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
         SlabBlock slab = (SlabBlock) blockMap.get(slabName).get();
         StairBlock stairs = (StairBlock) blockMap.get(stairsName).get();
 
-        // Volání tvé hlavní velké metody
         generateBlockSlabStairs(block, slab, stairs, texture, texture, false, isLamp);
     }
 
