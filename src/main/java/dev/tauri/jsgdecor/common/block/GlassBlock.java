@@ -6,10 +6,10 @@ public class GlassBlock {
 
     public enum Material {
         //Atlantis glasses
-        LEFT_WHITE_AND_GREEN_GLASS  ("left_white_and_green", "green_glass_pane_top", DyeColor.LIME),
-        RIGHT_WHITE_AND_GREEN_GLASS ("right_white_and_green", "green_glass_pane_top", DyeColor.LIME),
-        LEFT_GREEN_GLASS    ("left_green", "green_glass_pane_top", DyeColor.LIME),
-        RIGHT_GREEN_GLASS   ("right_green", "green_glass_pane_top", DyeColor.LIME),
+        LEFT_WHITE_AND_GREEN_GLASS  ("left_white_and_lime", "lime_glass_pane_top", DyeColor.LIME),
+        RIGHT_WHITE_AND_GREEN_GLASS ("right_white_and_lime", "lime_glass_pane_top", DyeColor.LIME),
+        LEFT_GREEN_GLASS    ("left_lime", "lime_glass_pane_top", DyeColor.LIME),
+        RIGHT_GREEN_GLASS   ("right_lime", "lime_glass_pane_top", DyeColor.LIME),
         LEFT_RED_GLASS      ("left_red", "red_glass_pane_top", DyeColor.RED),
         RIGHT_RED_GLASS     ("right_red","red_glass_pane_top", DyeColor.RED),
         LEFT_BLUE_GLASS     ("left_blue","blue_glass_pane_top", DyeColor.BLUE),
