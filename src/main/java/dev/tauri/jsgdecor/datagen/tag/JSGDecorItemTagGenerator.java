@@ -33,6 +33,7 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
 
     @Override
     @ParametersAreNonnullByDefault
+    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider pProvider) {
         //Boats
         var boatTag = tag(JSGDecorItemTags.BOATS);
@@ -116,8 +117,6 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
                 String name = material + "_" + shape.getShape();
 
                 if (shape == GlassBlock.Shape.GLASS_BLOCK) {
-
-
                     if (dyeColor == DyeColor.BLUE) {
                         blueGlassTag.add(GLASS_BLOCKS.get(name).get().asItem());
                     } else if (dyeColor == DyeColor.LIME) {
@@ -172,20 +171,20 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
         tag(Tags.Items.FENCE_GATES_WOODEN).addTag(JSGDecorItemTags.WOODEN_FENCE_GATES);
         tag(Tags.Items.FENCES_WOODEN).addTag(JSGDecorItemTags.WOODEN_FENCES);
 
-        tag(Tags.Items.STAINED_GLASS)
-                .addTag(JSGDecorItemTags.GLASS_RED)
-                .addTag(JSGDecorItemTags.GLASS_LIME)
-                .addTag(JSGDecorItemTags.GLASS_BLUE);
+        tag(Tags.Items.STAINED_GLASS).addTags(
+                JSGDecorItemTags.GLASS_RED,
+                JSGDecorItemTags.GLASS_LIME,
+                JSGDecorItemTags.GLASS_BLUE);
 
         tag(Tags.Items.GLASS_RED).addTag(JSGDecorItemTags.GLASS_RED);
         tag(Tags.Items.GLASS_BLUE).addTag(JSGDecorItemTags.GLASS_BLUE);
         tag(Tags.Items.GLASS_LIME).addTag(JSGDecorItemTags.GLASS_LIME);
         tag(Tags.Items.GLASS_COLORLESS).addTag(JSGDecorItemTags.GLASS_COLORLESS);
 
-        tag(Tags.Items.STAINED_GLASS_PANES)
-                .addTag(JSGDecorItemTags.GLASS_PANE_RED)
-                .addTag(JSGDecorItemTags.GLASS_PANE_LIME)
-                .addTag(JSGDecorItemTags.GLASS_PANE_BLUE);
+        tag(Tags.Items.STAINED_GLASS_PANES).addTags(
+                JSGDecorItemTags.GLASS_PANE_RED,
+                JSGDecorItemTags.GLASS_PANE_LIME,
+                JSGDecorItemTags.GLASS_PANE_BLUE);
 
         tag(Tags.Items.GLASS_PANES_RED).addTag(JSGDecorItemTags.GLASS_PANE_RED);
         tag(Tags.Items.GLASS_PANES_BLUE).addTag(JSGDecorItemTags.GLASS_PANE_BLUE);
