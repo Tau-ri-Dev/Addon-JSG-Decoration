@@ -1,26 +1,28 @@
 package dev.tauri.jsgdecor.common.block;
 
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
 
 public class BlockWithOverlay {
     public enum Material {
-        BROWN_SPARSELY_WRITTEN_BLOCK    ("brown_sparsely_written", "brown_terracotta","sparsely_written", MapColor.COLOR_BROWN),
-        BROWN_DENSELY_WRITTEN_BLOCK     ("brown_densely_written", "brown_terracotta","densely_written", MapColor.COLOR_BROWN);
+        BROWN_SPARSELY_WRITTEN_BLOCK    ("brown_sparsely_written", Blocks.BROWN_TERRACOTTA,"sparsely_written", MapColor.COLOR_BROWN),
+        BROWN_DENSELY_WRITTEN_BLOCK     ("brown_densely_written", Blocks.BROWN_TERRACOTTA,"densely_written", MapColor.COLOR_BROWN);
 
         private final String material;
-        private final String baseTexture;
+        private final Block baseBlock;
         private final String overlayTexture;
         private final MapColor mapColor;
 
-        Material(String material, String baseTexture, String overlayTexture, MapColor mapColor) {
+        Material(String material, Block baseBlock, String overlayTexture, MapColor mapColor) {
             this.material = material;
-            this.baseTexture = baseTexture;
+            this.baseBlock = baseBlock;
             this.overlayTexture = overlayTexture;
             this.mapColor = mapColor;
         }
 
         public String getMaterial() { return material; }
-        public String getBaseTexture() { return baseTexture; }
+        public Block getBaseBlock() { return baseBlock; }
         public String getOverlayTexture() { return overlayTexture; }
         public MapColor getMapColor() { return mapColor; }
     }

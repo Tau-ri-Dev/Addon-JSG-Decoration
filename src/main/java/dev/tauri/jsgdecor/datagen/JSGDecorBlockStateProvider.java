@@ -62,6 +62,7 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     private void generateBlockWithOverlayStates() {
         ResourceLocation cubeTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/cube_only_side_overlay");
         ResourceLocation slabTemplate = JSGMapping.rl(JSGDecor.MOD_ID, "block/templates/slab_only_side_overlay");
@@ -73,7 +74,7 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
         for (BlockWithOverlay.Material material : BlockWithOverlay.Material.values()) {
             String baseName = material.getMaterial();
 
-            ResourceLocation vanillaTexture = JSGMapping.rl("minecraft", "block/" + material.getBaseTexture());
+            ResourceLocation bottomTexture = JSGMapping.rl("minecraft", "block/" + BLOCKS.getKey(material.getBaseBlock()).getPath());
             ResourceLocation overlayTexture = JSGMapping.rl(JSGDecor.MOD_ID, "block/overlays/" + material.getOverlayTexture());
 
             String blockName = baseName + "_block";
@@ -82,23 +83,23 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
 
             Block block = OVERLAY_BLOCKS.get(blockName).get();
             BlockModelBuilder cubeModel = models().withExistingParent(blockName, cubeTemplate)
-                    .texture("normal", vanillaTexture)
+                    .texture("normal", bottomTexture)
                     .texture("overlay", overlayTexture);
             simpleBlock(block, cubeModel);
             generateInventoryItem(blockName);
 
             SlabBlock slab = (SlabBlock) OVERLAY_BLOCKS.get(slabName).get();
-            BlockModelBuilder slabModel = models().withExistingParent(slabName, slabTemplate).texture("normal", vanillaTexture).texture("overlay", overlayTexture);
-            BlockModelBuilder slabTopModel = models().withExistingParent(slabName + "_top", slabTopTemplate).texture("normal", vanillaTexture).texture("overlay", overlayTexture);
-            BlockModelBuilder slabDoubleModel = models().withExistingParent(slabName + "_double", cubeTemplate).texture("normal", vanillaTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder slabModel = models().withExistingParent(slabName, slabTemplate).texture("normal", bottomTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder slabTopModel = models().withExistingParent(slabName + "_top", slabTopTemplate).texture("normal", bottomTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder slabDoubleModel = models().withExistingParent(slabName + "_double", cubeTemplate).texture("normal", bottomTexture).texture("overlay", overlayTexture);
 
             slabBlock(slab, slabModel, slabTopModel, slabDoubleModel);
             generateInventoryItem(slabName);
 
             StairBlock stairs = (StairBlock) OVERLAY_BLOCKS.get(stairsName).get();
-            BlockModelBuilder stairsModel = models().withExistingParent(stairsName, stairsTemplate).texture("top", vanillaTexture).texture("bottom", vanillaTexture).texture("side", vanillaTexture).texture("overlay", overlayTexture);
-            BlockModelBuilder stairsInner = models().withExistingParent(stairsName + "_inner", stairsInnerTemplate).texture("top", vanillaTexture).texture("bottom", vanillaTexture).texture("side", vanillaTexture).texture("overlay", overlayTexture);
-            BlockModelBuilder stairsOuter = models().withExistingParent(stairsName + "_outer", stairsOuterTemplate).texture("top", vanillaTexture).texture("bottom", vanillaTexture).texture("side", vanillaTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder stairsModel = models().withExistingParent(stairsName, stairsTemplate).texture("top", bottomTexture).texture("bottom", bottomTexture).texture("side", bottomTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder stairsInner = models().withExistingParent(stairsName + "_inner", stairsInnerTemplate).texture("top", bottomTexture).texture("bottom", bottomTexture).texture("side", bottomTexture).texture("overlay", overlayTexture);
+            BlockModelBuilder stairsOuter = models().withExistingParent(stairsName + "_outer", stairsOuterTemplate).texture("top", bottomTexture).texture("bottom", bottomTexture).texture("side", bottomTexture).texture("overlay", overlayTexture);
 
             stairsBlock(stairs, stairsModel, stairsInner, stairsOuter);
             generateInventoryItem(stairsName);
