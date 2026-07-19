@@ -284,8 +284,8 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                             .pattern("N#N")
                             .pattern("###")
                             .define('#', Blocks.COBBLESTONE)
-                            .define('N', material.getNugget())
-                            .unlockedBy("has_nugget", has(material.getNugget()))
+                            .define('N', material.getNuggetTag())
+                            .unlockedBy("has_nugget", has(material.getNuggetTag()))
                             .save(pWriter);
 
                 } else if (variant == StoneBasedDecorationBlock.Variant.PETRIFIED) {
@@ -295,8 +295,8 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                             .pattern("N#N")
                             .pattern("###")
                             .define('#', Blocks.STONE)
-                            .define('N', material.getNugget())
-                            .unlockedBy("has_nugget", has(material.getNugget()))
+                            .define('N', material.getNuggetTag())
+                            .unlockedBy("has_nugget", has(material.getNuggetTag()))
                             .save(pWriter);
 
                     blockSmelting(pWriter, List.of(CobbledBlock), RecipeCategory.BUILDING_BLOCKS, craftedBlock, 0.1f, 200, "jsg_decor_petrified");

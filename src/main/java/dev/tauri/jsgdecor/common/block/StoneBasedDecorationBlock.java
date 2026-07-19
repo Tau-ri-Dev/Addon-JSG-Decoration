@@ -1,28 +1,27 @@
 package dev.tauri.jsgdecor.common.block;
 
-import dev.tauri.jsg.core.common.registry.CoreItems;
+import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.MapColor;
-
-import java.util.function.Supplier;
 
 public class StoneBasedDecorationBlock {
 
     public enum Material {
-        NAQUADAH("naquadah", MapColor.COLOR_GREEN, CoreItems.NAQUADAH_RAW_NUGGET::get),
-        NAQUADAH_ALLOY("naquadah_alloy", MapColor.COLOR_CYAN, CoreItems.NAQUADAH_NUGGET::get),
-        REFINED_NAQUADAH("refined_naquadah", MapColor.COLOR_LIGHT_GREEN, CoreItems.NAQUADAH_REFINED_NUGGET::get),
-        TITANIUM("titanium", MapColor.COLOR_LIGHT_GRAY, CoreItems.TITANIUM_NUGGET::get),
-        TRINIUM("trinium", MapColor.SNOW, CoreItems.TRINIUM_NUGGET::get);
+        NAQUADAH("naquadah", MapColor.COLOR_GREEN, CoreItemTags.NUGGET_NAQUADAH),
+        NAQUADAH_ALLOY("naquadah_alloy", MapColor.COLOR_CYAN, CoreItemTags.NUGGET_NAQUADAH_ALLOY),
+        REFINED_NAQUADAH("refined_naquadah", MapColor.COLOR_LIGHT_GREEN, CoreItemTags.NUGGET_NAQUADAH_REFINED),
+        TITANIUM("titanium", MapColor.COLOR_LIGHT_GRAY, CoreItemTags.NUGGET_TITANIUM),
+        TRINIUM("trinium", MapColor.SNOW, CoreItemTags.NUGGET_TRINIUM);
 
         private final String material;
         private final MapColor mapColor;
-        private final Supplier<Item> nuggetSupplier;
+        private final TagKey<Item> nuggetTag;
 
-        Material(String material, MapColor mapColor, Supplier<Item> nuggetSupplier) {
+        Material(String material, MapColor mapColor, TagKey<Item> nuggetTag) {
             this.material = material;
             this.mapColor = mapColor;
-            this.nuggetSupplier = nuggetSupplier;
+            this.nuggetTag = nuggetTag;
         }
 
         public String getMaterial() {
@@ -33,8 +32,8 @@ public class StoneBasedDecorationBlock {
             return mapColor;
         }
 
-        public Item getNugget() {
-            return nuggetSupplier.get();
+        public TagKey<Item> getNuggetTag() {
+            return nuggetTag;
         }
     }
 
