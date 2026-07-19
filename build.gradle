@@ -71,13 +71,14 @@ repositories {
         name = 'MinecraftForge'
         url = 'https://maven.minecraftforge.net/'
     }
-    maven {
+
+    /*maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
         content {
             includeGroup "maven.modrinth"
         }
-    }
+    }*/
 }
 
 dependencies {
@@ -85,7 +86,7 @@ dependencies {
 
     implementation(fg.deobf("eu.tauridev:jsg-core-${minecraft_version}:${core_version}:") { transitive = false })
 
-    runtimeOnly fg.deobf("maven.modrinth:2MgfuPip:OFBFNuzP")
+    //runtimeOnly fg.deobf("maven.modrinth:2MgfuPip:OFBFNuzP")
 }
 
 tasks.named('processResources', ProcessResources).configure {
