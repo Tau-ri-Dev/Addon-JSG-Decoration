@@ -32,31 +32,51 @@ public class WoodBlock {
             this(material, woodColor, barkColor, leavesColor, planksColor, treeGrower, true);
         }
 
-        public String getMaterial() { return material; }
-        public MapColor getWoodColor() { return woodColor; }
-        public MapColor getBarkColor() { return barkColor; }
-        public MapColor getLeavesColor() { return leavesColor; }
-        public MapColor getPlanksColor() { return planksColor; }
-        public AbstractTreeGrower getTreeGrower() { return treeGrower.get(); }
-        public boolean isFlammable() { return burns; }
+        public String getMaterial() {
+            return material;
+        }
+
+        public MapColor getWoodColor() {
+            return woodColor;
+        }
+
+        public MapColor getBarkColor() {
+            return barkColor;
+        }
+
+        public MapColor getLeavesColor() {
+            return leavesColor;
+        }
+
+        public MapColor getPlanksColor() {
+            return planksColor;
+        }
+
+        public AbstractTreeGrower getTreeGrower() {
+            return treeGrower.get();
+        }
+
+        public boolean isFlammable() {
+            return burns;
+        }
     }
 
     public enum Shape {
-        LOG                 ("log",5,5),
-        STRIPPED_LOG        ("stripped_log",5,5),
-        WOOD                ("wood",5,5),
-        STRIPPED_WOOD       ("stripped_wood",5,5),
-        LEAVES              ("leaves", 30, 60),
-        SAPLING             ("sapling", 0, 0),
-        PLANKS              ("planks", 5, 20),
-        SLAB                ("slab", 5, 20),
-        STAIRS              ("stairs", 5, 20),
-        FENCE               ("fence", 5, 20),
-        FENCE_GATE          ("fence_gate", 5, 20),
-        BUTTON              ("button", 0, 0),
-        PRESSURE_PLATE      ("pressure_plate", 0, 0),
-        DOOR                ("door", 0, 0),
-        TRAPDOOR            ("trapdoor", 0, 0);
+        LOG("log", 5, 5),
+        STRIPPED_LOG("stripped_log", 5, 5),
+        WOOD("wood", 5, 5),
+        STRIPPED_WOOD("stripped_wood", 5, 5),
+        LEAVES("leaves", 30, 60),
+        SAPLING("sapling", 0, 0),
+        PLANKS("planks", 5, 20),
+        SLAB("slab", 5, 20),
+        STAIRS("stairs", 5, 20),
+        FENCE("fence", 5, 20),
+        FENCE_GATE("fence_gate", 5, 20),
+        BUTTON("button", 0, 0),
+        PRESSURE_PLATE("pressure_plate", 0, 0),
+        DOOR("door", 0, 0),
+        TRAPDOOR("trapdoor", 0, 0);
 
         private final String shape;
         private final int flammability;
@@ -68,8 +88,16 @@ public class WoodBlock {
             this.fireSpreadSpeed = fireSpreadSpeed;
         }
 
-        public String getShape() { return shape; }
-        public int getFlammability() { return flammability; }
-        public int getFireSpreadSpeed() { return fireSpreadSpeed; }
+        public String getShape() {
+            return shape;
+        }
+
+        public int getFlammability() {
+            return flammability;
+        }
+
+        public int getFireSpreadSpeed() {
+            return fireSpreadSpeed;
+        }
     }
 }

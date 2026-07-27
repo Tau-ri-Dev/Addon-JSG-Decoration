@@ -416,14 +416,14 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
     }
 
     private Item getStoneBlock(StoneBasedDecorationBlock.Material mat, StoneBasedDecorationBlock.Variant var, StoneBasedDecorationBlock.Shape shape) {
-        String name = var.shouldSwapOrder()
+        String name = var.shouldSwapNameOrder()
                 ? var.getVariant() + "_" + mat.getMaterial() + "_" + shape.getShape()
                 : mat.getMaterial() + "_" + var.getVariant() + "_" + shape.getShape();
         return STONE_BASED_DECORATION_BLOCKS.get(name).get().asItem();
     }
 
     private String getStoneName(StoneBasedDecorationBlock.Material mat, StoneBasedDecorationBlock.Variant var) {
-        return var.shouldSwapOrder()
+        return var.shouldSwapNameOrder()
                 ? var.getVariant() + "_" + mat.getMaterial() + "_block"
                 :  mat.getMaterial() + "_" + var.getVariant() + "_block";
     }

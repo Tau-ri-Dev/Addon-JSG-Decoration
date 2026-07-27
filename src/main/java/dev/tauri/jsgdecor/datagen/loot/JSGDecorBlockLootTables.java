@@ -58,7 +58,7 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
             for (StoneBasedDecorationBlock.Variant variant : StoneBasedDecorationBlock.Variant.values()) {
                 for (StoneBasedDecorationBlock.Shape shape : StoneBasedDecorationBlock.Shape.values()) {
 
-                    String name = variant.shouldSwapOrder()
+                    String name = variant.shouldSwapNameOrder()
                             ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape()
                             : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
 

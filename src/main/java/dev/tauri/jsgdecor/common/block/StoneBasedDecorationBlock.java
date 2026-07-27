@@ -4,6 +4,7 @@ import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.MapColor;
+import org.apache.logging.log4j.util.TriConsumer;
 
 public class StoneBasedDecorationBlock {
 
@@ -56,7 +57,7 @@ public class StoneBasedDecorationBlock {
         CHISELED("chiseled", true),
         BIG_TILES("big_tiles", false),
         SMALL_TILES("small_tiles", false),
-        POLISHED_TILES("polished_tiles", false, true,true),
+        POLISHED_TILES("polished_tiles", false, true, true),
         TILLED_PILLAR("tilled_pillar", false, true, true),
         CARVED_PILLAR("carved_pillar", false, true, true),
         SCULPTED("sculpted"),
@@ -79,17 +80,32 @@ public class StoneBasedDecorationBlock {
             this.hasDifferentSideTexture = hasDifferentSideTexture;
         }
 
-        Variant(String variant, boolean shouldSwapOrder) { this(variant, shouldSwapOrder, false, false); }
+        Variant(String variant, boolean shouldSwapOrder) {
+            this(variant, shouldSwapOrder, false, false);
+        }
 
-        Variant(String variant) { this(variant, true, false, false); }
+        Variant(String variant) {
+            this(variant, true, false, false);
+        }
 
-        public String getVariant() { return variant; }
-        public Boolean shouldSwapOrder() { return shouldSwapOrder; }
-        public Boolean isRotatable() { return isRotatable; }
-        public Boolean hasDifferentSideTexture() { return hasDifferentSideTexture; }
+        public String getVariant() {
+            return variant;
+        }
+
+        public Boolean shouldSwapNameOrder() {
+            return shouldSwapOrder;
+        }
+
+        public Boolean isRotatable() {
+            return isRotatable;
+        }
+
+        public Boolean hasDifferentSideTexture() {
+            return hasDifferentSideTexture;
+        }
 
         public String getTopBottomTexture() {
-            return switch(this) {
+            return switch (this) {
                 case SCULPTED_CREEPER, SCULPTED_WITHER -> "burnished";
                 case POLISHED_TILES -> "small_tiles";
                 case PILLAR, TILLED_PILLAR, CARVED_PILLAR, SCULPTED_GUARDIAN -> this.variant + "_top";
@@ -112,6 +128,16 @@ public class StoneBasedDecorationBlock {
 
         public String getShape() {
             return shape;
+        }
+    }
+
+    public static void forEach(TriConsumer<Material, Variant, Shape> consumer) {
+        for (var material : StoneBasedDecorationBlock.Material.values()) {
+            for (var variant : StoneBasedDecorationBlock.Variant.values()) {
+                for (var shape : StoneBasedDecorationBlock.Shape.values()) {
+                    consumer.accept(material, variant, shape);
+                }
+            }
         }
     }
 }
