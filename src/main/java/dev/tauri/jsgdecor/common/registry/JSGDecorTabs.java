@@ -1,23 +1,22 @@
 package dev.tauri.jsgdecor.common.registry;
 
-import dev.tauri.jsg.core.common.registry.helper.TabBuilder;
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
+import dev.tauri.jsgcore.common.registry.helper.TabBuilder;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
-import dev.tauri.jsgdecor.common.block.BrazierBlock;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 import static dev.tauri.jsgdecor.JSGDecor.MOD_ID;
 import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
 
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class JSGDecorTabs {
-    public static final RegistryObject<CreativeModeTab> JSGD_BUILDING_TAB = JSGDecor.REGISTRY_HELPER.tab().register("building_blocks", TabBuilder.create(JSGMapping.rl(MOD_ID, "building_blocks"))
+    public static final RegistryObjectWrapper<CreativeModeTab> JSGD_BUILDING_TAB = JSGDecor.REGISTRY_HELPER.tab().register("building_blocks", TabBuilder.create(JSGMapping.rl(MOD_ID, "building_blocks"))
             .withIcon(() -> COMMON_BLOCKS.get("blue_atlantis_wall_block"))
             .withIcon(() -> COMMON_BLOCKS.get("gray_atlantis_wall_block"))
             .withIcon(() -> STONE_BASED_DECORATION_BLOCKS.get("naquadah_alloy_big_tiles_block"))
@@ -38,7 +37,7 @@ public class JSGDecorTabs {
         }
 
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
-            for (RegistryObject<BrazierBlock> brazier : JSGDecorBlocks.BRAZIERS.values()) event.accept(brazier.get());
+            for (var brazier : JSGDecorBlocks.BRAZIERS.values()) event.accept(brazier.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.REDSTONE_BLOCKS) {
@@ -65,14 +64,20 @@ public class JSGDecorTabs {
         }
 
         if (event.getTabKey() == CreativeModeTabs.COLORED_BLOCKS) {
-            for (var block : GLASS_BLOCKS.values()) { event.accept(block.get()); }
+            for (var block : GLASS_BLOCKS.values()) {
+                event.accept(block.get());
+            }
         }
 
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
 
-            for (var block : OVERLAY_BLOCKS.values()) { event.accept(block.get()); }
+            for (var block : OVERLAY_BLOCKS.values()) {
+                event.accept(block.get());
+            }
 
-            for (var block : COMMON_BLOCKS.values()) { event.accept(block.get()); }
+            for (var block : COMMON_BLOCKS.values()) {
+                event.accept(block.get());
+            }
 
             for (var block : WOOD_BLOCKS.values()) {
                 Block blockType = block.get();

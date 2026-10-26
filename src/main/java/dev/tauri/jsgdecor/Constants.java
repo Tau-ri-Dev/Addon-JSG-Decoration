@@ -1,10 +1,10 @@
 package dev.tauri.jsgdecor;
 
 
-import dev.tauri.jsg.core.common.registry.helper.builder.block.BlockRegistryHelperGeneric;
-import dev.tauri.jsg.core.common.registry.helper.builder.block.BlockRegistryHelperWood;
-import dev.tauri.jsg.core.common.registry.helper.builder.entity.EntityRegistryHelperBoat;
-import dev.tauri.jsg.core.common.registry.helper.builder.item.ItemRegistryHelperGeneric;
+import dev.tauri.jsgcore.common.registry.helper.builder.block.BlockRegistryHelperGeneric;
+import dev.tauri.jsgcore.common.registry.helper.builder.block.BlockRegistryHelperWood;
+import dev.tauri.jsgcore.common.registry.helper.builder.entity.EntityRegistryHelperBoat;
+import dev.tauri.jsgcore.common.registry.helper.builder.item.ItemRegistryHelperGeneric;
 
 
 public class Constants {

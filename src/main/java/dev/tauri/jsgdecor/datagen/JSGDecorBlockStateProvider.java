@@ -1,9 +1,9 @@
 package dev.tauri.jsgdecor.datagen;
 
 import com.google.gson.JsonObject;
-import dev.tauri.jsg.core.JSGCore;
-import dev.tauri.jsg.core.client.model.JSGOBJModelLoaderBuilder;
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.JSGCore;
+import dev.tauri.jsgcore.client.model.JSGOBJModelLoaderBuilder;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.*;
 import dev.tauri.jsgdecor.common.block.GlassBlock;
@@ -39,7 +39,7 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
     @SuppressWarnings("DataFlowIssue")
     private void generateBrazierStates() {
         var genericModel = models().getBuilder("block/brazier_generic")
-                .texture("particle", JSGMapping.rl(JSGCore.MOD_ID, "block/storage_block/naquadah_alloy_block"));
+                .texture("particle", JSGMapping.rl(JSGCore.MOD_ID, "block/materials/naquadah_alloy_block"));
 
         for (var brazier : BRAZIERS.values()) {
             BrazierBlock block = brazier.get();

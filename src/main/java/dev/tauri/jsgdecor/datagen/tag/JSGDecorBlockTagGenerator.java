@@ -1,9 +1,12 @@
 package dev.tauri.jsgdecor.datagen.tag;
 
-import dev.tauri.jsg.core.common.registry.tag.CoreBlockTags;
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.common.registry.tag.CoreBlockTags;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
-import dev.tauri.jsgdecor.common.block.*;
+import dev.tauri.jsgdecor.common.block.BrazierType;
+import dev.tauri.jsgdecor.common.block.GlassBlock;
+import dev.tauri.jsgdecor.common.block.StoneBasedDecorationBlock;
+import dev.tauri.jsgdecor.common.block.WoodBlock;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import net.minecraft.core.HolderLookup;
@@ -17,7 +20,6 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -38,7 +40,7 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
         //Braziers
         var brazierTag = tag(JSGDecorBlockTags.BRAZIERS);
 
-        for (RegistryObject<BrazierBlock> brazier : JSGDecorBlocks.BRAZIERS.values()) {
+        for (var brazier : JSGDecorBlocks.BRAZIERS.values()) {
             brazierTag.add(brazier.get());
         }
 
@@ -89,19 +91,25 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
         var slabTag = tag(JSGDecorBlockTags.SLABS);
         var stairsTag = tag(JSGDecorBlockTags.STAIRS);
 
-        for (RegistryObject<Block> block : OVERLAY_BLOCKS.values()) {
+        for (var block : OVERLAY_BLOCKS.values()) {
             stoneLevelPickaxeToolTag.add(block.get());
 
-            if (block.get() instanceof SlabBlock) { slabTag.add(block.get()); }
-            else if (block.get() instanceof StairBlock) { stairsTag.add(block.get()); }
+            if (block.get() instanceof SlabBlock) {
+                slabTag.add(block.get());
+            } else if (block.get() instanceof StairBlock) {
+                stairsTag.add(block.get());
+            }
         }
 
         //Common Blocks
-        for (RegistryObject<Block> block : COMMON_BLOCKS.values()) {
+        for (var block : COMMON_BLOCKS.values()) {
             stoneLevelPickaxeToolTag.add(block.get());
 
-            if (block.get() instanceof SlabBlock) { slabTag.add(block.get()); }
-            else if (block.get() instanceof StairBlock) { stairsTag.add(block.get()); }
+            if (block.get() instanceof SlabBlock) {
+                slabTag.add(block.get());
+            } else if (block.get() instanceof StairBlock) {
+                stairsTag.add(block.get());
+            }
         }
 
         //Stone Based Blocks
@@ -115,8 +123,11 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
 
                     Block block = STONE_BASED_DECORATION_BLOCKS.get(name).get();
 
-                    if (block instanceof SlabBlock) { slabTag.add(block); }
-                    else if (block instanceof StairBlock) { stairsTag.add(block); }
+                    if (block instanceof SlabBlock) {
+                        slabTag.add(block);
+                    } else if (block instanceof StairBlock) {
+                        stairsTag.add(block);
+                    }
 
                     switch (material) {
                         case NAQUADAH -> tag(JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL).add(block);
@@ -176,77 +187,77 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
         tag(CoreBlockTags.SUPPORT_LEMON).add(JSGDecorBlocks.WOOD_BLOCKS.get("lemon_leaves").get());
 
         //Minecraft tags
-            //Mining
-            tag(BlockTags.MINEABLE_WITH_PICKAXE).addTags(
-                    JSGDecorBlockTags.BRAZIERS,
-                    JSGDecorBlockTags.MINEABLE_STONE_PICKAXE,
-                    JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL,
-                    JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL,
-                    JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL,
-                    JSGDecorBlockTags.TITANIUM_BASED_MATERIAL,
-                    JSGDecorBlockTags.TRINIUM_BASED_MATERIAL);
+        //Mining
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).addTags(
+                JSGDecorBlockTags.BRAZIERS,
+                JSGDecorBlockTags.MINEABLE_STONE_PICKAXE,
+                JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL,
+                JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL,
+                JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL,
+                JSGDecorBlockTags.TITANIUM_BASED_MATERIAL,
+                JSGDecorBlockTags.TRINIUM_BASED_MATERIAL);
 
-            tag(BlockTags.MINEABLE_WITH_HOE).addTag(JSGDecorBlockTags.LEAVES);
+        tag(BlockTags.MINEABLE_WITH_HOE).addTag(JSGDecorBlockTags.LEAVES);
 
-            tag(BlockTags.NEEDS_STONE_TOOL).addTag(JSGDecorBlockTags.MINEABLE_STONE_PICKAXE);
+        tag(BlockTags.NEEDS_STONE_TOOL).addTag(JSGDecorBlockTags.MINEABLE_STONE_PICKAXE);
 
-            tag(BlockTags.NEEDS_IRON_TOOL).addTags(
-                    JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL,
-                    JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL,
-                    JSGDecorBlockTags.TITANIUM_BASED_MATERIAL);
+        tag(BlockTags.NEEDS_IRON_TOOL).addTags(
+                JSGDecorBlockTags.NAQUADAH_BASED_MATERIAL,
+                JSGDecorBlockTags.NAQUADAH_ALLOY_BASED_MATERIAL,
+                JSGDecorBlockTags.TITANIUM_BASED_MATERIAL);
 
-            tag(BlockTags.NEEDS_DIAMOND_TOOL).addTags(
-                    JSGDecorBlockTags.BRAZIERS,
-                    JSGDecorBlockTags.TRINIUM_BASED_MATERIAL,
-                    JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL);
+        tag(BlockTags.NEEDS_DIAMOND_TOOL).addTags(
+                JSGDecorBlockTags.BRAZIERS,
+                JSGDecorBlockTags.TRINIUM_BASED_MATERIAL,
+                JSGDecorBlockTags.REFINED_NAQUADAH_BASED_MATERIAL);
 
-            //Wood
-            tag(BlockTags.OVERWORLD_NATURAL_LOGS).addTag(JSGDecorBlockTags.OVERWORLD_NATURAL_LOGS);
-            tag(BlockTags.LOGS).addTag(JSGDecorBlockTags.LOGS_THAT_NOT_BURN);
-            tag(BlockTags.LOGS_THAT_BURN).addTag(JSGDecorBlockTags.LOGS_THAT_BURN);
-            tag(BlockTags.LEAVES).addTag(JSGDecorBlockTags.LEAVES);
-            tag(BlockTags.SAPLINGS).addTag(JSGDecorBlockTags.SAPLINGS);
-            tag(BlockTags.PLANKS).addTag(JSGDecorBlockTags.PLANKS);
-            tag(BlockTags.WOODEN_SLABS).addTag(JSGDecorBlockTags.WOODEN_SLABS);
-            tag(BlockTags.WOODEN_STAIRS).addTag(JSGDecorBlockTags.WOODEN_STAIRS);
-            tag(BlockTags.WOODEN_FENCES).addTag(JSGDecorBlockTags.WOODEN_FENCES);
-            tag(BlockTags.FENCE_GATES).addTag(JSGDecorBlockTags.WOODEN_FENCE_GATES);
-            tag(BlockTags.WOODEN_BUTTONS).addTag(JSGDecorBlockTags.WOODEN_BUTTONS);
-            tag(BlockTags.WOODEN_PRESSURE_PLATES).addTag(JSGDecorBlockTags.WOODEN_PRESSURE_PLATES);
-            tag(BlockTags.WOODEN_DOORS).addTag(JSGDecorBlockTags.WOODEN_DOORS);
-            tag(BlockTags.WOODEN_TRAPDOORS).addTag(JSGDecorBlockTags.WOODEN_TRAPDOORS);
+        //Wood
+        tag(BlockTags.OVERWORLD_NATURAL_LOGS).addTag(JSGDecorBlockTags.OVERWORLD_NATURAL_LOGS);
+        tag(BlockTags.LOGS).addTag(JSGDecorBlockTags.LOGS_THAT_NOT_BURN);
+        tag(BlockTags.LOGS_THAT_BURN).addTag(JSGDecorBlockTags.LOGS_THAT_BURN);
+        tag(BlockTags.LEAVES).addTag(JSGDecorBlockTags.LEAVES);
+        tag(BlockTags.SAPLINGS).addTag(JSGDecorBlockTags.SAPLINGS);
+        tag(BlockTags.PLANKS).addTag(JSGDecorBlockTags.PLANKS);
+        tag(BlockTags.WOODEN_SLABS).addTag(JSGDecorBlockTags.WOODEN_SLABS);
+        tag(BlockTags.WOODEN_STAIRS).addTag(JSGDecorBlockTags.WOODEN_STAIRS);
+        tag(BlockTags.WOODEN_FENCES).addTag(JSGDecorBlockTags.WOODEN_FENCES);
+        tag(BlockTags.FENCE_GATES).addTag(JSGDecorBlockTags.WOODEN_FENCE_GATES);
+        tag(BlockTags.WOODEN_BUTTONS).addTag(JSGDecorBlockTags.WOODEN_BUTTONS);
+        tag(BlockTags.WOODEN_PRESSURE_PLATES).addTag(JSGDecorBlockTags.WOODEN_PRESSURE_PLATES);
+        tag(BlockTags.WOODEN_DOORS).addTag(JSGDecorBlockTags.WOODEN_DOORS);
+        tag(BlockTags.WOODEN_TRAPDOORS).addTag(JSGDecorBlockTags.WOODEN_TRAPDOORS);
 
-            //OverlayBlocks + Common Blocks + StoneBasedBlocks
-            tag(BlockTags.SLABS).addTag(JSGDecorBlockTags.SLABS);
-            tag(BlockTags.STAIRS).addTag(JSGDecorBlockTags.STAIRS);
+        //OverlayBlocks + Common Blocks + StoneBasedBlocks
+        tag(BlockTags.SLABS).addTag(JSGDecorBlockTags.SLABS);
+        tag(BlockTags.STAIRS).addTag(JSGDecorBlockTags.STAIRS);
 
-            //Special mechanics
-            tag(BlockTags.IMPERMEABLE).addTag(JSGDecorBlockTags.NOT_LEAKING_BLOCKS);
-            tag(BlockTags.GUARDED_BY_PIGLINS).add(BrazierType.HATAK.block().get());
+        //Special mechanics
+        tag(BlockTags.IMPERMEABLE).addTag(JSGDecorBlockTags.NOT_LEAKING_BLOCKS);
+        tag(BlockTags.GUARDED_BY_PIGLINS).add(BrazierType.HATAK.block().get());
 
         //forge tags
-            tag(Tags.Blocks.FENCE_GATES_WOODEN).addTag(JSGDecorBlockTags.WOODEN_FENCE_GATES);
-            tag(Tags.Blocks.FENCES_WOODEN).addTag(JSGDecorBlockTags.WOODEN_FENCES);
+        tag(Tags.Blocks.FENCE_GATES_WOODEN).addTag(JSGDecorBlockTags.WOODEN_FENCE_GATES);
+        tag(Tags.Blocks.FENCES_WOODEN).addTag(JSGDecorBlockTags.WOODEN_FENCES);
 
-            tag(Tags.Blocks.STAINED_GLASS).addTags(
-                    JSGDecorBlockTags.GLASS_RED,
-                    JSGDecorBlockTags.GLASS_LIME,
-                    JSGDecorBlockTags.GLASS_BLUE);
+        tag(Tags.Blocks.STAINED_GLASS).addTags(
+                JSGDecorBlockTags.GLASS_RED,
+                JSGDecorBlockTags.GLASS_LIME,
+                JSGDecorBlockTags.GLASS_BLUE);
 
-            tag(Tags.Blocks.GLASS_RED).addTag(JSGDecorBlockTags.GLASS_RED);
-            tag(Tags.Blocks.GLASS_BLUE).addTag(JSGDecorBlockTags.GLASS_BLUE);
-            tag(Tags.Blocks.GLASS_LIME).addTag(JSGDecorBlockTags.GLASS_LIME);
-            tag(Tags.Blocks.GLASS_COLORLESS).addTag(JSGDecorBlockTags.GLASS_COLORLESS);
+        tag(Tags.Blocks.GLASS_RED).addTag(JSGDecorBlockTags.GLASS_RED);
+        tag(Tags.Blocks.GLASS_BLUE).addTag(JSGDecorBlockTags.GLASS_BLUE);
+        tag(Tags.Blocks.GLASS_LIME).addTag(JSGDecorBlockTags.GLASS_LIME);
+        tag(Tags.Blocks.GLASS_COLORLESS).addTag(JSGDecorBlockTags.GLASS_COLORLESS);
 
-            tag(Tags.Blocks.STAINED_GLASS_PANES).addTags(
-                    JSGDecorBlockTags.GLASS_PANE_RED,
-                    JSGDecorBlockTags.GLASS_PANE_LIME,
-                    JSGDecorBlockTags.GLASS_PANE_BLUE);
+        tag(Tags.Blocks.STAINED_GLASS_PANES).addTags(
+                JSGDecorBlockTags.GLASS_PANE_RED,
+                JSGDecorBlockTags.GLASS_PANE_LIME,
+                JSGDecorBlockTags.GLASS_PANE_BLUE);
 
-            tag(Tags.Blocks.GLASS_PANES_RED).addTag(JSGDecorBlockTags.GLASS_PANE_RED);
-            tag(Tags.Blocks.GLASS_PANES_BLUE).addTag(JSGDecorBlockTags.GLASS_PANE_BLUE);
-            tag(Tags.Blocks.GLASS_PANES_LIME).addTag(JSGDecorBlockTags.GLASS_PANE_LIME);
-            tag(Tags.Blocks.GLASS_PANES_COLORLESS).addTag(JSGDecorBlockTags.GLASS_PANE_COLORLESS);
+        tag(Tags.Blocks.GLASS_PANES_RED).addTag(JSGDecorBlockTags.GLASS_PANE_RED);
+        tag(Tags.Blocks.GLASS_PANES_BLUE).addTag(JSGDecorBlockTags.GLASS_PANE_BLUE);
+        tag(Tags.Blocks.GLASS_PANES_LIME).addTag(JSGDecorBlockTags.GLASS_PANE_LIME);
+        tag(Tags.Blocks.GLASS_PANES_COLORLESS).addTag(JSGDecorBlockTags.GLASS_PANE_COLORLESS);
     }
 
     private void addLogsToTag(WoodBlock.Material material, TagAppender<Block> tagAppender) {

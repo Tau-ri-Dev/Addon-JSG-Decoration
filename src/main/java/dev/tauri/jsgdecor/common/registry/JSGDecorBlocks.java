@@ -1,8 +1,9 @@
 package dev.tauri.jsgdecor.common.registry;
 
 
-import dev.tauri.jsg.core.common.registry.CoreTabs;
-import dev.tauri.jsg.core.common.registry.helper.builder.block.BlockRegistryHelperGeneric;
+import dev.tauri.jsgcore.common.registry.CoreTabs;
+import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
+import dev.tauri.jsgcore.common.registry.helper.builder.block.BlockRegistryHelperGeneric;
 import dev.tauri.jsgdecor.Constants;
 import dev.tauri.jsgdecor.common.block.*;
 import net.minecraft.sounds.SoundEvents;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,15 +25,15 @@ public class JSGDecorBlocks {
     /**
      * Braziers
      */
-    public static final Map<BrazierType, RegistryObject<BrazierBlock>> BRAZIERS = BrazierType.registerBlocks();
+    public static final Map<BrazierType, RegistryObjectWrapper<BrazierBlock>> BRAZIERS = BrazierType.registerBlocks();
 
 
-    public static final Map<String, RegistryObject<Block>> OVERLAY_BLOCKS = new LinkedHashMap<>();
-    public static final Map<String, RegistryObject<Block>> COMMON_BLOCKS = new LinkedHashMap<>();
-    public static final Map<String, RegistryObject<Block>> GLASS_BLOCKS = new LinkedHashMap<>();
-    public static final Map<String, RegistryObject<Block>> STONE_BASED_DECORATION_BLOCKS = new LinkedHashMap<>();
-    public static final Map<String, RegistryObject<Block>> WOOD_BLOCKS = new LinkedHashMap<>();
-    public static final Map<WoodBlock.Shape, List<RegistryObject<Block>>> WOOD_BY_SHAPE = new LinkedHashMap<>();
+    public static final Map<String, RegistryObjectWrapper<Block>> OVERLAY_BLOCKS = new LinkedHashMap<>();
+    public static final Map<String, RegistryObjectWrapper<Block>> COMMON_BLOCKS = new LinkedHashMap<>();
+    public static final Map<String, RegistryObjectWrapper<Block>> GLASS_BLOCKS = new LinkedHashMap<>();
+    public static final Map<String, RegistryObjectWrapper<Block>> STONE_BASED_DECORATION_BLOCKS = new LinkedHashMap<>();
+    public static final Map<String, RegistryObjectWrapper<Block>> WOOD_BLOCKS = new LinkedHashMap<>();
+    public static final Map<WoodBlock.Shape, List<RegistryObjectWrapper<Block>>> WOOD_BY_SHAPE = new LinkedHashMap<>();
 
     static {
         registerBlockWithOverlay();
@@ -172,7 +172,7 @@ public class JSGDecorBlocks {
 
 
             WOOD_BLOCKS.put(woodType + "leaves", createWoodBlockBuilder(woodType + "leaves", WoodBlock.Shape.LEAVES, leavesProperties).buildLeaves());
-            WOOD_BLOCKS.put(woodType + "sapling", Constants.JSGD_WOOD_HELPER.builder(woodType + "sapling").clearTooltip().setInTabs(List.of(CoreTabs.TAB_BUILDING_BLOCKS)).setProperties(saplingProperties).buildSapling(mat::getTreeGrower));
+            WOOD_BLOCKS.put(woodType + "sapling", Constants.JSGD_WOOD_HELPER.builder(woodType + "sapling").clearTooltip().setInTabs(List.of(() -> CoreTabs.TAB_BUILDING_BLOCKS)).setProperties(saplingProperties).buildSapling(mat::getTreeGrower));
 
             WOOD_BLOCKS.put(planksName, createWoodBlockBuilder(planksName, WoodBlock.Shape.PLANKS, plankProperties).buildGeneric());
             WOOD_BLOCKS.put(woodType + "slab", createWoodBlockBuilder(woodType + "slab", WoodBlock.Shape.SLAB, plankProperties).buildSlab());
@@ -190,7 +190,7 @@ public class JSGDecorBlocks {
 
         for (WoodBlock.Shape shape : WoodBlock.Shape.values()) {
             String shapeSuffix = shape.getShape();
-            for (Map.Entry<String, RegistryObject<Block>> entry : WOOD_BLOCKS.entrySet()) {
+            for (Map.Entry<String, RegistryObjectWrapper<Block>> entry : WOOD_BLOCKS.entrySet()) {
                 if (entry.getKey().endsWith(shapeSuffix)) {
                     WOOD_BY_SHAPE.computeIfAbsent(shape, key -> new ArrayList<>()).add(entry.getValue());
                 }
@@ -201,7 +201,7 @@ public class JSGDecorBlocks {
     private static BlockRegistryHelperGeneric.GenericBlockBuilder createBuildingBlockBuilder(String name, BlockBehaviour.Properties properties) {
         return Constants.JSGD_BLOCK_HELPER.builder(name)
                 .clearTooltip()
-                .setInTabs(List.of(CoreTabs.TAB_BUILDING_BLOCKS, JSGDecorTabs.JSGD_BUILDING_TAB))
+                .setInTabs(List.of(() -> CoreTabs.TAB_BUILDING_BLOCKS, () -> JSGDecorTabs.JSGD_BUILDING_TAB))
                 .setProperties(properties);
     }
 

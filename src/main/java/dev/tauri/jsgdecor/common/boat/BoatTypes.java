@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.common.boat;
 
 
-import dev.tauri.jsg.core.common.entity.vehicle.JSGBoatTypeWrapper;
+import dev.tauri.jsgcore.common.entity.vehicle.JSGBoatTypeWrapper;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorEntities;
 import net.minecraft.util.StringRepresentable;

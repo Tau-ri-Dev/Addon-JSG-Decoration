@@ -2,7 +2,7 @@ package dev.tauri.jsgdecor.client.renderer.brazier;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import dev.tauri.jsg.core.client.renderer.AbstractItemBEWLR;
+import dev.tauri.jsgcore.client.renderer.AbstractItemBEWLR;
 import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.item.BrazierItem;
 import net.minecraft.client.renderer.MultiBufferSource;

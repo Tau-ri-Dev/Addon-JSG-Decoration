@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.common.block;
 
-import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
+import dev.tauri.jsgcore.common.definition.material.MaterialType;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.MapColor;
@@ -9,11 +9,11 @@ import org.apache.logging.log4j.util.TriConsumer;
 public class StoneBasedDecorationBlock {
 
     public enum Material {
-        NAQUADAH("naquadah", MapColor.COLOR_GREEN, CoreItemTags.NUGGET_NAQUADAH),
-        NAQUADAH_ALLOY("naquadah_alloy", MapColor.COLOR_CYAN, CoreItemTags.NUGGET_NAQUADAH_ALLOY),
-        REFINED_NAQUADAH("refined_naquadah", MapColor.COLOR_LIGHT_GREEN, CoreItemTags.NUGGET_NAQUADAH_REFINED),
-        TITANIUM("titanium", MapColor.COLOR_LIGHT_GRAY, CoreItemTags.NUGGET_TITANIUM),
-        TRINIUM("trinium", MapColor.SNOW, CoreItemTags.NUGGET_TRINIUM);
+        NAQUADAH("naquadah", MapColor.COLOR_GREEN, MaterialType.NAQUADAH.forgeTags().nuggets()),
+        NAQUADAH_ALLOY("naquadah_alloy", MapColor.COLOR_CYAN, MaterialType.NAQUADAH_ALLOY.forgeTags().nuggets()),
+        REFINED_NAQUADAH("refined_naquadah", MapColor.COLOR_LIGHT_GREEN, MaterialType.REFINED_NAQUADAH.forgeTags().nuggets()),
+        TITANIUM("titanium", MapColor.COLOR_LIGHT_GRAY, MaterialType.TITANIUM.forgeTags().nuggets()),
+        TRINIUM("trinium", MapColor.SNOW, MaterialType.TRINIUM.forgeTags().nuggets());
 
         private final String material;
         private final MapColor mapColor;

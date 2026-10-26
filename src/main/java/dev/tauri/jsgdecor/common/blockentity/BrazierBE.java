@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.common.blockentity;
 
-import dev.tauri.jsg.core.common.blockentity.JSGBlockEntity;
+import dev.tauri.jsgcore.common.blockentity.JSGBlockEntity;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;

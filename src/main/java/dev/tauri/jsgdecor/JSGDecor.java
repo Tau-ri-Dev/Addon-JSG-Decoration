@@ -1,9 +1,9 @@
 package dev.tauri.jsgdecor;
 
-import dev.tauri.jsg.core.JSGAddon;
-import dev.tauri.jsg.core.JSGAddons;
-import dev.tauri.jsg.core.LoggerWrapper;
-import dev.tauri.jsg.core.common.registry.helper.RegistryHelper;
+import dev.tauri.jsgcore.JSGAddon;
+import dev.tauri.jsgcore.JSGAddons;
+import dev.tauri.jsgcore.LoggerWrapper;
+import dev.tauri.jsgcore.common.registry.helper.RegistryHelper;
 import dev.tauri.jsgdecor.client.ClientConstants;
 import dev.tauri.jsgdecor.common.injectors.JSGDecorTemplatePoolInjectors;
 import dev.tauri.jsgdecor.common.registry.JSGDecorEntities;

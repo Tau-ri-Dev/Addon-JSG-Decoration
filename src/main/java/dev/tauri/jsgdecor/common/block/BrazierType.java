@@ -1,12 +1,11 @@
 package dev.tauri.jsgdecor.common.block;
 
-import dev.tauri.jsg.core.common.registry.CoreBlocks;
-import dev.tauri.jsg.core.common.registry.helper.RegistryHelper;
+import dev.tauri.jsgcore.common.definition.material.MaterialType;
+import dev.tauri.jsgcore.common.registry.helper.RegistryHelper;
+import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.client.renderer.brazier.BrazierRenderer;
 import dev.tauri.jsgdecor.common.blockentity.BrazierBE;
-import dev.tauri.jsgdecor.common.registry.JSGDecorBlockEntities;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -14,8 +13,6 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,8 +69,8 @@ public enum BrazierType {
     public final float flamesSpreadY;
     public final Supplier<VoxelShape> blockShape;
 
-    private RegistryObject<BrazierBlock> block;
-    private RegistryObject<BlockEntityType<BrazierBE>> blockEntity;
+    private RegistryObjectWrapper<BrazierBlock> block;
+    private RegistryObjectWrapper<BlockEntityType<BrazierBE>> blockEntity;
 
     BrazierType(String id, String model, String texture, String coalModel, String coalTexture, String coalTextureLit, Vec3 translation, float scale, Vec3 coalTranslation, float coalScale, Vec3 flamesPosition, float flamesSpreadXZ, float flamesSpreadY, Supplier<VoxelShape> blockShape) {
         this.id = id;
@@ -92,20 +89,20 @@ public enum BrazierType {
         this.blockShape = blockShape;
     }
 
-    public RegistryObject<BrazierBlock> block() {
+    public RegistryObjectWrapper<BrazierBlock> block() {
         return block;
     }
 
-    public RegistryObject<BlockEntityType<BrazierBE>> blockEntity() {
+    public RegistryObjectWrapper<BlockEntityType<BrazierBE>> blockEntity() {
         return blockEntity;
     }
 
 
-    public static Map<BrazierType, RegistryObject<BrazierBlock>> registerBlocks() {
-        var map = new HashMap<BrazierType, RegistryObject<BrazierBlock>>();
+    public static Map<BrazierType, RegistryObjectWrapper<BrazierBlock>> registerBlocks() {
+        var map = new HashMap<BrazierType, RegistryObjectWrapper<BrazierBlock>>();
         for (var type : values()) {
             type.block = JSGDecor.REGISTRY_HELPER.block().register(type.id, () -> new BrazierBlock(
-                    BlockBehaviour.Properties.copy(CoreBlocks.NAQUADAH_BLOCK.get())
+                    BlockBehaviour.Properties.copy(MaterialType.NAQUADAH.getStorage().get())
                             .noOcclusion()
                             .lightLevel((state) -> (state.getOptionalValue(BlockStateProperties.LIT).orElse(false) && state.getOptionalValue(BlockStateProperties.DOUBLE_BLOCK_HALF).orElse(DoubleBlockHalf.LOWER) == DoubleBlockHalf.UPPER) ? 15 : 0)
                             .isRedstoneConductor((pState, pLevel, pPos) -> false),
@@ -115,8 +112,8 @@ public enum BrazierType {
         return map;
     }
 
-    public static Map<BrazierType, RegistryObject<BlockEntityType<BrazierBE>>> registerBEs() {
-        var map = new HashMap<BrazierType, RegistryObject<BlockEntityType<BrazierBE>>>();
+    public static Map<BrazierType, RegistryObjectWrapper<BlockEntityType<BrazierBE>>> registerBEs() {
+        var map = new HashMap<BrazierType, RegistryObjectWrapper<BlockEntityType<BrazierBE>>>();
         for (var type : values()) {
             type.blockEntity = JSGDecor.REGISTRY_HELPER.be().register(type.id, RegistryHelper.beSupplier((pos, state) -> new BrazierBE(pos, state, type, () -> map.get(type).get()), type.block()));
             map.put(type, type.blockEntity);

@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.common.injectors;
 
-import dev.tauri.jsg.core.common.worldgen.TemplatePoolInjector;
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.common.worldgen.TemplatePoolInjector;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 
 public class JSGDecorTemplatePoolInjectors {
     public static void register() {

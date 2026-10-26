@@ -10,7 +10,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class ClientModListener {
 
         for (WoodBlock.Material mat : WoodBlock.Material.values()) {
             String leavesKey = mat.getMaterial() + "_leaves";
-            RegistryObject<Block> leavesObj = JSGDecorBlocks.WOOD_BLOCKS.get(leavesKey);
+            var leavesObj = JSGDecorBlocks.WOOD_BLOCKS.get(leavesKey);
 
             if (leavesObj != null) {
                 leavesList.add(leavesObj.get());

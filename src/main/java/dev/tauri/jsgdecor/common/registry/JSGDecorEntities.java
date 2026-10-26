@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.common.registry;
 
 
-import dev.tauri.jsg.core.common.registry.helper.builder.entity.EntityRegistryHelperBoat;
+import dev.tauri.jsgcore.common.registry.helper.builder.entity.EntityRegistryHelperBoat;
 import dev.tauri.jsgdecor.Constants;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;

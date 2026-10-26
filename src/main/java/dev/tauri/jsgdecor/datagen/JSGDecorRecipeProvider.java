@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.datagen;
 
-import dev.tauri.jsg.core.common.registry.tag.CoreItemTags;
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.common.definition.material.MaterialType;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.*;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
@@ -45,11 +45,11 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .pattern("TTT")
                 .pattern("SBS")
                 .define('F', Blocks.CAMPFIRE)
-                .define('T', CoreItemTags.STORAGE_BLOCK_TITANIUM)
+                .define('T', MaterialType.TITANIUM.forgeTags().storagesItem())
                 .define('S', Blocks.POLISHED_DEEPSLATE_SLAB)
                 .define('B', Blocks.POLISHED_DEEPSLATE)
                 .unlockedBy("has_campfire", has(Blocks.CAMPFIRE))
-                .unlockedBy("has_titanium_block", has(CoreItemTags.STORAGE_BLOCK_TITANIUM))
+                .unlockedBy("has_titanium_block", has(MaterialType.TITANIUM.forgeTags().storagesItem()))
                 .unlockedBy("has_deepslate_slab", has(Blocks.POLISHED_DEEPSLATE_SLAB))
                 .unlockedBy("has_deepslate", has(Blocks.POLISHED_DEEPSLATE))
                 .save(pWriter);
@@ -77,11 +77,11 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .define('F', Blocks.CAMPFIRE)
                 .define('S', Blocks.DEEPSLATE_TILE_SLAB)
                 .define('B', Blocks.DEEPSLATE_TILES)
-                .define('#', CoreItemTags.STORAGE_BLOCK_TITANIUM)
+                .define('#', MaterialType.TITANIUM.forgeTags().storagesItem())
                 .unlockedBy("has_campfire", has(Blocks.CAMPFIRE))
                 .unlockedBy("has_slab", has(Blocks.DEEPSLATE_TILE_SLAB))
                 .unlockedBy("has_block", has(Blocks.DEEPSLATE_TILES))
-                .unlockedBy("has_material", has(CoreItemTags.STORAGE_BLOCK_TITANIUM))
+                .unlockedBy("has_material", has(MaterialType.TITANIUM.forgeTags().storagesItem()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BrazierType.GOAULD.block().get())
@@ -120,10 +120,10 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .pattern("TIT")
                 .define('#', Blocks.LIGHT_GRAY_CONCRETE)
                 .define('T', Tags.Items.NUGGETS_IRON)
-                .define('I', CoreItemTags.NUGGET_TITANIUM)
+                .define('I', MaterialType.TITANIUM.forgeTags().nuggets())
                 .unlockedBy("has_concrete", has(Blocks.LIGHT_GRAY_CONCRETE))
                 .unlockedBy("has_iron_nugget", has(Tags.Items.NUGGETS_IRON))
-                .unlockedBy("has_titanium_nugget", has(CoreItemTags.NUGGET_TITANIUM))
+                .unlockedBy("has_titanium_nugget", has(MaterialType.TITANIUM.forgeTags().nuggets()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, COMMON_BLOCKS.get("brown_atlantis_wall_block").get().asItem())
@@ -147,7 +147,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .unlockedBy("has_dye", has(Tags.Items.DYES_WHITE))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, COMMON_BLOCKS.get("atlantis_blue_block").get().asItem(),9)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, COMMON_BLOCKS.get("atlantis_blue_block").get().asItem(), 9)
                 .group("atlantis_blue_block")
                 .pattern("###")
                 .pattern("#W#")
@@ -425,7 +425,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
     private String getStoneName(StoneBasedDecorationBlock.Material mat, StoneBasedDecorationBlock.Variant var) {
         return var.shouldSwapNameOrder()
                 ? var.getVariant() + "_" + mat.getMaterial() + "_block"
-                :  mat.getMaterial() + "_" + var.getVariant() + "_block";
+                : mat.getMaterial() + "_" + var.getVariant() + "_block";
     }
 
     private void createSlabAndStairsRecipes(Consumer<FinishedRecipe> pWriter, Item craftingBlock, Item slab, Item stairs, String group, Boolean isWoodRecipe, Boolean stoneCutterRecipes) {
@@ -439,7 +439,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, slab, 6)
-                .group(isWoodRecipe? "wooden_slab" : group + "_slab")
+                .group(isWoodRecipe ? "wooden_slab" : group + "_slab")
                 .pattern("###")
                 .define('#', craftingBlock)
                 .unlockedBy("has_block", has(craftingBlock))

@@ -1,12 +1,12 @@
 package dev.tauri.jsgdecor.datagen;
 
+import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Map;
 
@@ -41,8 +41,8 @@ public class JSGDecorLanguageProvider extends LanguageProvider {
         }
     }
 
-    private void addMapTranslations(Map<String, RegistryObject<Block>> blockMap) {
-        for (Map.Entry<String, RegistryObject<Block>> entry : blockMap.entrySet()) {
+    private void addMapTranslations(Map<String, RegistryObjectWrapper<Block>> blockMap) {
+        for (var entry : blockMap.entrySet()) {
             add(entry.getValue().get(), createLocalizedName(entry.getKey()));
         }
     }
@@ -55,7 +55,7 @@ public class JSGDecorLanguageProvider extends LanguageProvider {
                 .replaceAll(match -> match.group(1).toUpperCase());
 
         return capitalizedName.replace("Goauld", "Goa'uld")
-                              .replace("Hatak", "Ha'tak");
+                .replace("Hatak", "Ha'tak");
     }
 
     public JSGDecorLanguageProvider(PackOutput output, String local) {

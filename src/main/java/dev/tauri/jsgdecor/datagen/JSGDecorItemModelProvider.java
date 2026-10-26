@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.datagen;
 
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import net.minecraft.data.PackOutput;

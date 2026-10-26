@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.common.registry.tag;
 
-import dev.tauri.jsg.core.mapping.JSGMapping;
+import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;

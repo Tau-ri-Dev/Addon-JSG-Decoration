@@ -1,5 +1,6 @@
 package dev.tauri.jsgdecor.datagen.loot;
 
+import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.StoneBasedDecorationBlock;
 import dev.tauri.jsgdecor.common.block.WoodBlock;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
         }
     }
 
-    private void dropStandardBlocks(Map<String, RegistryObject<Block>> blockMap) {
+    private void dropStandardBlocks(Map<String, RegistryObjectWrapper<Block>> blockMap) {
         for (var block : blockMap.values()) {
             Block dropBlock = block.get();
             if (dropBlock instanceof SlabBlock) {

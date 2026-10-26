@@ -1,6 +1,6 @@
 package dev.tauri.jsgdecor.datagen.worldgen;
 
-import dev.tauri.jsg.core.common.registry.CoreBlocks;
+import dev.tauri.jsgcore.common.registry.CoreBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorFeatures;
 import net.minecraft.core.Direction;
