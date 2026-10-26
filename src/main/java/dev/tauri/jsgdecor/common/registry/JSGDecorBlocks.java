@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 
@@ -47,7 +46,7 @@ public class JSGDecorBlocks {
         for (var mat : BlockWithOverlay.Material.values()) {
             var baseName = mat.getMaterial();
 
-            var blockProps = BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(mat.getMapColor()).strength(2.0f, 3.0f);
+            var blockProps = BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(mat.getMapColor()).strength(2.0f, 3.0f);
 
             String blockName = baseName + "_block";
             var blockBuilder = createBuildingBlockBuilder(blockName, blockProps);
@@ -71,7 +70,7 @@ public class JSGDecorBlocks {
                     var baseName = (variant == CommonBlock.Variant.DEFAULT) ? material.getMaterial() : variant.getVariant() + "_" + material.getMaterial();
 
                     var name = baseName + "_" + shape.getShape();
-                    var properties = BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(material.getMapColor());
+                    var properties = BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(material.getMapColor());
                     var builder = createBuildingBlockBuilder(name, properties);
 
                     var block = switch (shape) {
@@ -86,7 +85,7 @@ public class JSGDecorBlocks {
 
                     if (material.hasLampVariant()) {
                         String lampName = baseName + "_lamp_" + shape.getShape();
-                        var lampProperties = BlockBehaviour.Properties.copy(Blocks.STONE)
+                        var lampProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)
                                 .mapColor(material.getMapColor())
                                 .lightLevel((state) -> 15)
                                 .noOcclusion();
@@ -112,7 +111,7 @@ public class JSGDecorBlocks {
             for (var shape : GlassBlock.Shape.values()) {
                 var name = material.getMaterial() + "_" + shape.getShape();
 
-                var properties = BlockBehaviour.Properties.copy(Blocks.GLASS);
+                var properties = BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS);
                 var builder = createBuildingBlockBuilder(name, properties);
 
                 var registeredBlock = switch (shape) {
@@ -129,7 +128,7 @@ public class JSGDecorBlocks {
         StoneBasedDecorationBlock.forEach((material, variant, shape) -> {
             var name = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape() : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
 
-            var properties = BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(material.getMapColor());
+            var properties = BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(material.getMapColor());
             var builder = createBuildingBlockBuilder(name, properties);
 
             var registeredBlock = switch (shape) {
@@ -159,10 +158,10 @@ public class JSGDecorBlocks {
             var woodName = woodType + "wood";
             var planksName = woodType + "planks";
 
-            var logProperties = BlockBehaviour.Properties.copy(Blocks.OAK_LOG).mapColor(mat.getWoodColor());
-            var leavesProperties = BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).noOcclusion().mapColor(mat.getLeavesColor());
-            var saplingProperties = BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING).noCollission();
-            var plankProperties = BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).mapColor(mat.getPlanksColor());
+            var logProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG).mapColor(mat.getWoodColor());
+            var leavesProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES).noOcclusion().mapColor(mat.getLeavesColor());
+            var saplingProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING).noCollission();
+            var plankProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).mapColor(mat.getPlanksColor());
 
             WOOD_BLOCKS.put(strippedLogName, createWoodBlockBuilder(strippedLogName, WoodBlock.Shape.STRIPPED_LOG, logProperties).buildPillar(mat.getWoodColor(), mat.getBarkColor()));
             WOOD_BLOCKS.put(strippedWoodName, createWoodBlockBuilder(strippedWoodName, WoodBlock.Shape.STRIPPED_WOOD, logProperties).buildPillar(mat.getWoodColor(), mat.getBarkColor()));
@@ -181,11 +180,11 @@ public class JSGDecorBlocks {
             WOOD_BLOCKS.put(woodType + "fence", createWoodBlockBuilder(woodType + "fence", WoodBlock.Shape.FENCE, plankProperties).buildFence());
             WOOD_BLOCKS.put(woodType + "fence_gate", createWoodBlockBuilder(woodType + "fence_gate", WoodBlock.Shape.FENCE_GATE, plankProperties).buildFenceGate(() -> SoundEvents.FENCE_GATE_OPEN, () -> SoundEvents.FENCE_GATE_CLOSE));
 
-            WOOD_BLOCKS.put(woodType + "button", createWoodBlockBuilder(woodType + "button", WoodBlock.Shape.BUTTON, BlockBehaviour.Properties.copy(Blocks.OAK_BUTTON)).buildButton(BlockSetType.OAK, 30, true));
-            WOOD_BLOCKS.put(woodType + "pressure_plate", createWoodBlockBuilder(woodType + "pressure_plate", WoodBlock.Shape.PRESSURE_PLATE, BlockBehaviour.Properties.copy(Blocks.OAK_PRESSURE_PLATE)).buildPressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, BlockSetType.OAK));
+            WOOD_BLOCKS.put(woodType + "button", createWoodBlockBuilder(woodType + "button", WoodBlock.Shape.BUTTON, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)).buildButton(BlockSetType.OAK, 30, true));
+            WOOD_BLOCKS.put(woodType + "pressure_plate", createWoodBlockBuilder(woodType + "pressure_plate", WoodBlock.Shape.PRESSURE_PLATE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)).buildPressurePlate(BlockSetType.OAK));
 
-            WOOD_BLOCKS.put(woodType + "door", createWoodBlockBuilder(woodType + "door", WoodBlock.Shape.DOOR, BlockBehaviour.Properties.copy(Blocks.OAK_DOOR).noOcclusion()).buildDoor(BlockSetType.OAK));
-            WOOD_BLOCKS.put(woodType + "trapdoor", createWoodBlockBuilder(woodType + "trapdoor", WoodBlock.Shape.TRAPDOOR, BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR).noOcclusion()).buildTrapdoor(BlockSetType.OAK));
+            WOOD_BLOCKS.put(woodType + "door", createWoodBlockBuilder(woodType + "door", WoodBlock.Shape.DOOR, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR).noOcclusion()).buildDoor(BlockSetType.OAK));
+            WOOD_BLOCKS.put(woodType + "trapdoor", createWoodBlockBuilder(woodType + "trapdoor", WoodBlock.Shape.TRAPDOOR, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR).noOcclusion()).buildTrapdoor(BlockSetType.OAK));
         }
 
         for (WoodBlock.Shape shape : WoodBlock.Shape.values()) {

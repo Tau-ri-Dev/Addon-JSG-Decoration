@@ -7,20 +7,21 @@ import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.*;
 import dev.tauri.jsgdecor.common.block.GlassBlock;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Objects;
 
 import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
 
 public class JSGDecorBlockStateProvider extends BlockStateProvider {
-    protected static final IForgeRegistry<Block> BLOCKS_REGISTRY = ForgeRegistries.BLOCKS;
+    protected static final Registry<Block> BLOCKS_REGISTRY = BuiltInRegistries.BLOCK;
 
     public JSGDecorBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, JSGDecor.MOD_ID, exFileHelper);
@@ -53,7 +54,7 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
             itemModel.customLoader((parent, helper) ->
                     new JSGOBJModelLoaderBuilder<>(parent, helper) {
                         @Override
-                        public JsonObject toJson(JsonObject json) {
+                        public @NonNull JsonObject toJson(JsonObject json) {
                             JsonObject result = super.toJson(json);
                             result.addProperty("override_transformations", true);
                             return result;

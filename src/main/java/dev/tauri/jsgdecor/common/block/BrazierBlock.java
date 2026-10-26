@@ -13,7 +13,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -37,6 +38,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -64,22 +66,20 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
     @Override
     @ParametersAreNonnullByDefault
     @Nonnull
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState blockstate, Level level, BlockPos blockpos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (canLight(blockstate) && player.getItemInHand(hand).is(Items.FLINT_AND_STEEL) && blockstate.getOptionalValue(BlockStateProperties.DOUBLE_BLOCK_HALF).orElse(DoubleBlockHalf.LOWER) == DoubleBlockHalf.UPPER) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState blockstate, Level level, BlockPos blockpos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (canLight(blockstate) && stack.is(Items.FLINT_AND_STEEL) && blockstate.getOptionalValue(BlockStateProperties.DOUBLE_BLOCK_HALF).orElse(DoubleBlockHalf.LOWER) == DoubleBlockHalf.UPPER) {
             level.playSound(player, blockpos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
             level.setBlock(blockpos, blockstate.setValue(BlockStateProperties.LIT, true), 11);
             level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockpos);
-            player.getItemInHand(hand).hurtAndBreak(1, player, (p_41303_) -> p_41303_.broadcastBreakEvent(hand));
+            stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
 
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
-        return super.use(blockstate, level, blockpos, player, hand, hit);
+        return super.useItemOn(stack, blockstate, level, blockpos, player, hand, hitResult);
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("deprecation")
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos blockpos = pPos.below();
         BlockState blockstate = pLevel.getBlockState(blockpos);
@@ -88,14 +88,12 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
 
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("deprecation")
     public @NotNull BlockState rotate(BlockState blockState, Rotation rotation) {
         return blockState.setValue(JSGProperties.FACING_HORIZONTAL_PROPERTY, BlockPosHelper.rotateDir(blockState.getValue(JSGProperties.FACING_HORIZONTAL_PROPERTY), rotation));
     }
 
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("deprecation")
     public @NotNull BlockState mirror(BlockState blockState, Mirror mirror) {
         return blockState.setValue(JSGProperties.FACING_HORIZONTAL_PROPERTY, BlockPosHelper.flipDir(blockState.getValue(JSGProperties.FACING_HORIZONTAL_PROPERTY), mirror));
     }
@@ -110,7 +108,6 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull FluidState getFluidState(BlockState p_152045_) {
         return p_152045_.getValue(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_152045_);
     }
@@ -136,18 +133,18 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
 
     @Override
     @ParametersAreNonnullByDefault
-    @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 
+
     @Override
     @ParametersAreNonnullByDefault
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public @NonNull BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide) {
             preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     public static void preventCreativeDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
@@ -193,7 +190,6 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
     @Override
     @ParametersAreNonnullByDefault
     @Nonnull
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         var box = type.blockShape.get().bounds();
         if (box.maxY - box.minY > 1) {
@@ -205,7 +201,6 @@ public class BrazierBlock extends JSGBlock implements EntityBlock, IItemBlock, S
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     @ParametersAreNonnullByDefault
     @Nonnull
     public RenderShape getRenderShape(BlockState blockState) {

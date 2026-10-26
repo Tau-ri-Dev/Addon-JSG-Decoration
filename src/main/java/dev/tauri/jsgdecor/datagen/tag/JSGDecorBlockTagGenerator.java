@@ -17,9 +17,9 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -239,24 +239,25 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
         tag(Tags.Blocks.FENCE_GATES_WOODEN).addTag(JSGDecorBlockTags.WOODEN_FENCE_GATES);
         tag(Tags.Blocks.FENCES_WOODEN).addTag(JSGDecorBlockTags.WOODEN_FENCES);
 
-        tag(Tags.Blocks.STAINED_GLASS).addTags(
+        tag(Tags.Blocks.GLASS_BLOCKS_TINTED).addTags(
                 JSGDecorBlockTags.GLASS_RED,
                 JSGDecorBlockTags.GLASS_LIME,
                 JSGDecorBlockTags.GLASS_BLUE);
 
-        tag(Tags.Blocks.GLASS_RED).addTag(JSGDecorBlockTags.GLASS_RED);
-        tag(Tags.Blocks.GLASS_BLUE).addTag(JSGDecorBlockTags.GLASS_BLUE);
-        tag(Tags.Blocks.GLASS_LIME).addTag(JSGDecorBlockTags.GLASS_LIME);
-        tag(Tags.Blocks.GLASS_COLORLESS).addTag(JSGDecorBlockTags.GLASS_COLORLESS);
+        // TODO: Find equivalent?
+        //tag(Tags.Blocks.RED).addTag(JSGDecorBlockTags.GLASS_RED);
+        //tag(Tags.Blocks.GLASS_BLUE).addTag(JSGDecorBlockTags.GLASS_BLUE);
+        //tag(Tags.Blocks.GLASS_LIME).addTag(JSGDecorBlockTags.GLASS_LIME);
+        //tag(Tags.Blocks.GLASS_COLORLESS).addTag(JSGDecorBlockTags.GLASS_COLORLESS);
 
-        tag(Tags.Blocks.STAINED_GLASS_PANES).addTags(
+        tag(Tags.Blocks.GLASS_PANES).addTags(
                 JSGDecorBlockTags.GLASS_PANE_RED,
                 JSGDecorBlockTags.GLASS_PANE_LIME,
                 JSGDecorBlockTags.GLASS_PANE_BLUE);
 
-        tag(Tags.Blocks.GLASS_PANES_RED).addTag(JSGDecorBlockTags.GLASS_PANE_RED);
-        tag(Tags.Blocks.GLASS_PANES_BLUE).addTag(JSGDecorBlockTags.GLASS_PANE_BLUE);
-        tag(Tags.Blocks.GLASS_PANES_LIME).addTag(JSGDecorBlockTags.GLASS_PANE_LIME);
+        //tag(Tags.Blocks.GLASS_PANES_RED).addTag(JSGDecorBlockTags.GLASS_PANE_RED);
+        //tag(Tags.Blocks.GLASS_PANES_BLUE).addTag(JSGDecorBlockTags.GLASS_PANE_BLUE);
+        //tag(Tags.Blocks.GLASS_PANES_LIME).addTag(JSGDecorBlockTags.GLASS_PANE_LIME);
         tag(Tags.Blocks.GLASS_PANES_COLORLESS).addTag(JSGDecorBlockTags.GLASS_PANE_COLORLESS);
     }
 

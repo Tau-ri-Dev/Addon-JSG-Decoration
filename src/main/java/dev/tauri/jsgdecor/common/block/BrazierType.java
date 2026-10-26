@@ -102,7 +102,7 @@ public enum BrazierType {
         var map = new HashMap<BrazierType, RegistryObjectWrapper<BrazierBlock>>();
         for (var type : values()) {
             type.block = JSGDecor.REGISTRY_HELPER.block().register(type.id, () -> new BrazierBlock(
-                    BlockBehaviour.Properties.copy(MaterialType.NAQUADAH.getStorage().get())
+                    BlockBehaviour.Properties.ofFullCopy(MaterialType.NAQUADAH.getStorage().get())
                             .noOcclusion()
                             .lightLevel((state) -> (state.getOptionalValue(BlockStateProperties.LIT).orElse(false) && state.getOptionalValue(BlockStateProperties.DOUBLE_BLOCK_HALF).orElse(DoubleBlockHalf.LOWER) == DoubleBlockHalf.UPPER) ? 15 : 0)
                             .isRedstoneConductor((pState, pLevel, pPos) -> false),

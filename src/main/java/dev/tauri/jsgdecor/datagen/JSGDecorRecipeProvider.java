@@ -6,37 +6,35 @@ import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.*;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import dev.tauri.jsgdecor.common.registry.tag.JSGDecorItemTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
-import static net.minecraftforge.registries.ForgeRegistries.ITEMS;
 
 @SuppressWarnings("DataFlowIssue")
 public class JSGDecorRecipeProvider extends RecipeProvider implements IConditionBuilder {
-    public JSGDecorRecipeProvider(PackOutput pOutput) {
-        super(pOutput);
+    public JSGDecorRecipeProvider(PackOutput pOutput, CompletableFuture<HolderLookup.Provider> registries) {
+        super(pOutput, registries);
     }
 
     @Override
     @ParametersAreNonnullByDefault
-
-    protected void buildRecipes(Consumer<FinishedRecipe> pWriter) {
+    protected void buildRecipes(RecipeOutput pWriter) {
         // Braziers
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BrazierType.ABYDOS.block().get())
@@ -331,7 +329,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(material.getBaseBlock()), RecipeCategory.BUILDING_BLOCKS, craftedBlock, 1)
                     .group(material.getMaterial() + "_block")
                     .unlockedBy("has_terracotta", has(material.getBaseBlock()))
-                    .save(pWriter, JSGMapping.rl(JSGDecor.MOD_ID, ITEMS.getKey(craftedBlock).getPath() + "_from_stonecutting"));
+                    .save(pWriter, JSGMapping.rl(JSGDecor.MOD_ID, BuiltInRegistries.ITEM.getKey(craftedBlock).getPath() + "_from_stonecutting"));
 
             createSlabAndStairsRecipes(pWriter, craftedBlock, craftedSlab, craftedStairs, material.getMaterial(), false, true);
         }
@@ -428,7 +426,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 : mat.getMaterial() + "_" + var.getVariant() + "_block";
     }
 
-    private void createSlabAndStairsRecipes(Consumer<FinishedRecipe> pWriter, Item craftingBlock, Item slab, Item stairs, String group, Boolean isWoodRecipe, Boolean stoneCutterRecipes) {
+    private void createSlabAndStairsRecipes(RecipeOutput pWriter, Item craftingBlock, Item slab, Item stairs, String group, Boolean isWoodRecipe, Boolean stoneCutterRecipes) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 4)
                 .group(isWoodRecipe ? "wooden_stairs" : group + "_stairs")
                 .pattern("#  ")
@@ -446,8 +444,8 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                 .save(pWriter);
 
         if (stoneCutterRecipes) {
-            String stairsPath = ITEMS.getKey(stairs).getPath();
-            String slabPath = ITEMS.getKey(slab).getPath();
+            String stairsPath = BuiltInRegistries.ITEM.getKey(stairs).getPath();
+            String slabPath = BuiltInRegistries.ITEM.getKey(slab).getPath();
 
             SingleItemRecipeBuilder.stonecutting(Ingredient.of(craftingBlock), RecipeCategory.BUILDING_BLOCKS, stairs, 1)
                     .group(group + "_stairs")
@@ -488,20 +486,20 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
 
     @ParametersAreNonnullByDefault
     @SuppressWarnings("SameParameterValue")
-    protected static void blockSmelting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTIme, String pGroup) {
-        blockCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTIme, pGroup, "_from_smelting");
+    protected static void blockSmelting(RecipeOutput pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTIme, String pGroup) {
+        oreCooking(pFinishedRecipeConsumer, RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, pIngredients, pCategory, pResult, pExperience, pCookingTIme, pGroup, "_from_smelting");
     }
 
     @ParametersAreNonnullByDefault
     @SuppressWarnings("SameParameterValue")
-    protected static void blockBlasting(Consumer<FinishedRecipe> pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
-        blockCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, pIngredients, pCategory, pResult, pExperience, pCookingTime, pGroup, "_from_blasting");
+    protected static void blockBlasting(RecipeOutput pFinishedRecipeConsumer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup) {
+        oreCooking(pFinishedRecipeConsumer, RecipeSerializer.BLASTING_RECIPE, BlastingRecipe::new, pIngredients, pCategory, pResult, pExperience, pCookingTime, pGroup, "_from_blasting");
     }
 
     @ParametersAreNonnullByDefault
-    protected static void blockCooking(Consumer<FinishedRecipe> pFinishedRecipeConsumer, RecipeSerializer<? extends AbstractCookingRecipe> pCookingSerializer, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pRecipeName) {
+    protected static <T extends AbstractCookingRecipe> void oreCooking(net.minecraft.data.recipes.RecipeOutput pFinishedRecipeConsumer, RecipeSerializer<T> pCookingSerializer, net.minecraft.world.item.crafting.AbstractCookingRecipe.Factory<T> pFactory, List<ItemLike> pIngredients, RecipeCategory pCategory, ItemLike pResult, float pExperience, int pCookingTime, String pGroup, String pRecipeName) {
         for (ItemLike itemlike : pIngredients) {
-            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pCookingSerializer)
+            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), pCategory, pResult, pExperience, pCookingTime, pCookingSerializer, pFactory)
                     .group(pGroup).unlockedBy(getHasName(itemlike), has(itemlike))
                     .save(pFinishedRecipeConsumer, JSGDecor.MOD_ID + ":" + getItemName(pResult) + pRecipeName + "_" + getItemName(itemlike));
         }

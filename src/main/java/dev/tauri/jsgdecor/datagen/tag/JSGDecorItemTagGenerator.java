@@ -16,8 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -171,24 +171,25 @@ public class JSGDecorItemTagGenerator extends ItemTagsProvider {
         tag(Tags.Items.FENCE_GATES_WOODEN).addTag(JSGDecorItemTags.WOODEN_FENCE_GATES);
         tag(Tags.Items.FENCES_WOODEN).addTag(JSGDecorItemTags.WOODEN_FENCES);
 
-        tag(Tags.Items.STAINED_GLASS).addTags(
+        tag(Tags.Items.GLASS_BLOCKS_TINTED).addTags(
                 JSGDecorItemTags.GLASS_RED,
                 JSGDecorItemTags.GLASS_LIME,
                 JSGDecorItemTags.GLASS_BLUE);
 
-        tag(Tags.Items.GLASS_RED).addTag(JSGDecorItemTags.GLASS_RED);
-        tag(Tags.Items.GLASS_BLUE).addTag(JSGDecorItemTags.GLASS_BLUE);
-        tag(Tags.Items.GLASS_LIME).addTag(JSGDecorItemTags.GLASS_LIME);
-        tag(Tags.Items.GLASS_COLORLESS).addTag(JSGDecorItemTags.GLASS_COLORLESS);
+        // TODO: Find equivalent?
+        //tag(Tags.Items.GLASS_RED).addTag(JSGDecorItemTags.GLASS_RED);
+        //tag(Tags.Items.GLASS_BLUE).addTag(JSGDecorItemTags.GLASS_BLUE);
+        //tag(Tags.Items.GLASS_LIME).addTag(JSGDecorItemTags.GLASS_LIME);
+        //tag(Tags.Items.GLASS_COLORLESS).addTag(JSGDecorItemTags.GLASS_COLORLESS);
 
-        tag(Tags.Items.STAINED_GLASS_PANES).addTags(
+        tag(Tags.Items.GLASS_PANES).addTags(
                 JSGDecorItemTags.GLASS_PANE_RED,
                 JSGDecorItemTags.GLASS_PANE_LIME,
                 JSGDecorItemTags.GLASS_PANE_BLUE);
 
-        tag(Tags.Items.GLASS_PANES_RED).addTag(JSGDecorItemTags.GLASS_PANE_RED);
-        tag(Tags.Items.GLASS_PANES_BLUE).addTag(JSGDecorItemTags.GLASS_PANE_BLUE);
-        tag(Tags.Items.GLASS_PANES_LIME).addTag(JSGDecorItemTags.GLASS_PANE_LIME);
+        //tag(Tags.Items.GLASS_PANES_RED).addTag(JSGDecorItemTags.GLASS_PANE_RED);
+        //tag(Tags.Items.GLASS_PANES_BLUE).addTag(JSGDecorItemTags.GLASS_PANE_BLUE);
+        //tag(Tags.Items.GLASS_PANES_LIME).addTag(JSGDecorItemTags.GLASS_PANE_LIME);
         tag(Tags.Items.GLASS_PANES_COLORLESS).addTag(JSGDecorItemTags.GLASS_PANE_COLORLESS);
     }
 

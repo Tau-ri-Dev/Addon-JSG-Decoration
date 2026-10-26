@@ -4,7 +4,7 @@ import dev.tauri.jsgcore.common.registry.CoreBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
 import dev.tauri.jsgdecor.common.registry.JSGDecorFeatures;
 import net.minecraft.core.Direction;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import java.util.List;
 
 public class JSGDecorConfiguredFeatures {
-    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         var lemonDecorator = new AttachedToLeavesDecorator(
                 0.1F,
                 1,

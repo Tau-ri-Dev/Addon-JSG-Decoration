@@ -17,7 +17,6 @@ public class BrazierBE extends JSGBlockEntity {
         this.type = type;
     }
 
-    @Override
     public AABB getRenderBoundingBox() {
         return type.blockShape.get().bounds().move(getBlockPos());
     }

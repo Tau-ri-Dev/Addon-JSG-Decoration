@@ -5,6 +5,7 @@ import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.StoneBasedDecorationBlock;
 import dev.tauri.jsgdecor.common.block.WoodBlock;
 import dev.tauri.jsgdecor.common.registry.JSGDecorBlocks;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
@@ -22,8 +23,8 @@ import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
 
 public class JSGDecorBlockLootTables extends BlockLootSubProvider {
 
-    public JSGDecorBlockLootTables() {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+    public JSGDecorBlockLootTables(HolderLookup.Provider registries) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
 
         for (var block : GLASS_BLOCKS.values()) {
             Block dropBlock = block.get();
-            add(dropBlock, noDrop().withPool(LootPool.lootPool().when(HAS_SILK_TOUCH).add(LootItem.lootTableItem(dropBlock))));
+            add(dropBlock, noDrop().withPool(LootPool.lootPool().when(hasSilkTouch()).add(LootItem.lootTableItem(dropBlock))));
         }
     }
 

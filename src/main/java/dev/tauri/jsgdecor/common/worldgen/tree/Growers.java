@@ -2,27 +2,18 @@ package dev.tauri.jsgdecor.common.worldgen.tree;
 
 import dev.tauri.jsgdecor.common.registry.JSGDecorFeatures;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.function.BiFunction;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class Growers {
 
-    public static final Supplier<AbstractTreeGrower> LEMON_TREE_GROWER = createGrower((random, hasFlowers) -> JSGDecorFeatures.LEMON_TREE);
+    public static final Supplier<TreeGrower> LEMON_TREE_GROWER = createGrower("lemon", 0.1f, JSGDecorFeatures.LEMON_TREE);
 
 
-    public static Supplier<AbstractTreeGrower> createGrower(BiFunction<RandomSource, Boolean, ResourceKey<ConfiguredFeature<?, ?>>> configuredFeature) {
-        return () -> new AbstractTreeGrower() {
-            @Override
-            @ParametersAreNonnullByDefault
-            protected @Nullable ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource pRandom, boolean pHasFlowers) {
-                return configuredFeature.apply(pRandom, pHasFlowers);
-            }
-        };
+    public static Supplier<TreeGrower> createGrower(String name, float chance, ResourceKey<ConfiguredFeature<?, ?>> configuredFeature) {
+        return () -> new TreeGrower(name, chance, Optional.empty(), Optional.empty(), Optional.of(configuredFeature), Optional.empty(), Optional.empty(), Optional.empty());
     }
 }

@@ -1,62 +1,55 @@
 plugins {
-    id 'eclipse'
     id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id 'net.neoforged.moddev' version '2.0.141'
 }
 
-
 group = mod_group_id
-if(mod_version.contains("Dev"))
+if (mod_version.contains("Dev"))
     version = mod_version + (new Date().format(build_with_millis == "true" ? 'yyyyMMdd-HHmmss' : 'yyyyMMdd'))
 else
     version = mod_version
-
-tasks.register('printVersionName') {
-    println project.version
-}
 
 base {
     archivesName = build_extrapath + "-" + minecraft_version
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
-minecraft {
-    mappings channel: mapping_channel, version: mapping_version
+neoForge {
+    version = project.neo_version
 
-    copyIdeResources = true
+    parchment {
+        minecraftVersion = project.parchment_minecraft_version
+        mappingsVersion = project.parchment_mappings_version
+    }
+
+    //accessTransformers.from file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-
         client {
-            property 'forge.enabledGameTestNamespaces', mod_id
+            client()
         }
-
         server {
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
+            server()
+            programArgument '--nogui'
         }
-        gameTestServer {
-            property 'forge.enabledGameTestNamespaces', mod_id
-        }
-
         data {
-            workingDirectory project.file('run-data')
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '--existing-mod', "jsg_core"
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all',
+                    '--output', file('src/generated/resources/').absolutePath,
+                    '--existing', file('src/main/resources/').absolutePath,
+                    '--existing-mod', 'jsg_core'
+        }
+        configureEach {
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
         }
     }
 }
@@ -65,66 +58,78 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     mavenCentral()
-    gradlePluginPortal()
     mavenLocal()
     maven {
-        name = 'MinecraftForge'
-        url = 'https://maven.minecraftforge.net/'
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
     }
-
-    /*maven {
+    maven {
+        url "https://maven.squiddev.cc"
+        content {
+            includeGroup("cc.tweaked")
+        }
+    }
+    maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
         content {
             includeGroup "maven.modrinth"
         }
-    }*/
+    }
+
+    // Metrics
+    maven {
+        name = "faststatsReleases"
+        url = uri("https://repo.faststats.dev/releases")
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly "org.jspecify:jspecify:1.0.0"
 
-    implementation(fg.deobf("eu.tauridev:jsg-core-${minecraft_version}:${core_version}:") { transitive = false })
+    implementation("eu.tauridev:jsg-core-${minecraft_version}:${core_version}:") { transitive = false }
 
-    //runtimeOnly fg.deobf("maven.modrinth:2MgfuPip:OFBFNuzP")
-}
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-tasks.named('processResources', ProcessResources).configure {
-    var replaceProperties = [
-            minecraft_version: minecraft_version,
-            minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version,
-            forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id,
-            mod_name: mod_name,
-            mod_license: mod_license,
-            mod_version: version,
-            mod_authors: mod_authors,
-            mod_description: mod_description,
-            core_version_range     : core_version_range
-    ]
+    // CC:Tweaked keeps the "-forge" artifact naming for its NeoForge builds on 1.21.1
+    compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-core-api:${cct_version}"
+    compileOnly "cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cct_version}"
+    localRuntime "cc.tweaked:cc-tweaked-${minecraft_version}-forge:${cct_version}"
 
-    inputs.properties replaceProperties
-
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties + [project: project]
-    }
-}
-
-tasks.named('jar', Jar).configure {
-    manifest {
-        attributes(["Specification-Title"     : mod_id,
-                    "Specification-Vendor"    : mod_authors,
-                    "Specification-Version"   : "1", // We are version 1 of ourselves
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : project.jar.archiveVersion,
-                    "Implementation-Vendor"   : mod_authors,
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")])
-    }
-    finalizedBy 'reobfJar'
+    // Metrics
+    implementation "dev.faststats.metrics:neoforge:${faststats_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xmaxerrs' << '5000'
 }
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            neo_version_range      : neo_version_range,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+            core_version_range     : core_version_range
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata

@@ -6,9 +6,9 @@ import dev.tauri.jsgcore.common.item.JSGBlockItem;
 import dev.tauri.jsgdecor.client.renderer.brazier.BrazierBEWLR;
 import dev.tauri.jsgdecor.common.block.BrazierType;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.List;
 import java.util.function.Consumer;

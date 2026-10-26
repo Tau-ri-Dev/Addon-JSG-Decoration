@@ -6,12 +6,12 @@ import dev.tauri.jsgdecor.Constants;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = JSGDecor.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = JSGDecor.MOD_ID, value = Dist.CLIENT)
 public class JSGDecorEntities {
 
     public static final EntityRegistryHelperBoat.BoatRegistryObject JSGD_BOAT = Constants.JSGD_BOAT_HELPER.builder("boat").setProperties(new Item.Properties()).buildBoats(BoatTypes.JSGD_BOAT_TYPE_WRAPPER);

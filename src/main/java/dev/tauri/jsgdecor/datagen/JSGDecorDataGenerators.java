@@ -5,11 +5,11 @@ import dev.tauri.jsgdecor.datagen.loot.JSGDecorLootTableProvider;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorBiomeTagGenerator;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorBlockTagGenerator;
 import dev.tauri.jsgdecor.datagen.tag.JSGDecorItemTagGenerator;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-@Mod.EventBusSubscriber(modid = JSGDecor.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = JSGDecor.MOD_ID)
 public class JSGDecorDataGenerators {
     @SubscribeEvent
     public static void generate(GatherDataEvent event) {
@@ -18,9 +18,9 @@ public class JSGDecorDataGenerators {
         var exFileHelper = event.getExistingFileHelper();
         var lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), JSGDecorLootTableProvider.create(output));
+        generator.addProvider(event.includeServer(), JSGDecorLootTableProvider.create(output, lookupProvider));
 
-        generator.addProvider(event.includeServer(), new JSGDecorRecipeProvider(output));
+        generator.addProvider(event.includeServer(), new JSGDecorRecipeProvider(output, lookupProvider));
 
         var blockTagGenerator = generator.addProvider(event.includeServer(), new JSGDecorBlockTagGenerator(output, lookupProvider, exFileHelper));
         generator.addProvider(event.includeServer(), new JSGDecorItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), exFileHelper));

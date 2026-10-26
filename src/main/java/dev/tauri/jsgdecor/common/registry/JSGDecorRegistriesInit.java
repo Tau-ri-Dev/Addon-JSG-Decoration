@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.common.registry;
 
 import dev.tauri.jsgdecor.JSGDecor;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 public class JSGDecorRegistriesInit {
 

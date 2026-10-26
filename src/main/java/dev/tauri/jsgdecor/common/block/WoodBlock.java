@@ -1,7 +1,7 @@
 package dev.tauri.jsgdecor.common.block;
 
 import dev.tauri.jsgdecor.common.worldgen.tree.Growers;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.function.Supplier;
@@ -15,10 +15,10 @@ public class WoodBlock {
         private final MapColor barkColor;
         private final MapColor leavesColor;
         private final MapColor planksColor;
-        private final Supplier<AbstractTreeGrower> treeGrower;
+        private final Supplier<TreeGrower> treeGrower;
         private final Boolean burns;
 
-        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<AbstractTreeGrower> treeGrower, Boolean burns) {
+        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<TreeGrower> treeGrower, Boolean burns) {
             this.material = material;
             this.woodColor = woodColor;
             this.barkColor = barkColor;
@@ -28,7 +28,7 @@ public class WoodBlock {
             this.burns = burns;
         }
 
-        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<AbstractTreeGrower> treeGrower) {
+        Material(String material, MapColor woodColor, MapColor barkColor, MapColor leavesColor, MapColor planksColor, Supplier<TreeGrower> treeGrower) {
             this(material, woodColor, barkColor, leavesColor, planksColor, treeGrower, true);
         }
 
@@ -52,7 +52,7 @@ public class WoodBlock {
             return planksColor;
         }
 
-        public AbstractTreeGrower getTreeGrower() {
+        public TreeGrower getTreeGrower() {
             return treeGrower.get();
         }
 

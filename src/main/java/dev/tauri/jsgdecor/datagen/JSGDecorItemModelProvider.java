@@ -4,8 +4,8 @@ import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.boat.BoatTypes;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class JSGDecorItemModelProvider extends ItemModelProvider {
     public JSGDecorItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {

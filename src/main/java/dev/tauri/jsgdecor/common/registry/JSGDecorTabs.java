@@ -7,14 +7,14 @@ import dev.tauri.jsgdecor.JSGDecor;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 import static dev.tauri.jsgdecor.JSGDecor.MOD_ID;
 import static dev.tauri.jsgdecor.common.registry.JSGDecorBlocks.*;
 
-@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MOD_ID)
 public class JSGDecorTabs {
     public static final RegistryObjectWrapper<CreativeModeTab> JSGD_BUILDING_TAB = JSGDecor.REGISTRY_HELPER.tab().register("building_blocks", TabBuilder.create(JSGMapping.rl(MOD_ID, "building_blocks"))
             .withIcon(() -> COMMON_BLOCKS.get("blue_atlantis_wall_block"))
@@ -32,8 +32,8 @@ public class JSGDecorTabs {
     @SubscribeEvent
     public static void buildTabsContents(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
-            for (var type : JSGDecorEntities.JSGD_BOAT.item().values()) event.accept(type);
-            for (var type : JSGDecorEntities.JSGD_CHEST_BOAT.item().values()) event.accept(type);
+            for (var type : JSGDecorEntities.JSGD_BOAT.item().values()) event.accept(type.get());
+            for (var type : JSGDecorEntities.JSGD_CHEST_BOAT.item().values()) event.accept(type.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
