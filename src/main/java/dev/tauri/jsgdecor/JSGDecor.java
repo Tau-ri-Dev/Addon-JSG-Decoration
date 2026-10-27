@@ -45,6 +45,7 @@ public class JSGDecor implements JSGAddon {
         JSGDecorTemplatePoolInjectors.register();
 
         JSGAddons.registerAddon(this);
+        DecorMetrics.load();
     }
 
     @Override
