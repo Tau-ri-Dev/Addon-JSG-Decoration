@@ -184,6 +184,19 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
             }
         }
 
+        tag(JSGDecorBlockTags.GLASS_BLOCK_ALL).addTags(
+                JSGDecorBlockTags.GLASS_BLUE,
+                JSGDecorBlockTags.GLASS_LIME,
+                JSGDecorBlockTags.GLASS_RED,
+                JSGDecorBlockTags.GLASS_COLORLESS
+        );
+        tag(JSGDecorBlockTags.GLASS_PANE_ALL).addTags(
+                JSGDecorBlockTags.GLASS_PANE_BLUE,
+                JSGDecorBlockTags.GLASS_PANE_LIME,
+                JSGDecorBlockTags.GLASS_PANE_RED,
+                JSGDecorBlockTags.GLASS_PANE_COLORLESS
+        );
+
         //JSG Core tags
         tag(CoreBlockTags.SUPPORT_LEMON).add(JSGDecorBlocks.WOOD_BLOCKS.get("lemon_leaves").get());
 
