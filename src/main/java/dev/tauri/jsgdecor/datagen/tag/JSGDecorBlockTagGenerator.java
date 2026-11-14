@@ -1,5 +1,6 @@
 package dev.tauri.jsgdecor.datagen.tag;
 
+import dev.tauri.jsgcore.common.definition.material.MaterialType;
 import dev.tauri.jsgcore.common.registry.tag.CoreBlockTags;
 import dev.tauri.jsgcore.mapping.JSGMapping;
 import dev.tauri.jsgdecor.JSGDecor;
@@ -113,13 +114,13 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
         }
 
         //Stone Based Blocks
-        for (StoneBasedDecorationBlock.Material material : StoneBasedDecorationBlock.Material.values()) {
-            for (StoneBasedDecorationBlock.Variant variant : StoneBasedDecorationBlock.Variant.values()) {
-                for (StoneBasedDecorationBlock.Shape shape : StoneBasedDecorationBlock.Shape.values()) {
+        for (var material : MaterialType.values()) {
+            for (var variant : StoneBasedDecorationBlock.Variant.values()) {
+                for (var shape : StoneBasedDecorationBlock.Shape.values()) {
 
                     String name = variant.shouldSwapNameOrder()
-                            ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape()
-                            : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                            ? variant.getVariant() + "_" + material.getName() + "_" + shape.getShape()
+                            : material.getName() + "_" + variant.getVariant() + "_" + shape.getShape();
 
                     Block block = STONE_BASED_DECORATION_BLOCKS.get(name).get();
 
@@ -182,6 +183,19 @@ public class JSGDecorBlockTagGenerator extends BlockTagsProvider {
                 }
             }
         }
+
+        tag(JSGDecorBlockTags.GLASS_BLOCK_ALL).addTags(
+                JSGDecorBlockTags.GLASS_BLUE,
+                JSGDecorBlockTags.GLASS_LIME,
+                JSGDecorBlockTags.GLASS_RED,
+                JSGDecorBlockTags.GLASS_COLORLESS
+        );
+        tag(JSGDecorBlockTags.GLASS_PANE_ALL).addTags(
+                JSGDecorBlockTags.GLASS_PANE_BLUE,
+                JSGDecorBlockTags.GLASS_PANE_LIME,
+                JSGDecorBlockTags.GLASS_PANE_RED,
+                JSGDecorBlockTags.GLASS_PANE_COLORLESS
+        );
 
         //JSG Core tags
         tag(CoreBlockTags.SUPPORT_LEMON).add(JSGDecorBlocks.WOOD_BLOCKS.get("lemon_leaves").get());

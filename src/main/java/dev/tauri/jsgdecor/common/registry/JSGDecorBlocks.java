@@ -5,7 +5,11 @@ import dev.tauri.jsgcore.common.registry.CoreTabs;
 import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
 import dev.tauri.jsgcore.common.registry.helper.builder.block.BlockRegistryHelperGeneric;
 import dev.tauri.jsgdecor.Constants;
+import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.*;
+import dev.tauri.jsgdecor.common.block.glass.DecorGlassBlock;
+import dev.tauri.jsgdecor.common.block.glass.DecorGlassPaneBlock;
+import dev.tauri.jsgdecor.common.registry.tag.JSGDecorBlockTags;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.Block;
@@ -112,11 +116,14 @@ public class JSGDecorBlocks {
                 var name = material.getMaterial() + "_" + shape.getShape();
 
                 var properties = BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS);
-                var builder = createBuildingBlockBuilder(name, properties);
 
-                var registeredBlock = switch (shape) {
-                    case GLASS_PANE -> builder.buildGlassPane(material.getDyeColor());
-                    case GLASS_BLOCK -> builder.buildGlass(material.getDyeColor());
+                RegistryObjectWrapper<Block> registeredBlock = switch (shape) {
+                    case GLASS_BLOCK -> JSGDecor.REGISTRY_HELPER.block().register(name,
+                            () -> new DecorGlassBlock(material.getDyeColor(), properties, bs -> bs.is(JSGDecorBlockTags.GLASS_BLOCK_ALL))
+                    );
+                    case GLASS_PANE -> JSGDecor.REGISTRY_HELPER.block().register(name,
+                            () -> new DecorGlassPaneBlock(material.getDyeColor(), properties, bs -> bs.is(JSGDecorBlockTags.GLASS_PANE_ALL))
+                    );
                 };
 
                 GLASS_BLOCKS.put(name, registeredBlock);
@@ -126,7 +133,7 @@ public class JSGDecorBlocks {
 
     private static void registerStoneBasedDecorationBlocks() {
         StoneBasedDecorationBlock.forEach((material, variant, shape) -> {
-            var name = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape() : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+            var name = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getName() + "_" + shape.getShape() : material.getName() + "_" + variant.getVariant() + "_" + shape.getShape();
 
             var properties = BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(material.getMapColor());
             var builder = createBuildingBlockBuilder(name, properties);
@@ -135,8 +142,8 @@ public class JSGDecorBlocks {
                 case SLAB -> builder.buildSlab();
                 case STAIRS -> {
                     String baseBlockName = variant.shouldSwapNameOrder()
-                            ? variant.getVariant() + "_" + material.getMaterial() + "_block"
-                            : material.getMaterial() + "_" + variant.getVariant() + "_block";
+                            ? variant.getVariant() + "_" + material.getName() + "_block"
+                            : material.getName() + "_" + variant.getVariant() + "_block";
                     yield builder.buildStairs(() -> STONE_BASED_DECORATION_BLOCKS.get(baseBlockName).get().defaultBlockState());
                 }
                 default -> (variant.isRotatable() || variant.hasDifferentSideTexture())

@@ -165,13 +165,13 @@ public class JSGDecorBlockStateProvider extends BlockStateProvider {
         StoneBasedDecorationBlock.forEach((material, variant, shape) -> {
             if (shape != StoneBasedDecorationBlock.Shape.BLOCK) return;
 
-            var baseName = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getMaterial() : material.getMaterial() + "_" + variant.getVariant();
+            var baseName = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getName() : material.getName() + "_" + variant.getVariant();
 
             var block = STONE_BASED_DECORATION_BLOCKS.get(baseName + "_block").get();
             var slab = (SlabBlock) STONE_BASED_DECORATION_BLOCKS.get(baseName + "_slab").get();
             var stairs = (StairBlock) STONE_BASED_DECORATION_BLOCKS.get(baseName + "_stairs").get();
 
-            var textureRL = "block/stone_based/" + material.getMaterial() + "_";
+            var textureRL = "block/stone_based/" + material.getName() + "_";
 
             var textureSides = JSGMapping.rl(JSGDecor.MOD_ID, textureRL + variant.getVariant());
             var textureBottomTop = JSGMapping.rl(JSGDecor.MOD_ID, textureRL + variant.getTopBottomTexture());
