@@ -1,43 +1,9 @@
 package dev.tauri.jsgdecor.common.block;
 
 import dev.tauri.jsgcore.common.definition.material.MaterialType;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.material.MapColor;
 import org.apache.logging.log4j.util.TriConsumer;
 
 public class StoneBasedDecorationBlock {
-
-    public enum Material {
-        NAQUADAH("naquadah", MapColor.COLOR_GREEN, MaterialType.NAQUADAH.forgeTags().nuggets()),
-        NAQUADAH_ALLOY("naquadah_alloy", MapColor.COLOR_CYAN, MaterialType.NAQUADAH_ALLOY.forgeTags().nuggets()),
-        REFINED_NAQUADAH("refined_naquadah", MapColor.COLOR_LIGHT_GREEN, MaterialType.REFINED_NAQUADAH.forgeTags().nuggets()),
-        TITANIUM("titanium", MapColor.COLOR_LIGHT_GRAY, MaterialType.TITANIUM.forgeTags().nuggets()),
-        TRINIUM("trinium", MapColor.SNOW, MaterialType.TRINIUM.forgeTags().nuggets());
-
-        private final String material;
-        private final MapColor mapColor;
-        private final TagKey<Item> nuggetTag;
-
-        Material(String material, MapColor mapColor, TagKey<Item> nuggetTag) {
-            this.material = material;
-            this.mapColor = mapColor;
-            this.nuggetTag = nuggetTag;
-        }
-
-        public String getMaterial() {
-            return material;
-        }
-
-        public MapColor getMapColor() {
-            return mapColor;
-        }
-
-        public TagKey<Item> getNuggetTag() {
-            return nuggetTag;
-        }
-    }
-
     public enum Variant {
         PETRIFIED("petrified"),
         MONOLITHIC("monolithic"),
@@ -131,8 +97,8 @@ public class StoneBasedDecorationBlock {
         }
     }
 
-    public static void forEach(TriConsumer<Material, Variant, Shape> consumer) {
-        for (var material : StoneBasedDecorationBlock.Material.values()) {
+    public static void forEach(TriConsumer<MaterialType, Variant, Shape> consumer) {
+        for (var material : MaterialType.values()) {
             for (var variant : StoneBasedDecorationBlock.Variant.values()) {
                 for (var shape : StoneBasedDecorationBlock.Shape.values()) {
                     consumer.accept(material, variant, shape);
