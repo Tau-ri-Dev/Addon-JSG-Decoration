@@ -127,7 +127,7 @@ public class JSGDecorBlocks {
 
     private static void registerStoneBasedDecorationBlocks() {
         StoneBasedDecorationBlock.forEach((material, variant, shape) -> {
-            var name = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape() : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+            var name = variant.shouldSwapNameOrder() ? variant.getVariant() + "_" + material.getName() + "_" + shape.getShape() : material.getName() + "_" + variant.getVariant() + "_" + shape.getShape();
 
             var properties = BlockBehaviour.Properties.copy(Blocks.STONE).mapColor(material.getMapColor());
             var builder = createBuildingBlockBuilder(name, properties);
@@ -136,8 +136,8 @@ public class JSGDecorBlocks {
                 case SLAB -> builder.buildSlab();
                 case STAIRS -> {
                     String baseBlockName = variant.shouldSwapNameOrder()
-                            ? variant.getVariant() + "_" + material.getMaterial() + "_block"
-                            : material.getMaterial() + "_" + variant.getVariant() + "_block";
+                            ? variant.getVariant() + "_" + material.getName() + "_block"
+                            : material.getName() + "_" + variant.getVariant() + "_block";
                     yield builder.buildStairs(() -> STONE_BASED_DECORATION_BLOCKS.get(baseBlockName).get().defaultBlockState());
                 }
                 default -> (variant.isRotatable() || variant.hasDifferentSideTexture())

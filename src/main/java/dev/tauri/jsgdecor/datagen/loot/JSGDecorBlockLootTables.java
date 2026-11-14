@@ -1,5 +1,6 @@
 package dev.tauri.jsgdecor.datagen.loot;
 
+import dev.tauri.jsgcore.common.definition.material.MaterialType;
 import dev.tauri.jsgcore.common.registry.helper.RegistryObjectWrapper;
 import dev.tauri.jsgdecor.JSGDecor;
 import dev.tauri.jsgdecor.common.block.StoneBasedDecorationBlock;
@@ -54,18 +55,18 @@ public class JSGDecorBlockLootTables extends BlockLootSubProvider {
     }
 
     private void generateStoneBasedLoot() {
-        for (StoneBasedDecorationBlock.Material material : StoneBasedDecorationBlock.Material.values()) {
-            for (StoneBasedDecorationBlock.Variant variant : StoneBasedDecorationBlock.Variant.values()) {
-                for (StoneBasedDecorationBlock.Shape shape : StoneBasedDecorationBlock.Shape.values()) {
+        for (var material : MaterialType.values()) {
+            for (var variant : StoneBasedDecorationBlock.Variant.values()) {
+                for (var shape : StoneBasedDecorationBlock.Shape.values()) {
 
                     String name = variant.shouldSwapNameOrder()
-                            ? variant.getVariant() + "_" + material.getMaterial() + "_" + shape.getShape()
-                            : material.getMaterial() + "_" + variant.getVariant() + "_" + shape.getShape();
+                            ? variant.getVariant() + "_" + material.getName() + "_" + shape.getShape()
+                            : material.getName() + "_" + variant.getVariant() + "_" + shape.getShape();
 
                     Block block = STONE_BASED_DECORATION_BLOCKS.get(name).get();
 
                     if (variant == StoneBasedDecorationBlock.Variant.PETRIFIED && shape == StoneBasedDecorationBlock.Shape.BLOCK) {
-                        String cobbledName = StoneBasedDecorationBlock.Variant.COBBLED.getVariant() + "_" + material.getMaterial() + "_block";
+                        String cobbledName = StoneBasedDecorationBlock.Variant.COBBLED.getVariant() + "_" + material.getName() + "_block";
                         Block cobbledBlock = STONE_BASED_DECORATION_BLOCKS.get(cobbledName).get();
 
                         add(block, createSilkTouchDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(cobbledBlock))));

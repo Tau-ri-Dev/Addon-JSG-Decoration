@@ -259,7 +259,7 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
         }
 
         //Stone Based Blocks
-        for (StoneBasedDecorationBlock.Material material : StoneBasedDecorationBlock.Material.values()) {
+        for (var material : MaterialType.values()) {
             Item CobbledBlock = getStoneBlock(material, StoneBasedDecorationBlock.Variant.COBBLED, StoneBasedDecorationBlock.Shape.BLOCK);
             Item petrifiedBlock = getStoneBlock(material, StoneBasedDecorationBlock.Variant.PETRIFIED, StoneBasedDecorationBlock.Shape.BLOCK);
             Item SmoothBlock = getStoneBlock(material, StoneBasedDecorationBlock.Variant.SMOOTH, StoneBasedDecorationBlock.Shape.BLOCK);
@@ -284,8 +284,8 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                             .pattern("N#N")
                             .pattern("###")
                             .define('#', Blocks.COBBLESTONE)
-                            .define('N', material.getNuggetTag())
-                            .unlockedBy("has_nugget", has(material.getNuggetTag()))
+                            .define('N', material.forgeTags().nuggets())
+                            .unlockedBy("has_nugget", has(material.forgeTags().nuggets()))
                             .save(pWriter);
 
                 } else if (variant == StoneBasedDecorationBlock.Variant.PETRIFIED) {
@@ -295,8 +295,8 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
                             .pattern("N#N")
                             .pattern("###")
                             .define('#', Blocks.STONE)
-                            .define('N', material.getNuggetTag())
-                            .unlockedBy("has_nugget", has(material.getNuggetTag()))
+                            .define('N', material.forgeTags().nuggets())
+                            .unlockedBy("has_nugget", has(material.forgeTags().nuggets()))
                             .save(pWriter);
 
                     blockSmelting(pWriter, List.of(CobbledBlock), RecipeCategory.BUILDING_BLOCKS, craftedBlock, 0.1f, 200, "jsg_decor_petrified");
@@ -415,17 +415,17 @@ public class JSGDecorRecipeProvider extends RecipeProvider implements ICondition
         }
     }
 
-    private Item getStoneBlock(StoneBasedDecorationBlock.Material mat, StoneBasedDecorationBlock.Variant var, StoneBasedDecorationBlock.Shape shape) {
+    private Item getStoneBlock(MaterialType mat, StoneBasedDecorationBlock.Variant var, StoneBasedDecorationBlock.Shape shape) {
         String name = var.shouldSwapNameOrder()
-                ? var.getVariant() + "_" + mat.getMaterial() + "_" + shape.getShape()
-                : mat.getMaterial() + "_" + var.getVariant() + "_" + shape.getShape();
+                ? var.getVariant() + "_" + mat.getName() + "_" + shape.getShape()
+                : mat.getName() + "_" + var.getVariant() + "_" + shape.getShape();
         return STONE_BASED_DECORATION_BLOCKS.get(name).get().asItem();
     }
 
-    private String getStoneName(StoneBasedDecorationBlock.Material mat, StoneBasedDecorationBlock.Variant var) {
+    private String getStoneName(MaterialType mat, StoneBasedDecorationBlock.Variant var) {
         return var.shouldSwapNameOrder()
-                ? var.getVariant() + "_" + mat.getMaterial() + "_block"
-                : mat.getMaterial() + "_" + var.getVariant() + "_block";
+                ? var.getVariant() + "_" + mat.getName() + "_block"
+                : mat.getName() + "_" + var.getVariant() + "_block";
     }
 
     private void createSlabAndStairsRecipes(Consumer<FinishedRecipe> pWriter, Item craftingBlock, Item slab, Item stairs, String group, Boolean isWoodRecipe, Boolean stoneCutterRecipes) {
